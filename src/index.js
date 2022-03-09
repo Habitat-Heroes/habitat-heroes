@@ -12,12 +12,12 @@ class Game extends Phaser.Game {
         autoCenter: Phaser.Scale.CENTER_BOTH,
         parent: 'phaser-iso-map',
         width: 1200,
-        height: 600
+        height: 600,
       },
       disableContextMenu: true,
       scene: [HabitatHeroesScene],
       banner: {
-        hidePhaser: true
+        hidePhaser: true,
       },
       physics: {
         default: 'arcade',
