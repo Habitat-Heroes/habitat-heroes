@@ -17,95 +17,6 @@ let d = 0;
 let scene;
 
 class HabitatHeroesScene extends Phaser.Scene {
-  preload() {
-    this.load.json('map', mapjson);
-    this.load.spritesheet('tiles', tiles, { frameWidth: 64, frameHeight: 64 });
-    this.load.spritesheet('skeleton', skeleton, {
-      frameWidth: 128,
-      frameHeight: 128,
-    });
-    this.load.image('house', house);
-  }
-
-  create() {
-    scene = this;
-
-    this.buildMap();
-    this.placeHouses();
-
-    skeletons.push(
-      this.add.existing(new Skeleton(this, 240, 290, 'walk', 'southEast', 100))
-    );
-    skeletons.push(
-      this.add.existing(new Skeleton(this, 100, 380, 'walk', 'southEast', 230))
-    );
-    skeletons.push(
-      this.add.existing(new Skeleton(this, 620, 140, 'walk', 'south', 380))
-    );
-    skeletons.push(
-      this.add.existing(new Skeleton(this, 460, 180, 'idle', 'south', 0))
-    );
-
-    skeletons.push(
-      this.add.existing(new Skeleton(this, 760, 100, 'attack', 'southEast', 0))
-    );
-    skeletons.push(
-      this.add.existing(new Skeleton(this, 800, 140, 'attack', 'northWest', 0))
-    );
-
-    skeletons.push(
-      this.add.existing(new Skeleton(this, 750, 480, 'walk', 'east', 200))
-    );
-
-    skeletons.push(
-      this.add.existing(new Skeleton(this, 1030, 300, 'die', 'west', 0))
-    );
-
-    skeletons.push(
-      this.add.existing(new Skeleton(this, 1180, 340, 'attack', 'northEast', 0))
-    );
-
-    skeletons.push(
-      this.add.existing(new Skeleton(this, 1180, 180, 'walk', 'southEast', 160))
-    );
-
-    skeletons.push(
-      this.add.existing(new Skeleton(this, 1450, 320, 'walk', 'southWest', 320))
-    );
-    skeletons.push(
-      this.add.existing(new Skeleton(this, 1500, 340, 'walk', 'southWest', 340))
-    );
-    skeletons.push(
-      this.add.existing(new Skeleton(this, 1550, 360, 'walk', 'southWest', 330))
-    );
-
-    this.cameras.main.setSize(1600, 600);
-
-    // this.cameras.main.scrollX = 800;
-  }
-
-  update() {
-    skeletons.forEach((sk) => {
-      sk.update();
-    });
-
-    // return;
-
-    if (d) {
-      this.cameras.main.scrollX -= 0.5;
-
-      if (this.cameras.main.scrollX <= 0) {
-        d = 0;
-      }
-    } else {
-      this.cameras.main.scrollX += 0.5;
-
-      if (this.cameras.main.scrollX >= 800) {
-        d = 1;
-      }
-    }
-  }
-
   static buildMap() {
     //  Parse the data out of the map in scene cache
     const data = scenecache;
@@ -148,6 +59,105 @@ class HabitatHeroesScene extends Phaser.Scene {
 
     const house2 = scene.add.image(1300, 290, 'house');
     house2.depth = house2.y + 86;
+  }
+
+  preload() {
+    this.load.json('map', mapjson);
+    this.load.spritesheet('tiles', tiles, { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('skeleton', skeleton, {
+      frameWidth: 128,
+      frameHeight: 128,
+    });
+    this.load.image('house', house);
+  }
+
+  create() {
+    scene = this;
+
+    HabitatHeroesScene.buildMap();
+    HabitatHeroesScene.placeHouses();
+
+    skeletons.push(
+      this.add.existing(new Skeleton(this, 240, 290, 'walk', 'southEast', 100)),
+    );
+    skeletons.push(
+      this.add.existing(new Skeleton(this, 100, 380, 'walk', 'southEast', 230)),
+    );
+    skeletons.push(
+      this.add.existing(new Skeleton(this, 620, 140, 'walk', 'south', 380)),
+    );
+    skeletons.push(
+      this.add.existing(new Skeleton(this, 460, 180, 'idle', 'south', 0)),
+    );
+
+    skeletons.push(
+      this.add.existing(new Skeleton(this, 760, 100, 'attack', 'southEast', 0)),
+    );
+    skeletons.push(
+      this.add.existing(new Skeleton(this, 800, 140, 'attack', 'northWest', 0)),
+    );
+
+    skeletons.push(
+      this.add.existing(new Skeleton(this, 750, 480, 'walk', 'east', 200)),
+    );
+
+    skeletons.push(
+      this.add.existing(new Skeleton(this, 1030, 300, 'die', 'west', 0)),
+    );
+
+    skeletons.push(
+      this.add.existing(
+        new Skeleton(this, 1180, 340, 'attack', 'northEast', 0),
+      ),
+    );
+
+    skeletons.push(
+      this.add.existing(
+        new Skeleton(this, 1180, 180, 'walk', 'southEast', 160),
+      ),
+    );
+
+    skeletons.push(
+      this.add.existing(
+        new Skeleton(this, 1450, 320, 'walk', 'southWest', 320),
+      ),
+    );
+    skeletons.push(
+      this.add.existing(
+        new Skeleton(this, 1500, 340, 'walk', 'southWest', 340),
+      ),
+    );
+    skeletons.push(
+      this.add.existing(
+        new Skeleton(this, 1550, 360, 'walk', 'southWest', 330),
+      ),
+    );
+
+    this.cameras.main.setSize(1600, 600);
+
+    // this.cameras.main.scrollX = 800;
+  }
+
+  update() {
+    skeletons.forEach((sk) => {
+      sk.update();
+    });
+
+    // return;
+
+    if (d) {
+      this.cameras.main.scrollX -= 0.5;
+
+      if (this.cameras.main.scrollX <= 0) {
+        d = 0;
+      }
+    } else {
+      this.cameras.main.scrollX += 0.5;
+
+      if (this.cameras.main.scrollX >= 800) {
+        d = 1;
+      }
+    }
   }
 }
 
