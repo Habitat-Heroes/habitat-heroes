@@ -1,9 +1,9 @@
 import Phaser from 'phaser';
 
 import avatar from '../assets/avatar1.png';
+import house from '../assets/basic_hut.png';
 import mapjson from '../assets/isometric-grass-and-water.json';
 import tiles from '../assets/isometric-grass-and-water.png';
-import house from '../assets/rem_0002.png';
 import scenecache from '../assets/scenecache.json';
 import Avatar from '../objects/Avatar';
 
