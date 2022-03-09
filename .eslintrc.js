@@ -5,8 +5,8 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
+    // 'plugin:react/recommended',
+    // 'plugin:react/jsx-runtime',
     'airbnb',
     'prettier',
   ],
@@ -18,8 +18,8 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: [
-    'react',
-    'react-hooks',
+    // 'react',
+    // 'react-hooks',
     'import',
     'eslint-comments',
     'simple-import-sort',
@@ -104,16 +104,6 @@ module.exports = {
     // eslint-plugin-simple-import-sort //
     // ================================ //
     'simple-import-sort/exports': 'error',
-
-    // ===== //
-    // React //
-    // ===== //
-    'react/jsx-boolean-value': ['error', 'always'],
-    'react/jsx-sort-props': 'error',
-    // Checks effect dependencies
-    'react-hooks/exhaustive-deps': 'error',
-    // Checks rules of Hooks
-    'react-hooks/rules-of-hooks': 'error',
     'simple-import-sort/imports': [
       'error',
       {
@@ -133,5 +123,15 @@ module.exports = {
         ],
       },
     ],
+
+    // ===== //
+    // React //
+    // ===== //
+    // 'react/jsx-boolean-value': ['error', 'always'],
+    // 'react/jsx-sort-props': 'error',
+    // // Checks effect dependencies
+    // 'react-hooks/exhaustive-deps': 'error',
+    // // Checks rules of Hooks
+    // 'react-hooks/rules-of-hooks': 'error',
   },
 };
