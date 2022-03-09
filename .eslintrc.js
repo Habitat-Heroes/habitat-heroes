@@ -97,8 +97,8 @@ module.exports = {
     'import/no-mutable-exports': 'error',
     // Forbid a module from importing itself
     'import/no-self-import': 'error',
-    // Allow for non-default imports
-    'import/prefer-default-import': 'off',
+    // Only allow named exports
+    'import/prefer-default-export': 'off',
 
     // ================================ //
     // eslint-plugin-simple-import-sort //

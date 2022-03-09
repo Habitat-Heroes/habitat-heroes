@@ -5,7 +5,7 @@ import house from '../assets/basic_hut.png';
 import mapjson from '../assets/isometric-grass-and-water.json';
 import tiles from '../assets/isometric-grass-and-water.png';
 import scenecache from '../assets/scenecache.json';
-import Avatar from '../objects/Avatar';
+import { Avatar } from '../objects/Avatar';
 
 let player;
 
@@ -18,11 +18,11 @@ let scene;
 let touchX;
 let touchY;
 
-class HabitatHeroesScene extends Phaser.Scene {
+export class HabitatHeroesScene extends Phaser.Scene {
   constructor() {
     super({
       key: 'HabitatHeroesScene',
-      mapAdd: {isoPlugin: 'iso', isoPhysics: 'isoPhysics'}
+      mapAdd: { isoPlugin: 'iso', isoPhysics: 'isoPhysics' },
     });
   }
 
@@ -42,7 +42,8 @@ class HabitatHeroesScene extends Phaser.Scene {
     this.buildMap();
     this.placeHouses();
 
-    player = new Avatar(scene, 128, 128, 'avatar', { key: 'avatar', frame: 0 }).player;
+    player = new Avatar(scene, 128, 128, 'avatar', { key: 'avatar', frame: 0 })
+      .player;
     touchY = 128;
     touchX = 128;
     pointer = scene.input.activePointer;
@@ -63,7 +64,8 @@ class HabitatHeroesScene extends Phaser.Scene {
           player.anims.play('still', true);
         },
         [],
-        this);
+        this,
+      );
     }
 
     if (touchY > player.y) {
@@ -71,7 +73,8 @@ class HabitatHeroesScene extends Phaser.Scene {
       player.y += touchY > player.y + 2 ? 2 : touchY - player.y;
       player.depth = player.y + 48;
       return;
-    } if (touchY < player.y) {
+    }
+    if (touchY < player.y) {
       player.anims.play('down', true);
       player.y -= touchY + 2 < player.y ? 2 : player.y - touchY;
       player.depth = player.y + 64;
@@ -130,5 +133,3 @@ class HabitatHeroesScene extends Phaser.Scene {
   }
 }
 /* eslint-enable class-methods-use-this */
-
-export default HabitatHeroesScene;
