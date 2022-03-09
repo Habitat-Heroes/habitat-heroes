@@ -60,42 +60,22 @@ class HabitatHeroesScene extends Phaser.Scene {
 
     if (touchY > player.y) {
       player.anims.play('up', true);
-      player.scene.time.delayedCall(
-        0.15 * 1000,
-        () => { player.y += touchY > player.y + 2 ? 2 : touchY - player.y; },
-        [],
-        this,
-      );
+      player.y += touchY > player.y + 2 ? 2 : touchY - player.y;
       player.depth = player.y + 48;
       return;
     } if (touchY < player.y) {
       player.anims.play('down', true);
-      player.scene.time.delayedCall(
-        0.15 * 1000,
-        () => { player.y -= touchY + 2 < player.y ? 2 : player.y - touchY; },
-        [],
-        this,
-      );
+      player.y -= touchY + 2 < player.y ? 2 : player.y - touchY;
       player.depth = player.y + 64;
       return;
     }
 
     if (touchX > player.x) {
       player.anims.play('right', true);
-      player.scene.time.delayedCall(
-        0.15 * 1000,
-        () => { player.x += touchX > player.x + 2 ? 2 : touchX - player.x; },
-        [],
-        this,
-      );
+      player.x += touchX > player.x + 2 ? 2 : touchX - player.x;
     } else if (touchX < player.x) {
       player.anims.play('left', true);
-      player.scene.time.delayedCall(
-        0.15 * 1000,
-        () => { player.x -= touchX < player.x - 2 ? 2 : player.x - touchX; },
-        [],
-        this,
-      );
+      player.x -= touchX < player.x - 2 ? 2 : player.x - touchX;
     }
   }
 
