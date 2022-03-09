@@ -97,7 +97,7 @@ module.exports = {
     'import/no-mutable-exports': 'error',
     // Forbid a module from importing itself
     'import/no-self-import': 'error',
-    // Only allow named exports
+    // Allow for non-default exports
     'import/prefer-default-export': 'off',
 
     // ================================ //
