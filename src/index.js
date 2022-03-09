@@ -1,23 +1,26 @@
 import Phaser from 'phaser';
 import mapjson from './assets/isometric-grass-and-water.json';
 import tiles from './assets/isometric-grass-and-water.png';
-import skeleton from './assets/skeleton8.png';
+import avatar from './assets/avatar1.png';
 import house from './assets/rem_0002.png';
 import scenecache from './assets/scenecache.json';
-import {Skeleton} from "./objects/Skeleton";
+import {Avatar} from "./objects/Avatar";
 
-const skeletons = [];
+let player;
 
 let tileWidthHalf;
 let tileHeightHalf;
 
-let d = 0;
+let keyA;
+let keyS;
+let keyD;
+let keyW;
 
 let scene;
 
 class HabitatHeroesScene extends Phaser.Scene
 {
-    constructor ()
+    constructor()
     {
         super();
     }
@@ -26,7 +29,7 @@ class HabitatHeroesScene extends Phaser.Scene
     {
         this.load.json('map', mapjson);
         this.load.spritesheet('tiles', tiles, { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('skeleton', skeleton, { frameWidth: 128, frameHeight: 128 });
+        this.load.spritesheet('avatar', avatar, { frameWidth: 64, frameHeight: 64 });
         this.load.image('house', house);
     }
 
@@ -37,56 +40,35 @@ class HabitatHeroesScene extends Phaser.Scene
         this.buildMap();
         this.placeHouses();
 
-        skeletons.push(this.add.existing(new Skeleton(this, 240, 290, 'walk', 'southEast', 100)));
-        skeletons.push(this.add.existing(new Skeleton(this, 100, 380, 'walk', 'southEast', 230)));
-        skeletons.push(this.add.existing(new Skeleton(this, 620, 140, 'walk', 'south', 380)));
-        skeletons.push(this.add.existing(new Skeleton(this, 460, 180, 'idle', 'south', 0)));
+        player = new Avatar(scene, 128, 128, 'avatar', { key: 'avatar', frame: 0 });
+        // this.cameras.main.setSize(1200, 800);
 
-        skeletons.push(this.add.existing(new Skeleton(this, 760, 100, 'attack', 'southEast', 0)));
-        skeletons.push(this.add.existing(new Skeleton(this, 800, 140, 'attack', 'northWest', 0)));
-
-        skeletons.push(this.add.existing(new Skeleton(this, 750, 480, 'walk', 'east', 200)));
-
-        skeletons.push(this.add.existing(new Skeleton(this, 1030, 300, 'die', 'west', 0)));
-
-        skeletons.push(this.add.existing(new Skeleton(this, 1180, 340, 'attack', 'northEast', 0)));
-
-        skeletons.push(this.add.existing(new Skeleton(this, 1180, 180, 'walk', 'southEast', 160)));
-
-        skeletons.push(this.add.existing(new Skeleton(this, 1450, 320, 'walk', 'southWest', 320)));
-        skeletons.push(this.add.existing(new Skeleton(this, 1500, 340, 'walk', 'southWest', 340)));
-        skeletons.push(this.add.existing(new Skeleton(this, 1550, 360, 'walk', 'southWest', 330)));
-
-        this.cameras.main.setSize(1600, 600);
+        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 
         // this.cameras.main.scrollX = 800;
     }
 
     update ()
     {
-        skeletons.forEach(function (skeleton) {
-            skeleton.update();
-        });
-
-        // return;
-
-        if (d)
-        {
-            this.cameras.main.scrollX -= 0.5;
-
-            if (this.cameras.main.scrollX <= 0)
-            {
-                d = 0;
-            }
-        }
-        else
-        {
-            this.cameras.main.scrollX += 0.5;
-
-            if (this.cameras.main.scrollX >= 800)
-            {
-                d = 1;
-            }
+        if(keyA.isDown) {
+            player.x -= 2;
+            player.anims.play('left', true);
+        } else if(keyS.isDown) {
+            player.y += 2;
+            player.anims.play('down', true);
+            player.depth = player.y + 64;
+        } else if(keyD.isDown) {
+            player.x += 2;
+            player.anims.play('right', true);
+        } else if(keyW.isDown) {
+            player.y -= 2;
+            player.anims.play('up', true);
+            player.depth = player.y + 48;
+        } else {
+            player.scene.time.delayedCall(0.15 * 1000, () => player.anims.play('still', true), [], this);
         }
     }
 
@@ -132,21 +114,25 @@ class HabitatHeroesScene extends Phaser.Scene
 
     placeHouses ()
     {
-        const house_1 = scene.add.image(240, 370, 'house');
+        const house_1 = scene.add.image(440, 370, 'house');
         house_1.depth = house_1.y + 86;
-
-        const house_2 = scene.add.image(1300, 290, 'house');
-        house_2.depth = house_2.y + 86;
     }
 }
 
 const config = {
     type: Phaser.WEBGL,
-    width: 800,
+    width: 1200,
     height: 600,
     backgroundColor: '#ababab',
     parent: 'phaser-example',
-    scene: [ HabitatHeroesScene ]
+    scene: [ HabitatHeroesScene ],
+    physics: {
+        default: 'arcade',
+        fps: 60,
+        arcade: {
+            gravity: { y: 0 },
+        },
+    },
 };
 
 const game = new Phaser.Game(config);
