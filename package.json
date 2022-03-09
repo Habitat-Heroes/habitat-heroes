@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --config webpack/prod.js ",
     "start": "webpack-dev-server --config webpack/base.js --open",
-    "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install"
+    "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install",
+    "lint": "eslint . --fix --ext .ts,.js,.tsx,.jsx && prettier --write \"src/**/*.{ts,js,tsx,jsx}\" --tab-width 2"
   },
   "repository": {
     "type": "git",
