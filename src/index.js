@@ -5,7 +5,7 @@ import mapjson from './assets/isometric-grass-and-water.json';
 import tiles from './assets/isometric-grass-and-water.png';
 import house from './assets/rem_0002.png';
 import scenecache from './assets/scenecache.json';
-import {Avatar} from './objects/Avatar';
+import Avatar from './objects/Avatar';
 
 let player;
 
@@ -19,24 +19,24 @@ let keyW;
 
 let scene;
 
-class HabitatHeroesScene extends Phaser.Scene
-{
-  preload ()
-  {
+class HabitatHeroesScene extends Phaser.Scene {
+  preload() {
     this.load.json('map', mapjson);
     this.load.spritesheet('tiles', tiles, { frameWidth: 64, frameHeight: 64 });
-    this.load.spritesheet('avatar', avatar, { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('avatar', avatar, {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
     this.load.image('house', house);
   }
 
-  create ()
-  {
+  create() {
     scene = this;
 
     this.buildMap();
     this.placeHouses();
 
-    player = new Avatar(scene, 128, 128, 'avatar', { key: 'avatar', frame: 0 });
+    player = new Avatar(scene, 128, 128, 'avatar', { key: 'avatar', frame: 0 }).player;
     // this.cameras.main.setSize(1200, 800);
 
     keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -47,35 +47,38 @@ class HabitatHeroesScene extends Phaser.Scene
     // this.cameras.main.scrollX = 800;
   }
 
-  update ()
-  {
-    if(keyA.isDown) {
+  update() {
+    if (keyA.isDown) {
       player.x -= 2;
       player.anims.play('left', true);
-    } else if(keyS.isDown) {
+    } else if (keyS.isDown) {
       player.y += 2;
       player.anims.play('down', true);
       player.depth = player.y + 64;
-    } else if(keyD.isDown) {
+    } else if (keyD.isDown) {
       player.x += 2;
       player.anims.play('right', true);
-    } else if(keyW.isDown) {
+    } else if (keyW.isDown) {
       player.y -= 2;
       player.anims.play('up', true);
       player.depth = player.y + 48;
     } else {
-      player.scene.time.delayedCall(0.15 * 1000, () => player.anims.play('still', true), [], this);
+      player.scene.time.delayedCall(
+        0.15 * 1000,
+        () => player.anims.play('still', true),
+        [],
+        this,
+      );
     }
   }
 
   /* eslint-disable class-methods-use-this */
-  buildMap ()
-  {
+  buildMap() {
     //  Parse the data out of the map in scene cache
     const data = scenecache;
 
-    const {tilewidth} = data;
-    const {tileheight} = data;
+    const { tilewidth } = data;
+    const { tileheight } = data;
 
     tileWidthHalf = tilewidth / 2;
     tileHeightHalf = tileheight / 2;
@@ -90,10 +93,8 @@ class HabitatHeroesScene extends Phaser.Scene
 
     let i = 0;
 
-    for (let y = 0; y < mapheight; y +=1)
-    {
-      for (let x = 0; x < mapwidth; x+=1)
-      {
+    for (let y = 0; y < mapheight; y += 1) {
+      for (let x = 0; x < mapwidth; x += 1) {
         const id = layer[i] - 1;
 
         const tx = (x - y) * tileWidthHalf;
@@ -108,8 +109,7 @@ class HabitatHeroesScene extends Phaser.Scene
     }
   }
 
-  placeHouses ()
-  {
+  placeHouses() {
     const house1 = scene.add.image(440, 370, 'house');
     house1.depth = house1.y + 86;
   }
@@ -122,7 +122,7 @@ const config = {
   height: 600,
   backgroundColor: '#ababab',
   parent: 'phaser-example',
-  scene: [ HabitatHeroesScene ],
+  scene: [HabitatHeroesScene],
   physics: {
     default: 'arcade',
     fps: 60,
