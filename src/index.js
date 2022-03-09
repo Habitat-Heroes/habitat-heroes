@@ -1,10 +1,11 @@
 import Phaser from 'phaser';
+
 import mapjson from './assets/isometric-grass-and-water.json';
 import tiles from './assets/isometric-grass-and-water.png';
-import skeleton from './assets/skeleton8.png';
 import house from './assets/rem_0002.png';
 import scenecache from './assets/scenecache.json';
-import { Skeleton } from './objects/Skeleton';
+import skeleton from './assets/skeleton8.png';
+import Skeleton from './objects/Skeleton';
 
 const skeletons = [];
 
@@ -16,10 +17,6 @@ let d = 0;
 let scene;
 
 class HabitatHeroesScene extends Phaser.Scene {
-  constructor() {
-    super();
-  }
-
   preload() {
     this.load.json('map', mapjson);
     this.load.spritesheet('tiles', tiles, { frameWidth: 64, frameHeight: 64 });
@@ -88,8 +85,8 @@ class HabitatHeroesScene extends Phaser.Scene {
   }
 
   update() {
-    skeletons.forEach(function (skeleton) {
-      skeleton.update();
+    skeletons.forEach((sk) => {
+      sk.update();
     });
 
     // return;
@@ -109,12 +106,12 @@ class HabitatHeroesScene extends Phaser.Scene {
     }
   }
 
-  buildMap() {
+  static buildMap() {
     //  Parse the data out of the map in scene cache
     const data = scenecache;
 
-    const tilewidth = data.tilewidth;
-    const tileheight = data.tileheight;
+    const { tilewidth } = data;
+    const { tileheight } = data;
 
     tileWidthHalf = tilewidth / 2;
     tileHeightHalf = tileheight / 2;
@@ -129,8 +126,8 @@ class HabitatHeroesScene extends Phaser.Scene {
 
     let i = 0;
 
-    for (let y = 0; y < mapheight; y++) {
-      for (let x = 0; x < mapwidth; x++) {
+    for (let y = 0; y < mapheight; y += 1) {
+      for (let x = 0; x < mapwidth; x += 1) {
         const id = layer[i] - 1;
 
         const tx = (x - y) * tileWidthHalf;
@@ -140,17 +137,17 @@ class HabitatHeroesScene extends Phaser.Scene {
 
         tile.depth = centerY + ty;
 
-        i++;
+        i += 1;
       }
     }
   }
 
-  placeHouses() {
-    const house_1 = scene.add.image(240, 370, 'house');
-    house_1.depth = house_1.y + 86;
+  static placeHouses() {
+    const house1 = scene.add.image(240, 370, 'house');
+    house1.depth = house1.y + 86;
 
-    const house_2 = scene.add.image(1300, 290, 'house');
-    house_2.depth = house_2.y + 86;
+    const house2 = scene.add.image(1300, 290, 'house');
+    house2.depth = house2.y + 86;
   }
 }
 
@@ -164,3 +161,5 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
+
+export default game;

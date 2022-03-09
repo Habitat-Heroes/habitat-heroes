@@ -40,7 +40,7 @@ const anims = {
   },
 };
 
-export class Skeleton extends Phaser.GameObjects.Image {
+export default class Skeleton extends Phaser.GameObjects.Image {
   constructor(scene, x, y, motion, direction, distance) {
     super(scene, x, y, 'skeleton', direction.offset);
 
@@ -60,7 +60,7 @@ export class Skeleton extends Phaser.GameObjects.Image {
   }
 
   changeFrame() {
-    this.f++;
+    this.f += 1;
 
     let delay = this.anim.speed;
 
@@ -100,6 +100,9 @@ export class Skeleton extends Phaser.GameObjects.Image {
             [],
             this
           );
+          break;
+
+        default:
           break;
       }
     } else {
