@@ -33,14 +33,14 @@ class Avatar extends Phaser.GameObjects.Sprite {
     });
 
     scene.anims.create({
-      key: 'up',
+      key: 'down',
       frames: this.anims.generateFrameNumbers('avatar', { start: 12, end: 16 }),
       frameRate: 10,
       repeat: -1,
     });
 
     scene.anims.create({
-      key: 'down',
+      key: 'up',
       frames: this.anims.generateFrameNumbers('avatar', { start: 0, end: 3 }),
       frameRate: 10,
       repeat: -1,

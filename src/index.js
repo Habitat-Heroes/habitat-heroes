@@ -12,12 +12,11 @@ let player;
 let tileWidthHalf;
 let tileHeightHalf;
 
-let keyA;
-let keyS;
-let keyD;
-let keyW;
+let pointer;
 
 let scene;
+let touchX;
+let touchY;
 
 class HabitatHeroesScene extends Phaser.Scene {
   preload() {
@@ -37,35 +36,63 @@ class HabitatHeroesScene extends Phaser.Scene {
     this.placeHouses();
 
     player = new Avatar(scene, 128, 128, 'avatar', { key: 'avatar', frame: 0 }).player;
+    touchY = 128;
+    touchX = 128;
     // this.cameras.main.setSize(1200, 800);
-
-    keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-    keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-
+    pointer = scene.input.activePointer;
     // this.cameras.main.scrollX = 800;
   }
 
   update() {
-    if (keyA.isDown) {
-      player.x -= 2;
-      player.anims.play('left', true);
-    } else if (keyS.isDown) {
-      player.y += 2;
-      player.anims.play('down', true);
-      player.depth = player.y + 64;
-    } else if (keyD.isDown) {
-      player.x += 2;
-      player.anims.play('right', true);
-    } else if (keyW.isDown) {
-      player.y -= 2;
-      player.anims.play('up', true);
-      player.depth = player.y + 48;
-    } else {
+    if (pointer.isDown) {
+      touchX = pointer.x;
+      touchY = pointer.y;
+    }
+
+    if (touchY === player.y && touchX === player.x) {
       player.scene.time.delayedCall(
         0.15 * 1000,
         () => player.anims.play('still', true),
+        [],
+        this,
+      );
+    }
+
+    if (touchY > player.y) {
+      player.anims.play('up', true);
+      player.scene.time.delayedCall(
+        0.15 * 1000,
+        () => { player.y += touchY > player.y + 2 ? 2 : touchY - player.y; },
+        [],
+        this,
+      );
+      player.depth = player.y + 48;
+      return;
+    } if (touchY < player.y) {
+      player.anims.play('down', true);
+      player.scene.time.delayedCall(
+        0.15 * 1000,
+        () => { player.y -= touchY + 2 < player.y ? 2 : player.y - touchY; },
+        [],
+        this,
+      );
+      player.depth = player.y + 64;
+      return;
+    }
+
+    if (touchX > player.x) {
+      player.anims.play('right', true);
+      player.scene.time.delayedCall(
+        0.15 * 1000,
+        () => { player.x += touchX > player.x + 2 ? 2 : touchX - player.x; },
+        [],
+        this,
+      );
+    } else if (touchX < player.x) {
+      player.anims.play('left', true);
+      player.scene.time.delayedCall(
+        0.15 * 1000,
+        () => { player.x -= touchX < player.x - 2 ? 2 : player.x - touchX; },
         [],
         this,
       );
