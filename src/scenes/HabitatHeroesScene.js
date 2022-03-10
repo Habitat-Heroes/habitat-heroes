@@ -7,6 +7,7 @@ import bbsprite from '../assets/game_menu/build_button.png';
 import ibsprite from '../assets/game_menu/inventory_button.png';
 import nbsprite from '../assets/game_menu/news_button.png';
 import qbsprite from '../assets/game_menu/quest_button.png';
+import shbsprite from '../assets/game_menu/settings_button.png'; // TODO: replace by a share button
 import sbsprite from '../assets/game_menu/shop_button.png';
 import mapjson from '../assets/isometric-grass-and-water.json';
 import tiles from '../assets/isometric-grass-and-water.png';
@@ -16,6 +17,7 @@ import BuildButton from '../objects/BuildButton';
 import InventoryButton from '../objects/InventoryButton';
 import NewsButton from '../objects/NewsButton';
 import QuestButton from '../objects/QuestButton';
+import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
 import {MAP_HEIGHT, MAP_LAYOUT, MAP_WIDTH, TILE_HEIGHT_HALF, TILE_WIDTH_HALF} from '../utils/constants';
 import checkInMovableRange from '../utils/GameUtils';
@@ -62,6 +64,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     this.load.image('inventorybutton', ibsprite);
     this.load.image('questbutton', qbsprite);
     this.load.image('shopbutton', sbsprite);
+    this.load.image('sharebutton', shbsprite);
   }
 
   create() {
@@ -96,6 +99,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     scene.add.existing(NewsButton(this));
     scene.add.existing(QuestButton(this));
     scene.add.existing(ShopButton(this));
+    scene.add.existing(ShareButton(this));
   }
 
   update() {
