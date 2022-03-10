@@ -31,7 +31,7 @@ export default function CoinsButton(scene) {
   coinsButton.setButtonName('Coins');
   coinsButton.setOnDownCallback(() => store.dispatch(increaseByAmount(300)));
 
-  textObj = scene.add.text(x - 25, y - 15, currentAmt, {
+  textObj = scene.add.text(x - 30, y - 15, currentAmt, {
     fontFamily: 'Arial',  // TODO: change font
     fontSize: 28,
     color: '#000'
