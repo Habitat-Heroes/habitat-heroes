@@ -63,7 +63,6 @@ export class BuildMenuScene extends Phaser.Scene {
     closeButton.scale = 0.5;
     closeButton.setButtonName('Close');
     closeButton.on('pointerup', () => {
-      // TODO Add in building house animation + flow
       this.scene.start('HabitatHeroesScene');
     });
 
