@@ -24,6 +24,8 @@ export default class Button extends Phaser.GameObjects.Image {
 
   buttonText;
 
+  onDownCallback;
+
   constructor(scene, x, y, texture, tint = ORANGE) {
     super(scene, x, y, texture);
 
@@ -119,6 +121,13 @@ export default class Button extends Phaser.GameObjects.Image {
     this.setTexture(this.downTexture);
     this.setTint(this.downTint);
     this.tooltipContainer.setVisible(false);
+    if (this.onDownCallback != null) {
+      this.onDownCallback();
+    }
+  }
+
+  setOnDownCallback(callback) {
+    this.onDownCallback = callback;
   }
 
   handleOver() {
