@@ -35,36 +35,34 @@ store.dispatch(setName('Hello'));
 ### Fetching state
 
 ```js
-const { user } = store.getState();
-console.log(user.name);
+const selectName = (state) => {
+  return state.user.name;
+}
+
+const name = selectName(store.getState());
 ```
 
 ### Subscribing to state
 
-From Redux's website:
+Example based on Redux's own example on their website:
 
 ```js
-function select(state) {
-  return state.some.deep.property;
+const selectName = (state) => {
+  return state.user.name;
 }
 
-let currentValue;
-function handleChange() {
-  let previousValue = currentValue;
-  currentValue = select(store.getState());
+let currentName;
+const handleNameChange = () => {
+  let previousName = currentName;
+  currentName = selectName(store.getState());
 
-  if (previousValue !== currentValue) {
-    console.log(
-      'Some deep nested property changed from',
-      previousValue,
-      'to',
-      currentValue,
-    );
+  if (previousName !== currentName) {
+    // Handle name change
   }
 }
 
-const unsubscribe = store.subscribe(handleChange);
-unsubscribe();
+const unsubscribeToNameChanges = store.subscribe(handleNameChange);
+unsubscribeToNameChanges(); // to unsubscribe
 ```
 
 ### Defining your own reducers
