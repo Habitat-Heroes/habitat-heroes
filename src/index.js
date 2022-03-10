@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { BuildMenuScene } from './scenes/BuildMenuScene';
 import { HabitatHeroesScene } from './scenes/HabitatHeroesScene';
 import { NewsBoardScene } from './scenes/NewsBoardScene';
 
@@ -16,7 +17,7 @@ class Game extends Phaser.Game {
         height: 800,
       },
       disableContextMenu: true,
-      scene: [HabitatHeroesScene, NewsBoardScene],
+      scene: [HabitatHeroesScene, NewsBoardScene, BuildMenuScene],
       banner: {
         hidePhaser: true,
       },
