@@ -48,12 +48,27 @@ class HabitatHeroesScene extends Phaser.Scene {
     pointer = scene.input.activePointer;
     // this.cameras.main.setSize(1200, 800);
     // this.cameras.main.scrollX = 800;
+
+    // News Button
+    this.newsButton = this.add.text(50, 50, 'News', { fill: '#0f0' })
+      .setInteractive()
+      .on('pointerover', () => this.enterButtonHoverState() )
+      .on('pointerout', () => this.enterButtonRestState() )
+      .on('pointerdown', () => this.enterButtonActiveState() )
+      .on('pointerup', () => {
+        //this.updateClickCountText(++clickCount);
+        this.enterButtonHoverState();
+        this.scene.start("news");
+    });
+
   }
 
   update() {
     if (pointer.isDown) {
-      touchX = pointer.x;
-      touchY = pointer.y;
+      if (pointer.x > 100) { // disable character from entering the left panel
+        touchX = pointer.x;
+        touchY = pointer.y;
+      }
     }
 
     if (touchY === player.y && touchX === player.x) {
@@ -127,6 +142,16 @@ class HabitatHeroesScene extends Phaser.Scene {
   placeHouses() {
     const house1 = scene.add.image(440, 370, 'house');
     house1.depth = house1.y + 86;
+  }
+
+  enterButtonHoverState() {
+    this.newsButton.setStyle({ fill: '#ff0'});
+  }
+  enterButtonRestState() {
+    this.newsButton.setStyle({ fill: '#0f0' });
+  }
+  enterButtonActiveState() {
+    this.newsButton.setStyle({ fill: '#0ff' });
   }
 }
 /* eslint-enable class-methods-use-this */

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import HabitatHeroesScene from './scenes/HabitatHeroesScene';
+import NewsBoardScene from './scenes/NewsBoardScene';
 
 class Game extends Phaser.Game {
   constructor() {
@@ -15,7 +16,7 @@ class Game extends Phaser.Game {
         height: 600,
       },
       disableContextMenu: true,
-      scene: [HabitatHeroesScene],
+      scene: [HabitatHeroesScene, NewsBoardScene],
       banner: {
         hidePhaser: true,
       },
