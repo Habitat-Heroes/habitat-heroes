@@ -9,7 +9,7 @@ import tiles from '../assets/isometric-grass-and-water.png';
 import scenecache from '../assets/scenecache.json';
 import trees from '../assets/tree_tiles.png';
 import {Avatar} from '../objects/Avatar';
-import Button from '../objects/Button';
+import BuildButton from '../objects/BuildButton';
 import checkInMovableRange from '../utils/GameUtils';
 
 let player;
@@ -78,13 +78,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     touchX = centerX - 100;
     pointer = scene.input.activePointer;
 
-    // Create build button on bottom left (x, y) => (50, 750)
-    const buildButton = new Button(this, 50, 750, 'buildbutton')
-      .setDownTexture('buildbutton');
-    buildButton.depth = 800;
-    buildButton.scale = 0.35;
-
-    scene.add.existing(buildButton);
+    scene.add.existing(BuildButton(this));
   }
 
   update() {

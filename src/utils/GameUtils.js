@@ -7,7 +7,7 @@ const mapwidth = data.layers[0].width * tilewidth;
 const mapheight = data.layers[0].height * tileheight;
 
 export default function checkInMovableRange(x, y) {
-  if (x < 0 || y < 0 || y > mapheight || x > mapwidth) {
+  if (x < 50 || y < 50 || y > mapheight - 50 || x > mapwidth - 50) {
     return false;
   }
 
