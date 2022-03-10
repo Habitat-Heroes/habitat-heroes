@@ -1,13 +1,13 @@
 import Phaser from 'phaser';
 
-import HabitatHeroesScene from './scenes/HabitatHeroesScene';
-import NewsBoardScene from './scenes/NewsBoardScene';
+import { HabitatHeroesScene} from './scenes/HabitatHeroesScene';
+import { NewsBoardScene } from './scenes/NewsBoardScene';
 
 class Game extends Phaser.Game {
   constructor() {
     const config = {
       type: Phaser.WEBGL,
-      backgroundColor: 0xecf0f1,
+      backgroundColor: '#2d2d2d',
       scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -33,6 +33,5 @@ class Game extends Phaser.Game {
   }
 }
 
-/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 const game = new Game();
-/* eslint-enable no-unused-vars */

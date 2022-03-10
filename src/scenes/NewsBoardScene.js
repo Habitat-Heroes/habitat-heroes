@@ -4,7 +4,7 @@ import newsboard from '../assets/game_menu/woodboard_with_title.png';
 
 let scene;
 
-class NewsBoardScene extends Phaser.Scene {
+export class NewsBoardScene extends Phaser.Scene {
 
   constructor() {
     super({
@@ -48,4 +48,4 @@ class NewsBoardScene extends Phaser.Scene {
   }
 }
 /* eslint-enable class-methods-use-this */
-export default NewsBoardScene;
+// export default NewsBoardScene;

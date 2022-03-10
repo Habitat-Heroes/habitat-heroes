@@ -1,16 +1,15 @@
 import Phaser from 'phaser';
+import IsoPlugin from 'phaser3-plugin-isometric';
 
 import avatar from '../assets/avatar1.png';
 import house from '../assets/basic_hut.png';
 import mapjson from '../assets/isometric-grass-and-water.json';
 import tiles from '../assets/isometric-grass-and-water.png';
 import scenecache from '../assets/scenecache.json';
-import Avatar from '../objects/Avatar';
+import trees from '../assets/tree_tiles.png';
+import { Avatar } from '../objects/Avatar';
 
 let player;
-
-let tileWidthHalf;
-let tileHeightHalf;
 
 let pointer;
 
@@ -18,17 +17,41 @@ let scene;
 let touchX;
 let touchY;
 
-class HabitatHeroesScene extends Phaser.Scene {
+//  Parse the data out of the map in scene cache
+const data = scenecache;
+const mapwidth = data.layers[0].width;
+const mapheight = data.layers[0].height;
+const { tilewidth } = data;
+const { tileheight } = data;
+
+const tileWidthHalf = tilewidth / 2;
+const tileHeightHalf = tileheight / 2;
+
+const layer = data.layers[0].data;
+const centerX = mapwidth * tileWidthHalf;
+const centerY = 156;
+
+export class HabitatHeroesScene extends Phaser.Scene {
   constructor() {
     super({
       key: 'HabitatHeroesScene',
-      mapAdd: {isoPlugin: 'iso', isoPhysics: 'isoPhysics'}
+      mapAdd: { isoPlugin: 'iso', isoPhysics: 'isoPhysics' },
     });
   }
 
   preload() {
+    this.load.scenePlugin({
+      key: 'IsoPlugin',
+      url: IsoPlugin,
+      sceneKey: 'iso',
+    });
+
     this.load.json('map', mapjson);
     this.load.spritesheet('tiles', tiles, { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('trees', trees, {
+      frameWidth: 120,
+      frameHeight: 171,
+    });
     this.load.spritesheet('avatar', avatar, {
       frameWidth: 64,
       frameHeight: 64,
@@ -42,9 +65,13 @@ class HabitatHeroesScene extends Phaser.Scene {
     this.buildMap();
     this.placeHouses();
 
-    player = new Avatar(scene, 128, 128, 'avatar', { key: 'avatar', frame: 0 }).player;
-    touchY = 128;
-    touchX = 128;
+    player = new Avatar(scene, centerX - 100, centerY + 100, 'avatar', {
+      key: 'avatar',
+      frame: 0,
+    }).player;
+    player.depth = centerY + 164;
+    touchY = centerY + 100;
+    touchX = centerX - 100;
     pointer = scene.input.activePointer;
     // this.cameras.main.setSize(1200, 800);
     // this.cameras.main.scrollX = 800;
@@ -78,7 +105,8 @@ class HabitatHeroesScene extends Phaser.Scene {
           player.anims.play('still', true);
         },
         [],
-        this);
+        this,
+      );
     }
 
     if (touchY > player.y) {
@@ -86,7 +114,8 @@ class HabitatHeroesScene extends Phaser.Scene {
       player.y += touchY > player.y + 2 ? 2 : touchY - player.y;
       player.depth = player.y + 48;
       return;
-    } if (touchY < player.y) {
+    }
+    if (touchY < player.y) {
       player.anims.play('down', true);
       player.y -= touchY + 2 < player.y ? 2 : player.y - touchY;
       player.depth = player.y + 64;
@@ -104,39 +133,43 @@ class HabitatHeroesScene extends Phaser.Scene {
 
   /* eslint-disable class-methods-use-this */
   buildMap() {
-    //  Parse the data out of the map in scene cache
-    const data = scenecache;
+    function buildLand() {
+      let i = 0;
 
-    const { tilewidth } = data;
-    const { tileheight } = data;
-
-    tileWidthHalf = tilewidth / 2;
-    tileHeightHalf = tileheight / 2;
-
-    const layer = data.layers[0].data;
-
-    const mapwidth = data.layers[0].width;
-    const mapheight = data.layers[0].height;
-
-    const centerX = mapwidth * tileWidthHalf;
-    const centerY = 16;
-
-    let i = 0;
-
-    for (let y = 0; y < mapheight; y += 1) {
-      for (let x = 0; x < mapwidth; x += 1) {
-        const id = layer[i] - 1;
-
-        const tx = (x - y) * tileWidthHalf;
-        const ty = (x + y) * tileHeightHalf;
-
-        const tile = scene.add.image(centerX + tx, centerY + ty, 'tiles', id);
-
-        tile.depth = centerY + ty;
-
-        i += 1;
+      for (let y = -10; y < mapheight + 5; y += 1) {
+        for (let x = -10; x < mapwidth; x += 1) {
+          const id = layer[i] - 1;
+          const tx = (x - y) * tileWidthHalf;
+          const ty = (x + y) * tileHeightHalf;
+          const tile = scene.add.image(centerX + tx, centerY + ty, 'tiles', id);
+          tile.depth = centerY + ty;
+          i += 1;
+        }
       }
     }
+
+    function placeTrees() {
+      for (let y = -10; y < mapheight; y += 2) {
+        for (let x = -15; x < -3; x += 3) {
+          const tx = (x - y) * tileWidthHalf;
+          const ty = (x + y) * tileHeightHalf;
+          const tile = scene.add.image(centerX + tx, centerY + ty, 'trees', 5);
+          tile.depth = centerY + ty + 64;
+        }
+      }
+
+      for (let x = -10; x < mapwidth; x += 2) {
+        for (let y = -15; y < -3; y += 3) {
+          const tx = (x - y) * tileWidthHalf;
+          const ty = (x + y) * tileHeightHalf;
+          const tile = scene.add.image(centerX + tx, centerY + ty, 'trees', 5);
+          tile.depth = centerY + ty + 64;
+        }
+      }
+    }
+
+    buildLand();
+    placeTrees();
   }
 
   placeHouses() {
@@ -155,5 +188,3 @@ class HabitatHeroesScene extends Phaser.Scene {
   }
 }
 /* eslint-enable class-methods-use-this */
-
-export default HabitatHeroesScene;

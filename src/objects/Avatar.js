@@ -1,7 +1,7 @@
 // GameObject avatar
 import Phaser from 'phaser';
 
-class Avatar extends Phaser.GameObjects.Sprite {
+export class Avatar extends Phaser.GameObjects.Sprite {
   player;
 
   constructor(scene, x, y, key, frame) {
@@ -49,5 +49,3 @@ class Avatar extends Phaser.GameObjects.Sprite {
     this.player.setCollideWorldBounds(true);
   }
 }
-
-export default Avatar;
