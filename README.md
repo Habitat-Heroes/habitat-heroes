@@ -53,7 +53,7 @@ const selectName = (state) => {
 
 let currentName;
 const handleNameChange = () => {
-  let previousName = currentName;
+  const previousName = currentName;
   currentName = selectName(store.getState());
 
   if (previousName !== currentName) {
