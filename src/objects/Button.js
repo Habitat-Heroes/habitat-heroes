@@ -20,6 +20,10 @@ export default class Button extends Phaser.GameObjects.Image {
 
   disabledTint;
 
+  tooltipContainer;
+
+  buttonText;
+
   constructor(scene, x, y, texture, tint = ORANGE) {
     super(scene, x, y, texture);
 
@@ -39,6 +43,10 @@ export default class Button extends Phaser.GameObjects.Image {
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, this.handleOut, this)
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, this.handleDown, this)
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, this.handleOver, this);
+  }
+
+  setButtonName(buttonText) {
+    this.buttonText = buttonText;
   }
 
   setUpTexture(texture) {
@@ -104,15 +112,32 @@ export default class Button extends Phaser.GameObjects.Image {
   handleOut() {
     this.setTexture(this.upTexture);
     this.setTint(this.upTint);
+    this.tooltipContainer.setVisible(false);
   }
 
   handleDown() {
     this.setTexture(this.downTexture);
     this.setTint(this.downTint);
+    this.tooltipContainer.setVisible(false);
   }
 
   handleOver() {
     this.setTexture(this.overTexture);
     this.setTint(this.overTint);
+
+    const tooltip = { text: this.buttonText };
+
+    const tooltipX = this.x - 10 - this.buttonText.length * 4;
+    const tooltipY = this.y - 60;
+    const textPadding = 3;
+
+    const text = this.scene.add.text(textPadding, textPadding, tooltip.text, { color: '#000' });
+    const background = this.scene.add.rectangle(0, 0, text.displayWidth + (textPadding * 2), text.displayHeight + (textPadding * 2), 0xffffff).setOrigin(0, 0);
+
+    // Put both text and background in a container to easily position them
+    this.tooltipContainer = this.scene.add.container(tooltipX, tooltipY);
+    this.tooltipContainer.depth = 800;
+    this.tooltipContainer.add(background);
+    this.tooltipContainer.add(text);
   }
 }

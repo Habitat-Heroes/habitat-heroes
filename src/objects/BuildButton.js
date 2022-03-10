@@ -6,5 +6,6 @@ export default function BuildButton(scene) {
     .setDownTexture('buildbutton');
   buildButton.depth = 800;
   buildButton.scale = 0.35;
+  buildButton.setButtonName('Build');
   return buildButton;
 }
