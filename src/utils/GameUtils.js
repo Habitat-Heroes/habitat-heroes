@@ -1,23 +1,28 @@
-import scenecache from '../assets/scenecache.json';
-
-const data = scenecache;
-const {tilewidth} = data;
-const {tileheight} = data;
-const mapwidth = data.layers[0].width * tilewidth;
-const mapheight = data.layers[0].height * tileheight;
+import {
+  BUILD_BUTTON_END,
+  BUILD_BUTTON_START,
+  GAME_SCENE_PADDING,
+  MAP_HEIGHT,
+  MAP_WIDTH,
+  RIGHT_BUTTONS_START,
+  TILE_HEIGHT,
+  TILE_WIDTH
+} from './constants';
 
 export default function checkInMovableRange(x, y) {
-  if (x < 50 || y < 50 || y > mapheight - 50 || x > mapwidth - 50) {
+  if (x < GAME_SCENE_PADDING || y < GAME_SCENE_PADDING
+    || y > MAP_HEIGHT * TILE_HEIGHT - GAME_SCENE_PADDING
+    || x > MAP_WIDTH * TILE_WIDTH - GAME_SCENE_PADDING) {
     return false;
   }
 
   // Check if it is in the range of the buttons on the right
-  if (x > 1220 && y > 700) {
+  if (x > RIGHT_BUTTONS_START[0] && y > RIGHT_BUTTONS_START[1]) {
     return false;
   }
 
   // Check if it is in the range of the build button
-  if (x > 0 && x < 90 && y > 710 && y < 800) {
+  if (x > BUILD_BUTTON_START[0] && x < BUILD_BUTTON_END[0] && y >BUILD_BUTTON_START[1] && y < BUILD_BUTTON_END[1]) {
     return false;
   }
 

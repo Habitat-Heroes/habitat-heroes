@@ -10,7 +10,6 @@ import qbsprite from '../assets/game_menu/quest_button.png';
 import sbsprite from '../assets/game_menu/shop_button.png';
 import mapjson from '../assets/isometric-grass-and-water.json';
 import tiles from '../assets/isometric-grass-and-water.png';
-import scenecache from '../assets/scenecache.json';
 import trees from '../assets/tree_tiles.png';
 import {Avatar} from '../objects/Avatar';
 import BuildButton from '../objects/BuildButton';
@@ -18,6 +17,7 @@ import InventoryButton from '../objects/InventoryButton';
 import NewsButton from '../objects/NewsButton';
 import QuestButton from '../objects/QuestButton';
 import ShopButton from '../objects/ShopButton';
+import {MAP_HEIGHT, MAP_LAYOUT, MAP_WIDTH, TILE_HEIGHT_HALF, TILE_WIDTH_HALF} from '../utils/constants';
 import checkInMovableRange from '../utils/GameUtils';
 
 let player;
@@ -28,19 +28,8 @@ let scene;
 let touchX;
 let touchY;
 
-//  Parse the data out of the map in scene cache
-const data = scenecache;
-const mapwidth = data.layers[0].width;
-const mapheight = data.layers[0].height;
-const { tilewidth } = data;
-const { tileheight } = data;
-
-const tileWidthHalf = tilewidth / 2;
-const tileHeightHalf = tileheight / 2;
-
-const layer = data.layers[0].data;
-const centerX = mapwidth * tileWidthHalf;
-const centerY = 156;
+const centerX = MAP_WIDTH * TILE_WIDTH_HALF;
+const centerY = MAP_HEIGHT * TILE_HEIGHT_HALF * 0.3;
 
 export class HabitatHeroesScene extends Phaser.Scene {
   constructor() {
@@ -152,33 +141,35 @@ export class HabitatHeroesScene extends Phaser.Scene {
   buildMap() {
     function buildLand() {
       let i = 0;
-
-      for (let y = -10; y < mapheight + 10; y += 1) {
-        for (let x = -10; x < mapwidth + 10; x += 1) {
-          const id = layer[i] - 1;
-          const tx = (x - y) * tileWidthHalf;
-          const ty = (x + y) * tileHeightHalf;
+      for (let y = -10; y < MAP_HEIGHT + 10; y += 1) {
+        for (let x = -10; x < MAP_WIDTH + 10; x += 1) {
+          let id = Math.floor(Math.random() * 6);
+          if (x > 0 && y > 0 && x < MAP_WIDTH && y < MAP_HEIGHT) {
+            id = MAP_LAYOUT[i] - 1;
+            i += 1;
+          }
+          const tx = (x - y) * TILE_WIDTH_HALF;
+          const ty = (x + y) * TILE_HEIGHT_HALF;
           const tile = scene.add.image(centerX + tx, centerY + ty, 'tiles', id);
           tile.depth = centerY + ty;
-          i += 1;
         }
       }
     }
 
     function placeTrees() {
-      for (let y = -10; y < mapheight; y += 2) {
+      for (let y = -10; y < MAP_HEIGHT; y += 2) {
         for (let x = -15; x < -3; x += 3) {
-          const tx = (x - y) * tileWidthHalf;
-          const ty = (x + y) * tileHeightHalf;
+          const tx = (x - y) * TILE_WIDTH_HALF;
+          const ty = (x + y) * TILE_HEIGHT_HALF;
           const tile = scene.add.image(centerX + tx, centerY + ty, 'trees', 5);
           tile.depth = centerY + ty + 64;
         }
       }
 
-      for (let x = -10; x < mapwidth; x += 2) {
+      for (let x = -10; x < MAP_WIDTH; x += 2) {
         for (let y = -15; y < -3; y += 3) {
-          const tx = (x - y) * tileWidthHalf;
-          const ty = (x + y) * tileHeightHalf;
+          const tx = (x - y) * TILE_WIDTH_HALF;
+          const ty = (x + y) * TILE_HEIGHT_HALF;
           const tile = scene.add.image(centerX + tx, centerY + ty, 'trees', 5);
           tile.depth = centerY + ty + 64;
         }
