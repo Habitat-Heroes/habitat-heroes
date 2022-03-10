@@ -4,12 +4,20 @@ import IsoPlugin from 'phaser3-plugin-isometric';
 import avatar from '../assets/avatar1.png';
 import house from '../assets/basic_hut.png';
 import bbsprite from '../assets/game_menu/build_button.png';
+import ibsprite from '../assets/game_menu/inventory_button.png';
+import nbsprite from '../assets/game_menu/news_button.png';
+import qbsprite from '../assets/game_menu/quest_button.png';
+import sbsprite from '../assets/game_menu/shop_button.png';
 import mapjson from '../assets/isometric-grass-and-water.json';
 import tiles from '../assets/isometric-grass-and-water.png';
 import scenecache from '../assets/scenecache.json';
 import trees from '../assets/tree_tiles.png';
 import {Avatar} from '../objects/Avatar';
 import BuildButton from '../objects/BuildButton';
+import InventoryButton from '../objects/InventoryButton';
+import NewsButton from '../objects/NewsButton';
+import QuestButton from '../objects/QuestButton';
+import ShopButton from '../objects/ShopButton';
 import checkInMovableRange from '../utils/GameUtils';
 
 let player;
@@ -61,6 +69,10 @@ export class HabitatHeroesScene extends Phaser.Scene {
     });
     this.load.image('house', house);
     this.load.image('buildbutton', bbsprite);
+    this.load.image('newsbutton', nbsprite);
+    this.load.image('inventorybutton', ibsprite);
+    this.load.image('questbutton', qbsprite);
+    this.load.image('shopbutton', sbsprite);
   }
 
   create() {
@@ -78,9 +90,6 @@ export class HabitatHeroesScene extends Phaser.Scene {
     touchX = centerX - 100;
     pointer = scene.input.activePointer;
 
-    // this.cameras.main.setSize(1200, 800);
-    // this.cameras.main.scrollX = 800;
-
     // News Button
     this.newsButton = this.add.text(50, 50, 'News', { fill: '#0f0' })
       .setInteractive()
@@ -92,9 +101,12 @@ export class HabitatHeroesScene extends Phaser.Scene {
         this.scene.start('news');
     });
     this.newsButton.depth = this.newsButton.y + 186;
-    
-    scene.add.existing(BuildButton(this));
 
+    scene.add.existing(BuildButton(this));
+    scene.add.existing(InventoryButton(this));
+    scene.add.existing(NewsButton(this));
+    scene.add.existing(QuestButton(this));
+    scene.add.existing(ShopButton(this));
   }
 
   update() {

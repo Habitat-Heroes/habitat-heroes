@@ -11,6 +11,11 @@ export default function checkInMovableRange(x, y) {
     return false;
   }
 
+  // Check if it is in the range of the buttons on the right
+  if (x > 1220 && y > 700) {
+    return false;
+  }
+
   // Check if it is in the range of the build button
   if (x > 0 && x < 90 && y > 710 && y < 800) {
     return false;
