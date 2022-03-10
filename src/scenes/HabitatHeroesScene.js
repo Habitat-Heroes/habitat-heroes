@@ -7,7 +7,7 @@ import mapjson from '../assets/isometric-grass-and-water.json';
 import tiles from '../assets/isometric-grass-and-water.png';
 import scenecache from '../assets/scenecache.json';
 import trees from '../assets/tree_tiles.png';
-import Avatar from '../objects/Avatar';
+import { Avatar } from '../objects/Avatar';
 
 let player;
 
@@ -21,8 +21,8 @@ let touchY;
 const data = scenecache;
 const mapwidth = data.layers[0].width;
 const mapheight = data.layers[0].height;
-const {tilewidth} = data;
-const {tileheight} = data;
+const { tilewidth } = data;
+const { tileheight } = data;
 
 const tileWidthHalf = tilewidth / 2;
 const tileHeightHalf = tileheight / 2;
@@ -31,11 +31,11 @@ const layer = data.layers[0].data;
 const centerX = mapwidth * tileWidthHalf;
 const centerY = 156;
 
-class HabitatHeroesScene extends Phaser.Scene {
+export class HabitatHeroesScene extends Phaser.Scene {
   constructor() {
     super({
       key: 'HabitatHeroesScene',
-      mapAdd: {isoPlugin: 'iso', isoPhysics: 'isoPhysics'}
+      mapAdd: { isoPlugin: 'iso', isoPhysics: 'isoPhysics' },
     });
   }
 
@@ -43,19 +43,20 @@ class HabitatHeroesScene extends Phaser.Scene {
     this.load.scenePlugin({
       key: 'IsoPlugin',
       url: IsoPlugin,
-      sceneKey: 'iso'
+      sceneKey: 'iso',
     });
 
     this.load.json('map', mapjson);
     this.load.spritesheet('tiles', tiles, { frameWidth: 64, frameHeight: 64 });
-    this.load.spritesheet('trees', trees, { frameWidth: 120, frameHeight: 171 });
+    this.load.spritesheet('trees', trees, {
+      frameWidth: 120,
+      frameHeight: 171,
+    });
     this.load.spritesheet('avatar', avatar, {
       frameWidth: 64,
       frameHeight: 64,
     });
     this.load.image('house', house);
-
-
   }
 
   create() {
@@ -64,7 +65,10 @@ class HabitatHeroesScene extends Phaser.Scene {
     this.buildMap();
     this.placeHouses();
 
-    player = new Avatar(scene, centerX - 100, centerY + 100, 'avatar', { key: 'avatar', frame: 0 }).player;
+    player = new Avatar(scene, centerX - 100, centerY + 100, 'avatar', {
+      key: 'avatar',
+      frame: 0,
+    }).player;
     player.depth = centerY + 164;
     touchY = centerY + 100;
     touchX = centerX - 100;
@@ -86,7 +90,8 @@ class HabitatHeroesScene extends Phaser.Scene {
           player.anims.play('still', true);
         },
         [],
-        this);
+        this,
+      );
     }
 
     if (touchY > player.y) {
@@ -94,7 +99,8 @@ class HabitatHeroesScene extends Phaser.Scene {
       player.y += touchY > player.y + 2 ? 2 : touchY - player.y;
       player.depth = player.y + 48;
       return;
-    } if (touchY < player.y) {
+    }
+    if (touchY < player.y) {
       player.anims.play('down', true);
       player.y -= touchY + 2 < player.y ? 2 : player.y - touchY;
       player.depth = player.y + 64;
@@ -145,7 +151,6 @@ class HabitatHeroesScene extends Phaser.Scene {
           tile.depth = centerY + ty + 64;
         }
       }
-
     }
 
     buildLand();
@@ -158,5 +163,3 @@ class HabitatHeroesScene extends Phaser.Scene {
   }
 }
 /* eslint-enable class-methods-use-this */
-
-export default HabitatHeroesScene;

@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import HabitatHeroesScene from './scenes/HabitatHeroesScene';
+import { HabitatHeroesScene } from './scenes/HabitatHeroesScene';
 
 class Game extends Phaser.Game {
   constructor() {
@@ -32,6 +32,5 @@ class Game extends Phaser.Game {
   }
 }
 
-/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 const game = new Game();
-/* eslint-enable no-unused-vars */
