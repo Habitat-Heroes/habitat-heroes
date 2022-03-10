@@ -35,9 +35,7 @@ store.dispatch(setName('Hello'));
 ### Fetching state
 
 ```js
-const selectName = (state) => {
-  return state.user.name;
-}
+const selectName = (state) => return state.user.name;
 
 const name = selectName(store.getState());
 ```
@@ -47,9 +45,7 @@ const name = selectName(store.getState());
 Example based on Redux's own example on their website:
 
 ```js
-const selectName = (state) => {
-  return state.user.name;
-}
+const selectName = (state) => state.user.name;
 
 let currentName;
 const handleNameChange = () => {
