@@ -3,11 +3,14 @@ import IsoPlugin from 'phaser3-plugin-isometric';
 
 import avatar from '../assets/avatar1.png';
 import house from '../assets/basic_hut.png';
+import bbsprite from '../assets/game_menu/build_button.png';
 import mapjson from '../assets/isometric-grass-and-water.json';
 import tiles from '../assets/isometric-grass-and-water.png';
 import scenecache from '../assets/scenecache.json';
 import trees from '../assets/tree_tiles.png';
 import Avatar from '../objects/Avatar';
+import Button from '../objects/Button';
+import checkInMovableRange from '../utils/GameUtils';
 
 let player;
 
@@ -54,8 +57,7 @@ class HabitatHeroesScene extends Phaser.Scene {
       frameHeight: 64,
     });
     this.load.image('house', house);
-
-
+    this.load.image('buildbutton', bbsprite);
   }
 
   create() {
@@ -69,12 +71,18 @@ class HabitatHeroesScene extends Phaser.Scene {
     touchY = centerY + 100;
     touchX = centerX - 100;
     pointer = scene.input.activePointer;
-    // this.cameras.main.setSize(1200, 800);
-    // this.cameras.main.scrollX = 800;
+
+    // Create build button on bottom left (x, y) => (50, 750)
+    const buildButton = new Button(this, 50, 750, 'buildbutton')
+      .setDownTexture('buildbutton');
+    buildButton.depth = 800;
+    buildButton.scale = 0.35;
+
+    scene.add.existing(buildButton);
   }
 
   update() {
-    if (pointer.isDown) {
+    if (pointer.isDown && checkInMovableRange(pointer.x, pointer.y)) {
       touchX = pointer.x;
       touchY = pointer.y;
     }
@@ -115,8 +123,8 @@ class HabitatHeroesScene extends Phaser.Scene {
     function buildLand() {
       let i = 0;
 
-      for (let y = -10; y < mapheight + 5; y += 1) {
-        for (let x = -10; x < mapwidth; x += 1) {
+      for (let y = -10; y < mapheight + 10; y += 1) {
+        for (let x = -10; x < mapwidth + 10; x += 1) {
           const id = layer[i] - 1;
           const tx = (x - y) * tileWidthHalf;
           const ty = (x + y) * tileHeightHalf;
