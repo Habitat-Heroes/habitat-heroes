@@ -2,20 +2,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    coins: 2000,
+  amount: 2000,
 };
 
 const coinsSlice = createSlice({
-    name: 'coins',
-    initialState,
-    reducers: {
-        increaseByAmount: (state, action) => {
-            state.coins += action.payload;
-        },
-        decreaseByAmount: (state, action) => {
-            state.coins -= action.payload;
-        }
+  name: 'coins',
+  initialState,
+  reducers: {
+    increaseByAmount: (state, action) => {
+      state.amount += action.payload;
+    },
+
+    decreaseByAmount: (state, action) => {
+      state.amount -= action.payload;
     }
+  }
 });
 
 export const { increaseByAmount, decreaseByAmount } = coinsSlice.actions;

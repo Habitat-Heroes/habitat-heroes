@@ -35,9 +35,9 @@ export class SharePageScene extends Phaser.Scene {
     freeHutButton.scale = 0.3;
     freeHutButton.setButtonName('Share on Facebook!');
     freeHutButton.on('pointerup', () => {
-        const url = 'https://github.com/Habitat-Heroes/habitat-heroes'; // TODO: to be replaced individual link
-        const shareUrl = `http://www.facebook.com/sharer/sharer.phpu=${url}`;
-        window.open(shareUrl,'NewWindow'); // , params
+      const url = 'https://github.com/Habitat-Heroes/habitat-heroes'; // TODO: to be replaced individual link
+      const shareUrl = `http://www.facebook.com/sharer/sharer.phpu=${url}`;
+      window.open(shareUrl, 'NewWindow'); // , params
     });
 
     const closeButton = new Button(scene, screenCenterX + 340, screenCenterY - 218, 'closebutton')
