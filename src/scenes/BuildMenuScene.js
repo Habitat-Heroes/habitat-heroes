@@ -31,15 +31,46 @@ export class BuildMenuScene extends Phaser.Scene {
   create() {
     scene = this;
     scene.add.image(screenCenterX, screenCenterY + 10, 'buildmenu').setScale(0.75);
+    const freeHutButton = new Button(scene, screenCenterX - 210, screenCenterY + 175, 'freebutton')
+      .setDownTexture('freebutton');
+    freeHutButton.depth = 100;
+    freeHutButton.scale = 0.8;
+    freeHutButton.setButtonName('Build Basic Hut');
+    freeHutButton.on('pointerup', () => {
+      this.scene.start('HabitatHeroesScene');
+    });
+
+    const freeHouseButton = new Button(scene, screenCenterX + 5, screenCenterY + 175, 'freebutton')
+      .setDownTexture('freebutton');
+    freeHouseButton.scale = 0.8;
+    freeHouseButton.setButtonName('Build Brick House');
+    freeHouseButton.on('pointerup', () => {
+      // TODO Add in building house animation + flow
+      this.scene.start('HabitatHeroesScene');
+    });
+
+    const purchaseButton = new Button(scene, screenCenterX + 230, screenCenterY + 175, 'purchasebutton')
+      .setDownTexture('purchasebutton');
+    purchaseButton.scale = 0.8;
+    purchaseButton.setButtonName('Build Concrete House');
+    purchaseButton.on('pointerup', () => {
+      // TODO Add in building house animation + flow
+      this.scene.start('HabitatHeroesScene');
+    });
+
     const closeButton = new Button(scene, screenCenterX + 330, screenCenterY - 250, 'closebutton')
       .setDownTexture('closebutton');
-    closeButton.depth = 100;
     closeButton.scale = 0.5;
     closeButton.setButtonName('Close');
     closeButton.on('pointerup', () => {
+      // TODO Add in building house animation + flow
       this.scene.start('HabitatHeroesScene');
     });
+
     scene.add.existing(closeButton);
+    scene.add.existing(freeHutButton);
+    scene.add.existing(freeHouseButton);
+    scene.add.existing(purchaseButton);
   }
 
 }

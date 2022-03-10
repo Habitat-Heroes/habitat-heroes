@@ -120,7 +120,7 @@ export default class Button extends Phaser.GameObjects.Image {
   handleDown() {
     this.setTexture(this.downTexture);
     this.setTint(this.downTint);
-    // this.tooltipContainer.setVisible(false);
+    this.tooltipContainer.setVisible(false);
     if (this.onDownCallback != null) {
       this.onDownCallback();
     }
