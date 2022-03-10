@@ -71,6 +71,7 @@ export class LoginScene extends Phaser.Scene {
     let gameHeight = windowHeight;
     let gameWidth = windowWidth;
 
+    // Constrain the sizes by the smaller dimension
     if (gameHeight * ratio < gameWidth) {
       gameWidth = gameHeight * ratio;
     } else if (gameWidth / ratio < gameHeight) {
@@ -79,15 +80,6 @@ export class LoginScene extends Phaser.Scene {
 
     const height = gameHeight / 10;
     const width = gameWidth / 3.2;
-
-    // const nameFieldRatio = 8 * ratio;
-
-    // if (width / nameFieldRatio > height) {
-    //   width = height * nameFieldRatio;
-    // } else if (height * nameFieldRatio > width) {
-    //   height = width / nameFieldRatio;
-    // }
-
     const top = (windowHeight - height) / 2;
     const left = (windowWidth - width) / 2;
 
