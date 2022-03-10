@@ -31,7 +31,7 @@ export class BuildMenuScene extends Phaser.Scene {
   create() {
     scene = this;
     scene.add.image(screenCenterX, screenCenterY + 10, 'buildmenu').setScale(0.75);
-    const freeHutButton = new Button(scene, screenCenterX - 210, screenCenterY + 175, 'freebutton')
+    const freeHutButton = new Button(scene, screenCenterX - 210, screenCenterY + 190, 'freebutton')
       .setDownTexture('freebutton');
     freeHutButton.depth = 100;
     freeHutButton.scale = 0.8;
@@ -40,7 +40,7 @@ export class BuildMenuScene extends Phaser.Scene {
       this.scene.start('HabitatHeroesScene');
     });
 
-    const freeHouseButton = new Button(scene, screenCenterX + 5, screenCenterY + 175, 'freebutton')
+    const freeHouseButton = new Button(scene, screenCenterX + 5, screenCenterY + 190, 'freebutton')
       .setDownTexture('freebutton');
     freeHouseButton.scale = 0.8;
     freeHouseButton.setButtonName('Build Brick House');
@@ -49,7 +49,7 @@ export class BuildMenuScene extends Phaser.Scene {
       this.scene.start('HabitatHeroesScene');
     });
 
-    const purchaseButton = new Button(scene, screenCenterX + 230, screenCenterY + 175, 'purchasebutton')
+    const purchaseButton = new Button(scene, screenCenterX + 230, screenCenterY + 190, 'purchasebutton')
       .setDownTexture('purchasebutton');
     purchaseButton.scale = 0.8;
     purchaseButton.setButtonName('Build Concrete House');
@@ -58,7 +58,7 @@ export class BuildMenuScene extends Phaser.Scene {
       this.scene.start('HabitatHeroesScene');
     });
 
-    const closeButton = new Button(scene, screenCenterX + 330, screenCenterY - 250, 'closebutton')
+    const closeButton = new Button(scene, screenCenterX + 330, screenCenterY - 220, 'closebutton')
       .setDownTexture('closebutton');
     closeButton.scale = 0.5;
     closeButton.setButtonName('Close');
