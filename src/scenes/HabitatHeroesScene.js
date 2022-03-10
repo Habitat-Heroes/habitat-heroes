@@ -7,7 +7,7 @@ import bbsprite from '../assets/game_menu/build_button.png';
 import ibsprite from '../assets/game_menu/inventory_button.png';
 import nbsprite from '../assets/game_menu/news_button.png';
 import qbsprite from '../assets/game_menu/quest_button.png';
-import shbsprite from '../assets/game_menu/settings_button.png'; // TODO: replace by a share button
+import shbsprite from '../assets/game_menu/share_button.png';
 import sbsprite from '../assets/game_menu/shop_button.png';
 import mapjson from '../assets/isometric-grass-and-water.json';
 import tiles from '../assets/isometric-grass-and-water.png';
