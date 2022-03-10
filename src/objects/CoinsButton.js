@@ -13,14 +13,14 @@ const handleAmtChange = () => {
   const previousAmt = currentAmt;
   currentAmt = selectAmt(store.getState());
 
-  if (previousAmt !== currentAmt) {
+  if (textObj != null && (previousAmt !== currentAmt)) {
     textObj.text = currentAmt;
   }
 };
 
-export default function CoinsButton(scene) {
-  store.subscribe(handleAmtChange);
+store.subscribe(handleAmtChange);
 
+export default function CoinsButton(scene) {
   // create coin button on top left (x, y) => (1475, 50)
   const x = 1475;
   const y = 70;
