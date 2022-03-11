@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import { BuildMenuScene } from './scenes/BuildMenuScene';
 import { HabitatHeroesScene } from './scenes/HabitatHeroesScene';
+import { LoginScene } from './scenes/LoginScene';
 import { NewsBoardScene } from './scenes/NewsBoardScene';
 import { SharePageScene } from './scenes/SharePageScene';
 import { ShopScene } from './scenes/ShopScene';
@@ -19,7 +20,14 @@ class Game extends Phaser.Game {
         height: 800,
       },
       disableContextMenu: true,
-      scene: [HabitatHeroesScene, NewsBoardScene, BuildMenuScene, SharePageScene, ShopScene],
+      scene: [
+        LoginScene,
+        HabitatHeroesScene,
+        NewsBoardScene,
+        BuildMenuScene,
+        SharePageScene,
+        ShopScene,
+      ],
       banner: {
         hidePhaser: true,
       },
