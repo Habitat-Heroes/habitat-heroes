@@ -58,7 +58,7 @@ export class SharePageScene extends Phaser.Scene {
     insButton.scale = 0.4;
     insButton.setButtonName('Share on Instagram!');
     insButton.on('pointerup', () => {
-      window.open('https://www.facebook.com/sharer/sharer.php?u=https://ibb.co/brg0qtD', 'pop', 'width=600, height=400, scrollbars=no');
+      window.open('https://www.instagram.com/?url=https://www.drdrop.co/', 'pop', 'width=600, height=400, scrollbars=no');
     });
 
     const teleButton = new Button(scene, screenCenterX, screenCenterY + 180, 'telebutton')
@@ -67,7 +67,7 @@ export class SharePageScene extends Phaser.Scene {
     teleButton.scale = 0.4;
     teleButton.setButtonName('Share on Telegram!');
     teleButton.on('pointerup', () => {
-      window.open('https://www.facebook.com/sharer/sharer.php?u=https://ibb.co/brg0qtD', 'pop', 'width=600, height=400, scrollbars=no');
+      window.open('https://t.me/share/url?url=https://ibb.co/brg0qtD&text=Join me to build houses at Habitat Heroes!', 'pop', 'width=600, height=400, scrollbars=no');
     });
 
     const twiButton = new Button(scene, screenCenterX + 120, screenCenterY + 180, 'twibutton')
@@ -76,7 +76,7 @@ export class SharePageScene extends Phaser.Scene {
     twiButton.scale = 0.4;
     twiButton.setButtonName('Share on Twitter!');
     twiButton.on('pointerup', () => {
-      window.open('https://www.facebook.com/sharer/sharer.php?u=https://ibb.co/brg0qtD', 'pop', 'width=600, height=400, scrollbars=no');
+      window.open('https://twitter.com/intent/tweet?text=Join me to build houses at Habitat Heroes!', 'pop', 'width=600, height=400, scrollbars=no');
     });
 
     const whatsButton = new Button(scene, screenCenterX + 249, screenCenterY + 180, 'whatsbutton')
@@ -85,7 +85,7 @@ export class SharePageScene extends Phaser.Scene {
     whatsButton.scale = 0.4;
     whatsButton.setButtonName('Share on Whatsapp!');
     whatsButton.on('pointerup', () => {
-      window.open('https://www.facebook.com/sharer/sharer.php?u=https://ibb.co/brg0qtD', 'pop', 'width=600, height=400, scrollbars=no');
+      window.open('https://wa.me/?text=https://ibb.co/brg0qtD', 'pop', 'width=600, height=400, scrollbars=no');
     });
 
     const closeButton = new Button(scene, screenCenterX + 365, screenCenterY - 230, 'closebutton')
