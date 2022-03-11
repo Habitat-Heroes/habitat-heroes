@@ -4,6 +4,7 @@ import { BuildMenuScene } from './scenes/BuildMenuScene';
 import { HabitatHeroesScene } from './scenes/HabitatHeroesScene';
 import { NewsBoardScene } from './scenes/NewsBoardScene';
 import { SharePageScene } from './scenes/SharePageScene';
+import { ShopScene } from './scenes/ShopScene';
 
 class Game extends Phaser.Game {
   constructor() {
@@ -18,7 +19,7 @@ class Game extends Phaser.Game {
         height: 800,
       },
       disableContextMenu: true,
-      scene: [HabitatHeroesScene, NewsBoardScene, BuildMenuScene, SharePageScene],
+      scene: [HabitatHeroesScene, NewsBoardScene, BuildMenuScene, SharePageScene, ShopScene],
       banner: {
         hidePhaser: true,
       },
