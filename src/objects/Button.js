@@ -27,6 +27,8 @@ export default class Button extends Phaser.GameObjects.Image {
 
   onDownCallback;
 
+  isDisabled;
+
   constructor(scene, x, y, texture, tint = ORANGE) {
     super(scene, x, y, texture);
 
@@ -40,6 +42,7 @@ export default class Button extends Phaser.GameObjects.Image {
     this.overTint = LIGHTORANGE;
     this.disabledTexture = texture;
     this.disabledTint = GREY;
+    this.isDisabled = false;
 
     this.setInteractive({ cursor: 'pointer' })
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, this.handleUp, this)
@@ -93,6 +96,12 @@ export default class Button extends Phaser.GameObjects.Image {
   }
 
   setDisabled(disabled) {
+    if (disabled === this.isDisabled) {
+      return this;
+    }
+
+    this.isDisabled = disabled;
+
     if (disabled) {
       this.setTexture(this.disabledTexture);
       this.setTint(this.disabledTint);
@@ -101,7 +110,7 @@ export default class Button extends Phaser.GameObjects.Image {
     }
 
     this.setTexture(this.upTexture);
-    this.setTint(this.disabledTint);
+    this.setTint(this.upTint);
     this.setInteractive();
 
     return this;
@@ -112,8 +121,8 @@ export default class Button extends Phaser.GameObjects.Image {
   }
 
   handleOut() {
-    this.setTexture(this.upTexture);
-    this.setTint(this.upTint);
+    this.setTexture(this.isDisabled ? this.disabledTexture : this.upTexture);
+    this.setTint(this.isDisabled ? this.disabledTint : this.upTint);
     this.tooltipContainer.setVisible(false);
   }
 
