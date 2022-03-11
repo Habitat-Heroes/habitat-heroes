@@ -86,18 +86,6 @@ export class HabitatHeroesScene extends Phaser.Scene {
     touchX = centerX - 100;
     pointer = scene.input.activePointer;
 
-    // News Button
-    this.newsButton = this.add.text(50, 50, 'News', { fill: '#0f0' })
-      .setInteractive()
-      .on('pointerover', () => this.enterButtonHoverState())
-      .on('pointerout', () => this.enterButtonRestState())
-      .on('pointerdown', () => this.enterButtonActiveState())
-      .on('pointerup', () => {
-        this.enterButtonHoverState();
-        this.scene.start('news');
-      });
-    this.newsButton.depth = this.newsButton.y + 186;
-
     scene.add.existing(BuildButton(this));
     scene.add.existing(InventoryButton(this));
     scene.add.existing(NewsButton(this));
