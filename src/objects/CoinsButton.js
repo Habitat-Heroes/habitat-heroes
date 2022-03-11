@@ -34,10 +34,9 @@ export default function CoinsButton(scene) {
   // eslint-disable-next-line no-undef
   WebFont.load({
     google: {
-      families: [ 'Graduate', 'Quicksand' ]
+      families: ['Graduate']
     },
-    active ()
-    {
+    active() {
       textObj = scene.add.text(x - 30, y - 18, currentAmt, {
         fontFamily: 'Graduate',
         fontSize: 28,
