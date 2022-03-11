@@ -173,7 +173,8 @@ export class HabitatHeroesScene extends Phaser.Scene {
   }
 
   placeHouses() {
-    const house1 = scene.add.image(440, 370, 'house');
+    const house1 = scene.add.image(680, 370, 'house');
+    house1.scale = 1.5;
     house1.depth = house1.y + 86;
   }
 
