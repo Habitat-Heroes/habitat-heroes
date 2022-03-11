@@ -7,5 +7,9 @@ export default function ShopButton(scene) {
   shopButton.depth = 800;
   shopButton.scale = 0.35;
   shopButton.setButtonName('Shop');
+  shopButton.setOnDownCallback(() => {
+    scene.scene.launch('ShopScene');
+    scene.scene.pause('HabitatHeroesScene');
+  });
   return shopButton;
 }

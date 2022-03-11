@@ -5,6 +5,7 @@ import { HabitatHeroesScene } from './scenes/HabitatHeroesScene';
 import { LoginScene } from './scenes/LoginScene';
 import { NewsBoardScene } from './scenes/NewsBoardScene';
 import { SharePageScene } from './scenes/SharePageScene';
+import { ShopScene } from './scenes/ShopScene';
 
 class Game extends Phaser.Game {
   constructor() {
@@ -25,6 +26,7 @@ class Game extends Phaser.Game {
         NewsBoardScene,
         BuildMenuScene,
         SharePageScene,
+        ShopScene,
       ],
       banner: {
         hidePhaser: true,
