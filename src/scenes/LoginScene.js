@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
-import loginbutton from '../assets/game_menu/long_button.png';
-import menu from '../assets/game_menu/woodboard_no_cblogo.png';
+import menu from '../assets/login/LoginBoard_NoLoginButton.png';
+import loginbutton from '../assets/login/LoginButton.png';
 import Button from '../objects/Button';
 import { setName } from '../reducers/userReducer';
 import store from '../store';
@@ -23,8 +23,6 @@ export class LoginScene extends Phaser.Scene {
   preload() {
     this.load.image('menu', menu);
     this.load.image('loginbutton', loginbutton);
-    // TODO: Replace the following with the actual textfield BG
-    this.load.image('textfield', loginbutton);
     screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
     screenCenterY =
       this.cameras.main.worldView.y + this.cameras.main.height / 2;
@@ -47,8 +45,6 @@ export class LoginScene extends Phaser.Scene {
     loginButton.setButtonName('Get Started!');
     loginButton.on('pointerup', this.onGetStartedClick.bind(this));
     scene.add.existing(loginButton);
-
-    scene.add.image(screenCenterX, screenCenterY + 10, 'textfield');
 
     LoginScene.updateNameField();
     window.addEventListener('resize', LoginScene.updateNameField);
@@ -78,10 +74,10 @@ export class LoginScene extends Phaser.Scene {
       gameHeight = gameWidth / ratio;
     }
 
-    const height = gameHeight / 10;
-    const width = gameWidth / 3.2;
-    const top = (windowHeight - height) / 2;
-    const left = (windowWidth - width) / 2;
+    const height = gameHeight / 15;
+    const width = gameWidth / 3.8;
+    const top = windowHeight / 1.95 - height / 2;
+    const left = windowWidth / 1.82 - width / 2;
 
     nameField.style.height = `${height}px`;
     nameField.style.fontSize = `${height * 0.5}px`;
