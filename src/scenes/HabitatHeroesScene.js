@@ -3,6 +3,7 @@ import IsoPlugin from 'phaser3-plugin-isometric';
 
 import avatar from '../assets/avatar1.png';
 import house from '../assets/basic_hut.png';
+import cbsprite from '../assets/coins/coins_panel.png';
 import bbsprite from '../assets/game_menu/build_button.png';
 import ibsprite from '../assets/game_menu/inventory_button.png';
 import nbsprite from '../assets/game_menu/news_button.png';
@@ -12,14 +13,15 @@ import sbsprite from '../assets/game_menu/shop_button.png';
 import mapjson from '../assets/isometric-grass-and-water.json';
 import tiles from '../assets/isometric-grass-and-water.png';
 import trees from '../assets/tree_tiles.png';
-import {Avatar} from '../objects/Avatar';
+import { Avatar } from '../objects/Avatar';
 import BuildButton from '../objects/BuildButton';
+import CoinsButton from '../objects/CoinsButton';
 import InventoryButton from '../objects/InventoryButton';
 import NewsButton from '../objects/NewsButton';
 import QuestButton from '../objects/QuestButton';
 import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
-import {MAP_HEIGHT, MAP_LAYOUT, MAP_WIDTH, TILE_HEIGHT_HALF, TILE_WIDTH_HALF} from '../utils/constants';
+import { MAP_HEIGHT, MAP_LAYOUT, MAP_WIDTH, TILE_HEIGHT_HALF, TILE_WIDTH_HALF } from '../utils/constants';
 import checkInMovableRange from '../utils/GameUtils';
 
 let player;
@@ -65,6 +67,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     this.load.image('questbutton', qbsprite);
     this.load.image('shopbutton', sbsprite);
     this.load.image('sharebutton', shbsprite);
+    this.load.image('coinsbutton', cbsprite);
   }
 
   create() {
@@ -85,13 +88,13 @@ export class HabitatHeroesScene extends Phaser.Scene {
     // News Button
     this.newsButton = this.add.text(50, 50, 'News', { fill: '#0f0' })
       .setInteractive()
-      .on('pointerover', () => this.enterButtonHoverState() )
-      .on('pointerout', () => this.enterButtonRestState() )
-      .on('pointerdown', () => this.enterButtonActiveState() )
+      .on('pointerover', () => this.enterButtonHoverState())
+      .on('pointerout', () => this.enterButtonRestState())
+      .on('pointerdown', () => this.enterButtonActiveState())
       .on('pointerup', () => {
         this.enterButtonHoverState();
         this.scene.start('news');
-    });
+      });
     this.newsButton.depth = this.newsButton.y + 186;
 
     scene.add.existing(BuildButton(this));
@@ -100,6 +103,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     scene.add.existing(QuestButton(this));
     scene.add.existing(ShopButton(this));
     scene.add.existing(ShareButton(this));
+    scene.add.existing(CoinsButton(this));
   }
 
   update() {
@@ -185,12 +189,13 @@ export class HabitatHeroesScene extends Phaser.Scene {
   }
 
   placeHouses() {
-    const house1 = scene.add.image(440, 370, 'house');
+    const house1 = scene.add.image(680, 370, 'house');
+    house1.scale = 1.5;
     house1.depth = house1.y + 86;
   }
 
   enterButtonHoverState() {
-    this.newsButton.setStyle({ fill: '#ff0'});
+    this.newsButton.setStyle({ fill: '#ff0' });
   }
 
   enterButtonRestState() {

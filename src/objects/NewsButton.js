@@ -7,5 +7,8 @@ export default function NewsButton(scene) {
   newsButton.depth = 800;
   newsButton.scale = 0.35;
   newsButton.setButtonName('News');
+  newsButton.setOnDownCallback(() => {
+    scene.scene.start('news');
+  });
   return newsButton;
 }
