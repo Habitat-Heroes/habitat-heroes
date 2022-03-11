@@ -3,8 +3,8 @@ import IsoPlugin from 'phaser3-plugin-isometric';
 
 import avatar from '../assets/avatar1.png';
 import house from '../assets/basic_hut.png';
+import cbsprite from '../assets/coins/coins_panel.png';
 import bbsprite from '../assets/game_menu/build_button.png';
-import cbsprite from '../assets/game_menu/coins_button.png';
 import ibsprite from '../assets/game_menu/inventory_button.png';
 import nbsprite from '../assets/game_menu/news_button.png';
 import qbsprite from '../assets/game_menu/quest_button.png';
