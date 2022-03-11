@@ -1,6 +1,8 @@
 import {
   BUILD_BUTTON_END,
   BUILD_BUTTON_START,
+  COINS_BUTTON_END,
+  COINS_BUTTON_START,
   GAME_SCENE_PADDING,
   MAP_HEIGHT,
   MAP_WIDTH,
@@ -22,7 +24,11 @@ export default function checkInMovableRange(x, y) {
   }
 
   // Check if it is in the range of the build button
-  if (x > BUILD_BUTTON_START[0] && x < BUILD_BUTTON_END[0] && y >BUILD_BUTTON_START[1] && y < BUILD_BUTTON_END[1]) {
+  if (x > BUILD_BUTTON_START[0] && x < BUILD_BUTTON_END[0] && y > BUILD_BUTTON_START[1] && y < BUILD_BUTTON_END[1]) {
+    return false;
+  }
+
+  if (x > COINS_BUTTON_START[0] && x < COINS_BUTTON_END[0] && y > COINS_BUTTON_START[1] && y < COINS_BUTTON_END[1]) {
     return false;
   }
 

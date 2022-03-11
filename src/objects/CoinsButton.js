@@ -1,5 +1,6 @@
 import { increaseByAmount } from '../reducers/coinsReducer';
 import store from '../store';
+import { COINS_BUTTON_CENTER } from '../utils/constants';
 
 import Button from './Button';
 
@@ -22,8 +23,7 @@ store.subscribe(handleAmtChange);
 
 export default function CoinsButton(scene) {
   // create coin button on top left (x, y) => (1475, 50)
-  const x = 1475;
-  const y = 70;
+  const [x, y] = COINS_BUTTON_CENTER;
 
   const coinsButton = new Button(scene, x, y, 'coinsbutton').setDownTexture('coinsbutton');
   coinsButton.depth = 800;
