@@ -1,8 +1,14 @@
 import Phaser from 'phaser';
 
+import photoboard from '../assets/build_menu/GratitudeBoard_NewsButton.png';
 import closebutton from '../assets/game_menu/close_button.png';
-import fbbutton from '../assets/game_menu/long_button.png';
 import shareboard from '../assets/game_menu/woodboard.png';
+import fbbutton from '../assets/social_media/FacebookButton.png';
+import insbutton from '../assets/social_media/InstagramButton.png';
+import photo from '../assets/social_media/My_Large_House_At_HarbitatHeroes.png';
+import telebutton from '../assets/social_media/TelegramButton.png';
+import twibutton from '../assets/social_media/TwitterButton.png';
+import whatsbutton from '../assets/social_media/WhatsappButton.png';
 import Button from '../objects/Button';
 
 let scene;
@@ -20,7 +26,13 @@ export class SharePageScene extends Phaser.Scene {
 
   preload() {
     this.load.image('shareboard', shareboard);
+    this.load.image('photoboard', photoboard);
+    this.load.image('photo', photo);
     this.load.image('fbbutton', fbbutton);
+    this.load.image('insbutton', insbutton);
+    this.load.image('telebutton', telebutton);
+    this.load.image('twibutton', twibutton);
+    this.load.image('whatsbutton', whatsbutton);
     this.load.image('closebutton', closebutton);
     screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
     screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
@@ -28,19 +40,55 @@ export class SharePageScene extends Phaser.Scene {
 
   create() {
     scene = this;
-    scene.add.image(screenCenterX, screenCenterY + 10, 'shareboard').setScale(0.75);
-    const freeHutButton = new Button(scene, screenCenterX - 210, screenCenterY + 175, 'fbbutton')
+    scene.add.image(screenCenterX, screenCenterY + 10, 'shareboard').setScale(0.8);
+    scene.add.image(screenCenterX, screenCenterY - 40, 'photoboard').setDisplaySize(600, 300);// setScale(0.9);
+    scene.add.image(screenCenterX, screenCenterY - 40, 'photo').setScale(0.8);// .setDisplaySize(600, 300)
+    const fbButton = new Button(scene, screenCenterX - 240, screenCenterY + 180, 'fbbutton')
       .setDownTexture('fbbutton');
-    freeHutButton.depth = 100;
-    freeHutButton.scale = 0.3;
-    freeHutButton.setButtonName('Share on Facebook!');
-    freeHutButton.on('pointerup', () => {
-      const url = 'https://github.com/Habitat-Heroes/habitat-heroes'; // TODO: to be replaced individual link
-      const shareUrl = `http://www.facebook.com/sharer/sharer.phpu=${url}`;
-      window.open(shareUrl, 'NewWindow'); // , params
+    fbButton.depth = 100;
+    fbButton.scale = 0.4;
+    fbButton.setButtonName('Share on Facebook!');
+    fbButton.on('pointerup', () => {
+      window.open('https://www.facebook.com/sharer/sharer.php?u=https://ibb.co/brg0qtD', 'pop', 'width=600, height=400, scrollbars=no');
     });
 
-    const closeButton = new Button(scene, screenCenterX + 340, screenCenterY - 218, 'closebutton')
+    const insButton = new Button(scene, screenCenterX - 120, screenCenterY + 180, 'insbutton')
+      .setDownTexture('insbutton');
+    insButton.depth = 100;
+    insButton.scale = 0.4;
+    insButton.setButtonName('Share on Instagram!');
+    insButton.on('pointerup', () => {
+      window.open('https://www.facebook.com/sharer/sharer.php?u=https://ibb.co/brg0qtD', 'pop', 'width=600, height=400, scrollbars=no');
+    });
+
+    const teleButton = new Button(scene, screenCenterX, screenCenterY + 180, 'telebutton')
+      .setDownTexture('telebutton');
+    teleButton.depth = 100;
+    teleButton.scale = 0.4;
+    teleButton.setButtonName('Share on Telegram!');
+    teleButton.on('pointerup', () => {
+      window.open('https://www.facebook.com/sharer/sharer.php?u=https://ibb.co/brg0qtD', 'pop', 'width=600, height=400, scrollbars=no');
+    });
+
+    const twiButton = new Button(scene, screenCenterX + 120, screenCenterY + 180, 'twibutton')
+      .setDownTexture('twibutton');
+    twiButton.depth = 100;
+    twiButton.scale = 0.4;
+    twiButton.setButtonName('Share on Twitter!');
+    twiButton.on('pointerup', () => {
+      window.open('https://www.facebook.com/sharer/sharer.php?u=https://ibb.co/brg0qtD', 'pop', 'width=600, height=400, scrollbars=no');
+    });
+
+    const whatsButton = new Button(scene, screenCenterX + 249, screenCenterY + 180, 'whatsbutton')
+      .setDownTexture('whatsbutton');
+    whatsButton.depth = 100;
+    whatsButton.scale = 0.4;
+    whatsButton.setButtonName('Share on Whatsapp!');
+    whatsButton.on('pointerup', () => {
+      window.open('https://www.facebook.com/sharer/sharer.php?u=https://ibb.co/brg0qtD', 'pop', 'width=600, height=400, scrollbars=no');
+    });
+
+    const closeButton = new Button(scene, screenCenterX + 365, screenCenterY - 230, 'closebutton')
       .setDownTexture('closebutton');
     closeButton.scale = 0.8;
     closeButton.setButtonName('Close');
@@ -49,7 +97,11 @@ export class SharePageScene extends Phaser.Scene {
     });
 
     scene.add.existing(closeButton);
-    scene.add.existing(freeHutButton);
+    scene.add.existing(fbButton);
+    scene.add.existing(insButton);
+    scene.add.existing(teleButton);
+    scene.add.existing(twiButton);
+    scene.add.existing(whatsButton);
   }
 
 }
