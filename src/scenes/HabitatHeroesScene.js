@@ -49,6 +49,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
       url: IsoPlugin,
       sceneKey: 'iso',
     });
+    this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
 
     this.load.json('map', mapjson);
     this.load.spritesheet('tiles', tiles, { frameWidth: 64, frameHeight: 64 });

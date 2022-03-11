@@ -31,13 +31,23 @@ export default function CoinsButton(scene) {
   coinsButton.setButtonName('Coins');
   coinsButton.setOnDownCallback(() => store.dispatch(increaseByAmount(300)));
 
-  textObj = scene.add.text(x - 30, y - 18, currentAmt, {
-    fontFamily: 'Arial',  // TODO: change font
-    fontSize: 28,
-    color: '#fff',
-    align: 'right',
+  // eslint-disable-next-line no-undef
+  WebFont.load({
+    google: {
+      families: [ 'Graduate', 'Quicksand' ]
+    },
+    active ()
+    {
+      textObj = scene.add.text(x - 30, y - 18, currentAmt, {
+        fontFamily: 'Graduate',
+        fontSize: 28,
+        color: '#fff',
+        align: 'right',
+        strokeThickness: 2
+      }).setShadow(2, 2, '#333333', 2, false, true);
+      textObj.depth = 850;
+    }
   });
-  textObj.depth = 850;
 
   return coinsButton;
 }
