@@ -44,7 +44,7 @@ export class SharePageScene extends Phaser.Scene {
     scene.add.image(screenCenterX, screenCenterY - 40, 'photoboard').setDisplaySize(600, 300);// setScale(0.9);
     scene.add.image(screenCenterX, screenCenterY - 40, 'photo').setScale(0.8);// .setDisplaySize(600, 300)
     const fbButton = new Button(scene, screenCenterX - 240, screenCenterY + 180, 'fbbutton')
-      .setDownTexture('fbbutton');
+      .setDownTexture('fbbutton').clearTint();
     fbButton.depth = 100;
     fbButton.scale = 0.4;
     fbButton.setButtonName('Share on Facebook!');
@@ -53,7 +53,7 @@ export class SharePageScene extends Phaser.Scene {
     });
 
     const insButton = new Button(scene, screenCenterX - 120, screenCenterY + 180, 'insbutton')
-      .setDownTexture('insbutton');
+      .setDownTexture('insbutton').clearTint();
     insButton.depth = 100;
     insButton.scale = 0.4;
     insButton.setButtonName('Share on Instagram!');
@@ -62,7 +62,7 @@ export class SharePageScene extends Phaser.Scene {
     });
 
     const teleButton = new Button(scene, screenCenterX, screenCenterY + 180, 'telebutton')
-      .setDownTexture('telebutton');
+      .setDownTexture('telebutton').clearTint();
     teleButton.depth = 100;
     teleButton.scale = 0.4;
     teleButton.setButtonName('Share on Telegram!');
@@ -71,7 +71,7 @@ export class SharePageScene extends Phaser.Scene {
     });
 
     const twiButton = new Button(scene, screenCenterX + 120, screenCenterY + 180, 'twibutton')
-      .setDownTexture('twibutton');
+      .setDownTexture('twibutton').clearTint();
     twiButton.depth = 100;
     twiButton.scale = 0.4;
     twiButton.setButtonName('Share on Twitter!');
@@ -80,7 +80,7 @@ export class SharePageScene extends Phaser.Scene {
     });
 
     const whatsButton = new Button(scene, screenCenterX + 249, screenCenterY + 180, 'whatsbutton')
-      .setDownTexture('whatsbutton');
+      .setDownTexture('whatsbutton').clearTint();
     whatsButton.depth = 100;
     whatsButton.scale = 0.4;
     whatsButton.setButtonName('Share on Whatsapp!');
