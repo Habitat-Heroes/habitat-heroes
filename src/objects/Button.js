@@ -92,8 +92,7 @@ export default class Button extends Phaser.GameObjects.Image {
   }
 
   setDisabled(disabled) {
-    if (disabled)
-    {
+    if (disabled) {
       this.setTexture(this.disabledTexture);
       this.setTint(this.disabledTint);
       this.disableInteractive();
