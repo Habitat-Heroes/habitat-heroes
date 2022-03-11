@@ -30,8 +30,19 @@ export class LoginScene extends Phaser.Scene {
     ratio = this.cameras.main.width / this.cameras.main.height;
   }
 
+  static selectName(state) {
+    return state.user.name;
+  }
+
   create() {
     scene = this;
+    const currentName = LoginScene.selectName(store.getState());
+    if (currentName !== '') {
+      nameField.style.display = 'none';
+      this.scene.start('HabitatHeroesScene');
+      return;
+    }
+
     scene.add.image(screenCenterX, screenCenterY + 10, 'menu').setScale(0.75);
 
     const loginButton = new Button(
