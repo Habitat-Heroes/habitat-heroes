@@ -11,7 +11,7 @@ let scene;
 let screenCenterX;
 let screenCenterY;
 let nameField;
-let ratio;
+let canvas;
 
 export class LoginScene extends Phaser.Scene {
   constructor() {
@@ -27,7 +27,7 @@ export class LoginScene extends Phaser.Scene {
     screenCenterY =
       this.cameras.main.worldView.y + this.cameras.main.height / 2;
     nameField = document.getElementById('name');
-    ratio = this.cameras.main.width / this.cameras.main.height;
+    canvas = document.querySelector('canvas');
   }
 
   static selectName(state) {
@@ -71,29 +71,27 @@ export class LoginScene extends Phaser.Scene {
     this.scene.start('HabitatHeroesScene');
   }
 
+  static parsePxStringToFloat(str) {
+    return parseFloat(str.substring(0, str.length - 2));
+  }
+
   static updateNameField() {
-    const windowHeight = window.innerHeight;
-    const windowWidth = window.innerWidth;
+    const canvasHeight = LoginScene.parsePxStringToFloat(canvas.style.height);
+    const canvasWidth = LoginScene.parsePxStringToFloat(canvas.style.width);
+    const canvasMarginTop = LoginScene.parsePxStringToFloat(
+      canvas.style.marginTop,
+    );
+    const canvasMarginLeft = LoginScene.parsePxStringToFloat(
+      canvas.style.marginLeft,
+    );
 
-    let gameHeight = windowHeight;
-    let gameWidth = windowWidth;
-
-    // Constrain the sizes by the smaller dimension
-    if (gameHeight * ratio < gameWidth) {
-      gameWidth = gameHeight * ratio;
-    } else if (gameWidth / ratio < gameHeight) {
-      gameHeight = gameWidth / ratio;
-    }
-
-    const height = gameHeight / 15;
-    const width = gameWidth / 3.8;
-    const top = windowHeight / 1.95 - height / 2;
-    const left = windowWidth / 1.82 - width / 2;
+    const height = canvasHeight / 15;
+    const width = canvasWidth / 3.8;
 
     nameField.style.height = `${height}px`;
     nameField.style.fontSize = `${height * 0.5}px`;
     nameField.style.width = `${width}px`;
-    nameField.style.top = `${top}px`;
-    nameField.style.left = `${left}px`;
+    nameField.style.marginLeft = `${canvasMarginLeft + canvasWidth / 2.4}px`;
+    nameField.style.marginTop = `${canvasMarginTop + canvasHeight / 2.13}px`;
   }
 }
