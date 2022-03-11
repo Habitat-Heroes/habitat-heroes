@@ -8,7 +8,8 @@ export default function BuildButton(scene) {
   buildButton.scale = 0.35;
   buildButton.setButtonName('Build');
   buildButton.setOnDownCallback(() => {
-    scene.scene.start('buildMenu');
+    scene.scene.launch('BuildMenuScene');
+    scene.scene.pause('HabitatHeroesScene');
   });
   return buildButton;
 }

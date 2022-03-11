@@ -2,8 +2,10 @@ import Phaser from 'phaser';
 import IsoPlugin from 'phaser3-plugin-isometric';
 
 import avatar from '../assets/avatar1.png';
-import house from '../assets/basic_hut.png';
+import basichut from '../assets/basic_hut.png';
+import brickhouse from '../assets/brick_house.png';
 import cbsprite from '../assets/coins/coins_panel.png';
+import concretehouse from '../assets/concrete_house.png';
 import bbsprite from '../assets/game_menu/build_button.png';
 import ibsprite from '../assets/game_menu/inventory_button.png';
 import nbsprite from '../assets/game_menu/news_button.png';
@@ -21,10 +23,12 @@ import NewsButton from '../objects/NewsButton';
 import QuestButton from '../objects/QuestButton';
 import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
+import store from '../store';
 import { MAP_HEIGHT, MAP_LAYOUT, MAP_WIDTH, TILE_HEIGHT_HALF, TILE_WIDTH_HALF } from '../utils/constants';
 import checkInMovableRange from '../utils/GameUtils';
 
 let player;
+let house;
 
 let pointer;
 
@@ -61,7 +65,9 @@ export class HabitatHeroesScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
-    this.load.image('house', house);
+    this.load.image('basichut', basichut);
+    this.load.image('brickhouse', brickhouse);
+    this.load.image('concretehouse', concretehouse);
     this.load.image('buildbutton', bbsprite);
     this.load.image('newsbutton', nbsprite);
     this.load.image('inventorybutton', ibsprite);
@@ -177,10 +183,27 @@ export class HabitatHeroesScene extends Phaser.Scene {
     placeTrees();
   }
 
+  removeHouse() {
+    house.destroy();
+  }
+
   placeHouses() {
-    const house1 = scene.add.image(680, 370, 'house');
-    house1.scale = 1.5;
-    house1.depth = house1.y + 86;
+    const {houses} = store.getState();
+    if (houses.total_house > 0) {
+      if (houses.basic_hut === 1) {
+        house = scene.add.image(680, 370, 'basichut');
+        house.scale = 1.5;
+        house.depth = house.y + 120;
+      } else if (houses.brick_house === 1) {
+        house = scene.add.image(550, 370, 'brickhouse');
+        house.scale = 0.35;
+        house.depth = house.y + 160;
+      } else if (houses.concrete_house === 1) {
+        house = scene.add.image(530, 370, 'concretehouse');
+        house.scale = 0.9;
+        house.depth = house.y + 180;
+      }
+    }
   }
 
 }

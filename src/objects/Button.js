@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 const ORANGE = 0xFFAD00;
 const LIGHTORANGE = 0xffcd60;
+const GREY = 0X808080;
 
 export default class Button extends Phaser.GameObjects.Image {
   upTexture;
@@ -38,7 +39,7 @@ export default class Button extends Phaser.GameObjects.Image {
     this.overTexture = texture;
     this.overTint = LIGHTORANGE;
     this.disabledTexture = texture;
-    this.disabledTint = tint;
+    this.disabledTint = GREY;
 
     this.setInteractive({ cursor: 'pointer' })
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, this.handleUp, this)
