@@ -183,17 +183,5 @@ export class HabitatHeroesScene extends Phaser.Scene {
     house1.depth = house1.y + 86;
   }
 
-  enterButtonHoverState() {
-    this.newsButton.setStyle({ fill: '#ff0' });
-  }
-
-  enterButtonRestState() {
-    this.newsButton.setStyle({ fill: '#0f0' });
-  }
-
-  enterButtonActiveState() {
-    this.newsButton.setStyle({ fill: '#0ff' });
-  }
-
 }
 /* eslint-enable class-methods-use-this */
