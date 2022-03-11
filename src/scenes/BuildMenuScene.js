@@ -54,6 +54,9 @@ export class BuildMenuScene extends Phaser.Scene {
         this.scene.resume('HabitatHeroesScene');
       }
     });
+    if (!(store.getState().houses.basic_hut === 0 && store.getState().houses.total_house === 0)) {
+      buildBasicHutButton.setDisabled(true);
+    }
 
     const buildBrickHouseButton = new Button(scene, screenCenterX + 5, screenCenterY + 190, 'freebutton')
       .setDownTexture('freebutton');
@@ -73,6 +76,9 @@ export class BuildMenuScene extends Phaser.Scene {
         this.scene.resume('HabitatHeroesScene');
       }
     });
+    if (store.getState().houses.basic_hut === 0) {
+      buildBrickHouseButton.setDisabled(true);
+    }
 
     const buildConcreteHouseButton = new Button(scene, screenCenterX + 230, screenCenterY + 190, 'purchasebutton')
       .setDownTexture('purchasebutton');
@@ -94,6 +100,9 @@ export class BuildMenuScene extends Phaser.Scene {
         this.scene.resume('HabitatHeroesScene');
       }
     });
+    if (store.getState().houses.brick_house === 0) {
+      buildConcreteHouseButton.setDisabled(true);
+    }
 
     const closeButton = new Button(scene, screenCenterX + 330, screenCenterY - 220, 'closebutton')
       .setDownTexture('closebutton');
