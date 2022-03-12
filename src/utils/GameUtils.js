@@ -1,4 +1,6 @@
 import {
+  AVATAR_PANEL_END,
+  AVATAR_PANEL_START,
   BUILD_BUTTON_END,
   BUILD_BUTTON_START,
   COINS_BUTTON_END,
@@ -41,6 +43,15 @@ export default function checkInMovableRange(x, y) {
     x < COINS_BUTTON_END[0] &&
     y > COINS_BUTTON_START[1] &&
     y < COINS_BUTTON_END[1]
+  ) {
+    return false;
+  }
+
+  if (
+    x > AVATAR_PANEL_START[0] &&
+    x < AVATAR_PANEL_END[0] &&
+    y > AVATAR_PANEL_START[1] &&
+    y < AVATAR_PANEL_END[1]
   ) {
     return false;
   }
