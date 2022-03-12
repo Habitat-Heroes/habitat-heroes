@@ -220,7 +220,7 @@ export class InventoryScene extends Phaser.Scene {
 
   #destroyPanels() {
     this.panels?.forEach((panel) => {
-      Object.values(panel ?? []).forEach((obj) => obj?.destroy?.());
+      Object.values(panel ?? {}).forEach((obj) => obj?.destroy?.());
     });
   }
 }
