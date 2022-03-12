@@ -14,7 +14,7 @@ import {
 } from './constants';
 
 export function getRemainingBuildTime(houses) {
-  const currentTime = Math.floor(new Date().getTime()/1000);
+  const currentTime = Math.floor(new Date().getTime() / 1000);
   if (currentTime < houses.startBuildTime + houses.buildTime) {
     return houses.buildTime - (currentTime - houses.startBuildTime);
   }
