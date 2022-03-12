@@ -279,7 +279,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
       const previousDonations = donations;
       donations = store.getState().user.donations;
       if (donationText != null && previousDonations !== donations) {
-        donationText.text = donations;
+        donationText.text = `Donations: SGD ${this.#roundToTwo(donations)}`;
       }
     };
 
