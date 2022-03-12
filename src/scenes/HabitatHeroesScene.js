@@ -39,6 +39,7 @@ import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
 import footstep from '../sounds/footstep.mp3';
 import mainbgm from '../sounds/mainbgm.mp3';
+import openmenu from '../sounds/openmenu.mp3';
 import reward from '../sounds/reward.mp3';
 import store from '../store';
 import {
@@ -137,6 +138,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     this.load.audio('footstep', footstep);
     this.load.audio('building', building);
     this.load.audio('reward', reward);
+    this.load.audio('openmenu', openmenu);
     loadItemSprites(this);
   }
 
@@ -151,6 +153,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     });
     const downSfx = this.sound.add('buttonclick');
     const overSfx = this.sound.add('buttonhover');
+    const openMenuSfx = this.sound.add('openmenu');
     const footstepSfx = this.sound.add('footstep');
     this.buildingSfx = this.sound.add('building');
     this.rewardSfx = this.sound.add('reward');
@@ -175,12 +178,12 @@ export class HabitatHeroesScene extends Phaser.Scene {
     touchX = centerX - 100;
     pointer = scene.input.activePointer;
 
-    scene.add.existing(BuildButton(this, downSfx, overSfx));
-    scene.add.existing(InventoryButton(this, downSfx, overSfx));
-    scene.add.existing(NewsButton(this, downSfx, overSfx));
-    scene.add.existing(QuestButton(this, downSfx, overSfx));
-    scene.add.existing(ShopButton(this, downSfx, overSfx));
-    scene.add.existing(ShareButton(this, downSfx, overSfx));
+    scene.add.existing(BuildButton(this, openMenuSfx, overSfx));
+    scene.add.existing(InventoryButton(this, openMenuSfx, overSfx));
+    scene.add.existing(NewsButton(this, openMenuSfx, overSfx));
+    scene.add.existing(QuestButton(this, openMenuSfx, overSfx));
+    scene.add.existing(ShopButton(this, openMenuSfx, overSfx));
+    scene.add.existing(ShareButton(this, openMenuSfx, overSfx));
     scene.add.existing(CoinsButton(this, downSfx, overSfx));
 
     this.events.on('resume', (_scene, data) => {

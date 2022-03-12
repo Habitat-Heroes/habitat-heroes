@@ -7,6 +7,7 @@ import { setName } from '../reducers/userReducer';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
 import loginbgm from '../sounds/loginbgm.mp3';
+import thud from '../sounds/thud.mp3';
 import store from '../store';
 import { DEFAULT_SFX_CONFIG } from '../utils/constants';
 
@@ -37,6 +38,7 @@ export class LoginScene extends Phaser.Scene {
     this.load.audio('loginbgm', loginbgm);
     this.load.audio('buttonhover', buttonhover);
     this.load.audio('buttonclick', buttonclick);
+    this.load.audio('thud', thud);
   }
 
   static selectName(state) {
@@ -59,11 +61,12 @@ export class LoginScene extends Phaser.Scene {
       loop: true,
       volume: 0.5,
     });
+    const downSfx = this.sound.add('buttonclick');
+    const overSfx = this.sound.add('buttonhover');
+    const thudSfx = this.sound.add('thud');
 
     scene.add.image(screenCenterX, screenCenterY + 10, 'menu').setScale(0.75);
 
-    const downSfx = this.sound.add('buttonclick');
-    const overSfx = this.sound.add('buttonhover');
     const loginButton = new Button(
       scene,
       screenCenterX,
@@ -82,6 +85,19 @@ export class LoginScene extends Phaser.Scene {
 
     LoginScene.updateNameField();
     window.addEventListener('resize', LoginScene.updateNameField);
+    nameField.addEventListener('input', () =>
+      LoginScene.onNameChange(overSfx, thudSfx),
+    );
+  }
+
+  static onNameChange(typeSfx, thudSfx) {
+    const { value } = nameField;
+    if (value.length > 10) {
+      thudSfx.play(DEFAULT_SFX_CONFIG);
+      nameField.value = value.substring(0, 10);
+      return;
+    }
+    typeSfx.play(DEFAULT_SFX_CONFIG);
   }
 
   onGetStartedClick() {
