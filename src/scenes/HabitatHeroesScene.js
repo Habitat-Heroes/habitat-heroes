@@ -32,7 +32,8 @@ import NewsButton from '../objects/NewsButton';
 import QuestButton from '../objects/QuestButton';
 import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
-import {updateBuildTime} from '../reducers/houseReducer';
+import { updateBuildTime } from '../reducers/houseReducer';
+import { removeFromInventory } from '../reducers/inventoryReducer';
 import store from '../store';
 import {
   AVATAR_PANEL_CENTER,
@@ -43,7 +44,8 @@ import {
   TILE_HEIGHT_HALF,
   TILE_WIDTH_HALF,
 } from '../utils/constants';
-import checkInMovableRange, {getRemainingBuildTime} from '../utils/GameUtils';
+import checkInMovableRange, { getRemainingBuildTime } from '../utils/GameUtils';
+import { loadItemSprites } from '../utils/items';
 
 let player;
 let house;
@@ -115,6 +117,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
       'avatarpanel',
       USE_ACTUAL_AVATAR_SPRITE ? avatarpanelwithoutlucas : avatarpanel,
     );
+    loadItemSprites(this);
   }
 
   create() {
@@ -140,6 +143,36 @@ export class HabitatHeroesScene extends Phaser.Scene {
     scene.add.existing(ShopButton(this));
     scene.add.existing(ShareButton(this));
     scene.add.existing(CoinsButton(this));
+
+    this.events.on('resume', (_scene, data) => {
+      if (data == null) {
+        return;
+      }
+
+      const { spritesheet, frame, itemId } = data;
+      const placingItemImage = this.add.image(
+        this.input.x + this.cameras.main.scrollX,
+        this.input.y + this.cameras.main.scrollY,
+        spritesheet, frame);
+      placingItemImage.depth = 800;
+      placingItemImage.setAlpha(0.6);
+      const placingItemFn = movingPointer => {
+        placingItemImage.setPosition(movingPointer.x, movingPointer.y);
+      };
+      this.input.on('pointermove', placingItemFn);
+
+      // TODO someway to cancel placing item
+
+      this.input.once('pointerup', () => {
+        placingItemImage.setAlpha(1);
+        this.input.off('pointermove', placingItemFn);
+
+        store.dispatch(removeFromInventory({ [itemId]: 1 }));
+
+        // TODO save the built item data into store so it will still be there when reloaded
+      });
+
+    });
   }
 
   update() {
@@ -220,7 +253,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     }
 
     let buildTimerBar;
-    const buildFrac = remainingBuildTime/totalBuildTime;
+    const buildFrac = remainingBuildTime / totalBuildTime;
     if (between(buildFrac, 0, 0.05)) {
       buildTimerBar = '0bar';
     } else if (between(buildFrac, 0.05, 0.2)) {

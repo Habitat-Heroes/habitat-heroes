@@ -170,7 +170,8 @@ export class InventoryScene extends Phaser.Scene {
     button.scaleX = 0.15;
     button.setButtonName('Place');
     button.on('pointerup', () => {
-      // TODO: place on map
+      this.scene.stop('InventoryScene');
+      this.scene.resume('HabitatHeroesScene', { spritesheet, frame, itemId });
     });
     this.add.existing(button);
 
