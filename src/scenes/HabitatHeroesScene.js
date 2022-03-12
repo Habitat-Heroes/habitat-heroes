@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 import IsoPlugin from 'phaser3-plugin-isometric';
 
+import avatarpanelwithoutlucas from '../assets/avatar/AvatarPanel_NoAvatar.png';
+import avatarpanel from '../assets/avatar/AvatarPanelLucas_NoText.png';
 import avatar from '../assets/avatar2.png';
 import basichut from '../assets/basic_hut.png';
 import brickhouse from '../assets/brick_house.png';
@@ -26,6 +28,7 @@ import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
 import store from '../store';
 import {
+  AVATAR_PANEL_CENTER,
   BUILD_DIRECTION_MAPPING,
   MAP_HEIGHT,
   MAP_LAYOUT,
@@ -46,8 +49,15 @@ let scene;
 let touchX;
 let touchY;
 
+let name;
+let donations;
+let nameText;
+let donationText;
+
 const centerX = MAP_WIDTH * TILE_WIDTH_HALF;
 const centerY = MAP_HEIGHT * TILE_HEIGHT_HALF * 0.3;
+
+const USE_ACTUAL_AVATAR_SPRITE = false;
 
 export class HabitatHeroesScene extends Phaser.Scene {
   constructor() {
@@ -63,10 +73,6 @@ export class HabitatHeroesScene extends Phaser.Scene {
       url: IsoPlugin,
       sceneKey: 'iso',
     });
-    this.load.script(
-      'webfont',
-      'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
-    );
 
     this.load.json('map', mapjson);
     this.load.spritesheet('tiles', tiles, { frameWidth: 64, frameHeight: 64 });
@@ -89,6 +95,10 @@ export class HabitatHeroesScene extends Phaser.Scene {
     this.load.image('shopbutton', sbsprite);
     this.load.image('sharebutton', shbsprite);
     this.load.image('coinsbutton', cbsprite);
+    this.load.image(
+      'avatarpanel',
+      USE_ACTUAL_AVATAR_SPRITE ? avatarpanelwithoutlucas : avatarpanel,
+    );
   }
 
   create() {
@@ -96,6 +106,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
 
     this.buildMap();
     this.placeHouses();
+    this.addAvatarPanel();
 
     player = new Avatar(scene, centerX - 100, centerY + 100, 'avatar', {
       key: 'avatar',
@@ -215,6 +226,64 @@ export class HabitatHeroesScene extends Phaser.Scene {
 
     buildLand();
     placeTrees();
+  }
+
+  #roundToTwo(num) {
+    return +`${Math.round(`${num}e+2`)}e-2`;
+  }
+
+  addAvatarPanel() {
+    const [x, y] = AVATAR_PANEL_CENTER;
+    const panel = scene.add.image(x, y, 'avatarpanel').setScale(0.2);
+    panel.depth = 800;
+
+    if (USE_ACTUAL_AVATAR_SPRITE) {
+      const panelAvatar = new Avatar(scene, x - 71, y - 8, 'avatar', {
+        key: 'avatar',
+        frame: 0,
+      }).player;
+      panelAvatar.depth = 850;
+      panelAvatar.setScale(0.8);
+    }
+
+    name = store.getState().user.name;
+    donations = store.getState().user.donations;
+
+    nameText = scene.add
+      .text(x - 35, y - 23, name, {
+        fontFamily: 'Graduate',
+        fontSize: 18,
+        color: '#fff',
+        align: 'left',
+        strokeThickness: 2,
+      })
+      .setShadow(2, 2, '#333333', 2, false, true);
+    nameText.depth = 850;
+    donationText = scene.add
+      .text(x - 35, y, `Donations: SGD ${this.#roundToTwo(donations)}`, {
+        fontFamily: 'Graduate',
+        fontSize: 12,
+        color: '#fff',
+        align: 'left',
+        strokeThickness: 2,
+      })
+      .setShadow(2, 2, '#333333', 2, false, true);
+    donationText.depth = 850;
+
+    const handleUserChange = () => {
+      const previousName = name;
+      name = store.getState().user.name;
+      if (nameText != null && previousName !== name) {
+        nameText.text = name;
+      }
+      const previousDonations = donations;
+      donations = store.getState().user.donations;
+      if (donationText != null && previousDonations !== donations) {
+        donationText.text = `Donations: SGD ${this.#roundToTwo(donations)}`;
+      }
+    };
+
+    store.subscribe(handleUserChange);
   }
 
   removeHouse() {

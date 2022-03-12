@@ -33,24 +33,16 @@ export default function CoinsButton(scene) {
   coinsButton.setButtonName('Coins');
   coinsButton.setOnDownCallback(() => store.dispatch(increaseByAmount(300)));
 
-  // eslint-disable-next-line no-undef
-  WebFont.load({
-    google: {
-      families: ['Graduate'],
-    },
-    active() {
-      textObj = scene.add
-        .text(x - 30, y - 18, currentAmt, {
-          fontFamily: 'Graduate',
-          fontSize: 28,
-          color: '#fff',
-          align: 'right',
-          strokeThickness: 2,
-        })
-        .setShadow(2, 2, '#333333', 2, false, true);
-      textObj.depth = 850;
-    },
-  });
+  textObj = scene.add
+    .text(x - 35, y - 20, currentAmt, {
+      fontFamily: 'Graduate',
+      fontSize: 28,
+      color: '#fff',
+      align: 'right',
+      strokeThickness: 2,
+    })
+    .setShadow(2, 2, '#333333', 2, false, true);
+  textObj.depth = 850;
 
   return coinsButton;
 }
