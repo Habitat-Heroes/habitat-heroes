@@ -8,13 +8,7 @@ import wishingwell from '../assets/shop/wishingwell.png';
 import trees from '../assets/tree_tiles.png';
 
 
-
-/* spritesheet
-  "trees" => assets/tree_tiles.png
-  "tiles" => assets/shop/expensive_tiles.png
-*/
-
-export function loadItemSprites(scene) {
+export function loadItemSprites(scene) {  // call this function in any scene that will render item images
   scene.load.spritesheet('trees', trees, {
     frameWidth: 120,
     frameHeight: 171,
