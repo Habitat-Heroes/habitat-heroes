@@ -7,12 +7,11 @@ import nextbutton from '../assets/game_menu/next_button.png';
 import prevbutton from '../assets/game_menu/prev_button.png';
 import baseboard from '../assets/game_menu/vertical_baseboard.png';
 import background from '../assets/game_menu/woodboard_no_cblogo.png';
-import trees from '../assets/tree_tiles.png';
 import Button from '../objects/Button';
 import { decreaseByAmount } from '../reducers/coinsReducer';
 import { addToInventory } from '../reducers/inventoryReducer';
 import store from '../store';
-import ITEMS from '../utils/items';
+import ITEMS, { loadItemSprites } from '../utils/items';
 import { modulo } from '../utils/utilFunctions';
 
 export class ShopScene extends Phaser.Scene {
@@ -68,10 +67,7 @@ export class ShopScene extends Phaser.Scene {
     this.load.image('buybutton', buybutton);
     this.load.image('coinimage', coinimage);
 
-    this.load.spritesheet('trees', trees, {
-      frameWidth: 120,
-      frameHeight: 171,
-    });
+    loadItemSprites(this);
 
     this.screenCenterX =
       this.cameras.main.worldView.x + this.cameras.main.width / 2;
@@ -164,6 +160,12 @@ export class ShopScene extends Phaser.Scene {
     itemName.setWordWrapWidth(200);
 
     const image = this.add.image(x, y, spritesheet, frame);
+    if (image.height > 200) {
+      image.displayHeight = 200;
+    }
+    if (image.displayWidth > 200) {
+      image.displayWidth = 200;
+    }
 
     const button = new Button(this, x, y + 130, 'buybutton').setDownTexture(
       'buybutton',
