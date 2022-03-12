@@ -31,7 +31,7 @@ import {
   MAP_LAYOUT,
   MAP_WIDTH,
   TILE_HEIGHT_HALF,
-  TILE_WIDTH_HALF
+  TILE_WIDTH_HALF,
 } from '../utils/constants';
 import checkInMovableRange from '../utils/GameUtils';
 
@@ -63,7 +63,10 @@ export class HabitatHeroesScene extends Phaser.Scene {
       url: IsoPlugin,
       sceneKey: 'iso',
     });
-    this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+    this.load.script(
+      'webfont',
+      'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
+    );
 
     this.load.json('map', mapjson);
     this.load.spritesheet('tiles', tiles, { frameWidth: 64, frameHeight: 64 });
@@ -114,10 +117,16 @@ export class HabitatHeroesScene extends Phaser.Scene {
 
   update() {
     if (store.getState().houses.building) {
-      if (player.x === BUILD_DIRECTION_MAPPING[buildDirection][0] && player.y === BUILD_DIRECTION_MAPPING[buildDirection][1]) {
+      if (
+        player.x === BUILD_DIRECTION_MAPPING[buildDirection][0] &&
+        player.y === BUILD_DIRECTION_MAPPING[buildDirection][1]
+      ) {
         this.animateBuilding();
       } else {
-        this.walkToPoint(BUILD_DIRECTION_MAPPING[buildDirection][0], BUILD_DIRECTION_MAPPING[buildDirection][1]);
+        this.walkToPoint(
+          BUILD_DIRECTION_MAPPING[buildDirection][0],
+          BUILD_DIRECTION_MAPPING[buildDirection][1],
+        );
       }
       return;
     }
@@ -219,7 +228,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     }
 
     buildFrame -= 1;
-    switch(buildDirection) {
+    switch (buildDirection) {
       case 0:
         player.anims.play('build_right', true);
         break;
@@ -238,7 +247,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
   }
 
   placeHouses() {
-    const {houses} = store.getState();
+    const { houses } = store.getState();
     if (houses.total_house > 0 && houses.building) {
       house = scene.add.image(650, 370, 'buildingstate');
       house.scale = 1.2;
@@ -261,6 +270,5 @@ export class HabitatHeroesScene extends Phaser.Scene {
       }
     }
   }
-
 }
 /* eslint-enable class-methods-use-this */

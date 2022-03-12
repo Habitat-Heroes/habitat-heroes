@@ -8,13 +8,16 @@ import {
   MAP_WIDTH,
   RIGHT_BUTTONS_START,
   TILE_HEIGHT,
-  TILE_WIDTH
+  TILE_WIDTH,
 } from './constants';
 
 export default function checkInMovableRange(x, y) {
-  if (x < GAME_SCENE_PADDING || y < GAME_SCENE_PADDING
-    || y > MAP_HEIGHT * TILE_HEIGHT - GAME_SCENE_PADDING
-    || x > MAP_WIDTH * TILE_WIDTH - GAME_SCENE_PADDING) {
+  if (
+    x < GAME_SCENE_PADDING ||
+    y < GAME_SCENE_PADDING ||
+    y > MAP_HEIGHT * TILE_HEIGHT - GAME_SCENE_PADDING ||
+    x > MAP_WIDTH * TILE_WIDTH - GAME_SCENE_PADDING
+  ) {
     return false;
   }
 
@@ -24,11 +27,21 @@ export default function checkInMovableRange(x, y) {
   }
 
   // Check if it is in the range of the build button
-  if (x > BUILD_BUTTON_START[0] && x < BUILD_BUTTON_END[0] && y > BUILD_BUTTON_START[1] && y < BUILD_BUTTON_END[1]) {
+  if (
+    x > BUILD_BUTTON_START[0] &&
+    x < BUILD_BUTTON_END[0] &&
+    y > BUILD_BUTTON_START[1] &&
+    y < BUILD_BUTTON_END[1]
+  ) {
     return false;
   }
 
-  if (x > COINS_BUTTON_START[0] && x < COINS_BUTTON_END[0] && y > COINS_BUTTON_START[1] && y < COINS_BUTTON_END[1]) {
+  if (
+    x > COINS_BUTTON_START[0] &&
+    x < COINS_BUTTON_END[0] &&
+    y > COINS_BUTTON_START[1] &&
+    y < COINS_BUTTON_END[1]
+  ) {
     return false;
   }
 

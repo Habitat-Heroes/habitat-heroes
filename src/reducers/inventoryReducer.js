@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {};  // { itemID: count }
+const initialState = {}; // { itemID: count }
 
 const inventorySlice = createSlice({
   name: 'inventory',
@@ -22,8 +22,8 @@ const inventorySlice = createSlice({
           delete state[itemID];
         }
       });
-    }
-  }
+    },
+  },
 });
 
 export const { addToInventory, removeFromInventory } = inventorySlice.actions;

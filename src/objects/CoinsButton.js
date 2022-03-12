@@ -14,7 +14,7 @@ const handleAmtChange = () => {
   const previousAmt = currentAmt;
   currentAmt = selectAmt(store.getState());
 
-  if (textObj != null && (previousAmt !== currentAmt)) {
+  if (textObj != null && previousAmt !== currentAmt) {
     textObj.text = currentAmt;
   }
 };
@@ -25,7 +25,9 @@ export default function CoinsButton(scene) {
   // create coin button on top left (x, y) => (1475, 50)
   const [x, y] = COINS_BUTTON_CENTER;
 
-  const coinsButton = new Button(scene, x, y, 'coinsbutton').setDownTexture('coinsbutton');
+  const coinsButton = new Button(scene, x, y, 'coinsbutton').setDownTexture(
+    'coinsbutton',
+  );
   coinsButton.depth = 800;
   coinsButton.scale = 0.35;
   coinsButton.setButtonName('Coins');
@@ -34,18 +36,20 @@ export default function CoinsButton(scene) {
   // eslint-disable-next-line no-undef
   WebFont.load({
     google: {
-      families: ['Graduate']
+      families: ['Graduate'],
     },
     active() {
-      textObj = scene.add.text(x - 30, y - 18, currentAmt, {
-        fontFamily: 'Graduate',
-        fontSize: 28,
-        color: '#fff',
-        align: 'right',
-        strokeThickness: 2
-      }).setShadow(2, 2, '#333333', 2, false, true);
+      textObj = scene.add
+        .text(x - 30, y - 18, currentAmt, {
+          fontFamily: 'Graduate',
+          fontSize: 28,
+          color: '#fff',
+          align: 'right',
+          strokeThickness: 2,
+        })
+        .setShadow(2, 2, '#333333', 2, false, true);
       textObj.depth = 850;
-    }
+    },
   });
 
   return coinsButton;

@@ -16,9 +16,7 @@ import ITEMS from '../utils/items';
 
 const modulo = (val, n) => ((val % n) + n) % n;
 
-
 export class ShopScene extends Phaser.Scene {
-
   screenCenterX;
 
   screenCenterY;
@@ -40,7 +38,7 @@ export class ShopScene extends Phaser.Scene {
     this.currentAmt = this.selectAmt(store.getState());
 
     // disable buy buttons if price go below cost of item
-    this.panels.forEach(panel => {
+    this.panels.forEach((panel) => {
       if (panel?.cost > this.currentAmt) {
         panel?.button?.setDisabled(true);
       }
@@ -49,7 +47,7 @@ export class ShopScene extends Phaser.Scene {
 
   constructor() {
     super({
-      key: 'ShopScene'
+      key: 'ShopScene',
     });
 
     this.#setUpStore();
@@ -76,29 +74,36 @@ export class ShopScene extends Phaser.Scene {
       frameHeight: 171,
     });
 
-    this.screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
-    this.screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+    this.screenCenterX =
+      this.cameras.main.worldView.x + this.cameras.main.width / 2;
+    this.screenCenterY =
+      this.cameras.main.worldView.y + this.cameras.main.height / 2;
   }
 
   create() {
-    this.add.image(this.screenCenterX, this.screenCenterY + 10, 'background').setScale(0.85);
+    this.add
+      .image(this.screenCenterX, this.screenCenterY + 10, 'background')
+      .setScale(0.85);
 
     this.add.text(640, 100, 'Shop', {
       fontFamily: 'Graduate',
       fontSize: 90,
       color: '#fff',
-      strokeThickness: 2
+      strokeThickness: 2,
     });
 
     this.#addCloseButton();
     this.#addNavButtons();
     this.#addPanels();
-
   }
 
   #addCloseButton() {
-    const closeButton = new Button(this, this.screenCenterX + 390, this.screenCenterY - 240, 'closebutton')
-      .setDownTexture('closebutton');
+    const closeButton = new Button(
+      this,
+      this.screenCenterX + 390,
+      this.screenCenterY - 240,
+      'closebutton',
+    ).setDownTexture('closebutton');
     closeButton.depth = 800;
     closeButton.scale = 0.6;
     closeButton.setButtonName('Close');
@@ -110,8 +115,12 @@ export class ShopScene extends Phaser.Scene {
   }
 
   #addNavButtons() {
-    this.prevButton = new Button(this, this.screenCenterX - 360, this.screenCenterY + 50, 'prevbutton')
-      .setDownTexture('prevbutton');
+    this.prevButton = new Button(
+      this,
+      this.screenCenterX - 360,
+      this.screenCenterY + 50,
+      'prevbutton',
+    ).setDownTexture('prevbutton');
     this.prevButton.scale = 0.4;
     this.prevButton.depth = 800;
     this.prevButton.setButtonName('Previous Page');
@@ -122,8 +131,12 @@ export class ShopScene extends Phaser.Scene {
     });
     this.add.existing(this.prevButton);
 
-    this.nextButton = new Button(this, this.screenCenterX + 368, this.screenCenterY + 50, 'nextbutton')
-      .setDownTexture('nextbutton');
+    this.nextButton = new Button(
+      this,
+      this.screenCenterX + 368,
+      this.screenCenterY + 50,
+      'nextbutton',
+    ).setDownTexture('nextbutton');
     this.nextButton.scale = 0.4;
     this.nextButton.depth = 800;
     this.nextButton.setButtonName('Next Page');
@@ -146,14 +159,16 @@ export class ShopScene extends Phaser.Scene {
       fontSize: 22,
       color: '#fff',
       strokeThickness: 1,
-      align: 'center'
+      align: 'center',
     });
     itemName.setOrigin(0.5, 0);
     itemName.setWordWrapWidth(200);
 
     const image = this.add.image(x, y, spritesheet, frame);
 
-    const button = new Button(this, x, y + 130, 'buybutton').setDownTexture('buybutton');
+    const button = new Button(this, x, y + 130, 'buybutton').setDownTexture(
+      'buybutton',
+    );
     button.scale = 0.3;
     button.setButtonName('Buy');
     button.on('pointerup', () => {
@@ -171,16 +186,24 @@ export class ShopScene extends Phaser.Scene {
     const coinImage = this.add.image(x - 60, y + 128, 'coinimage');
     coinImage.scale = 0.2;
 
-    const costText = this.add.text(x + 10, y + 112, `${  cost}`, {
+    const costText = this.add.text(x + 10, y + 112, `${cost}`, {
       fontFamily: 'Graduate',
       fontSize: 22,
       color: '#fff',
       strokeThickness: 1,
-      align: 'center'
+      align: 'center',
     });
     costText.setOrigin(0.5, 0);
 
-    this.panels[panelIdx] = { panel, itemName, image, button, coinImage, costText, cost };
+    this.panels[panelIdx] = {
+      panel,
+      itemName,
+      image,
+      button,
+      coinImage,
+      costText,
+      cost,
+    };
   }
 
   #addPanels() {
@@ -197,8 +220,8 @@ export class ShopScene extends Phaser.Scene {
   }
 
   #destroyPanels() {
-    this.panels?.forEach(panel => {
-      Object.values(panel).forEach(obj => obj.destroy?.());
+    this.panels?.forEach((panel) => {
+      Object.values(panel).forEach((obj) => obj.destroy?.());
     });
   }
 }

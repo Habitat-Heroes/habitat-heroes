@@ -9,5 +9,5 @@ export const rootReducer = combineReducers({
   user: userReducer,
   coins: coinsReducer,
   inventory: inventoryReducer,
-  houses: houseReducer
+  houses: houseReducer,
 });

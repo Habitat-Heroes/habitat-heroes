@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
-const ORANGE = 0xFFAD00;
+const ORANGE = 0xffad00;
 const LIGHTORANGE = 0xffcd60;
-const GREY = 0X808080;
+const GREY = 0x808080;
 
 export default class Button extends Phaser.GameObjects.Image {
   upTexture;
@@ -149,8 +149,18 @@ export default class Button extends Phaser.GameObjects.Image {
     const tooltipY = this.y - 60;
     const textPadding = 3;
 
-    const text = this.scene.add.text(textPadding, textPadding, tooltip.text, { color: '#000' });
-    const background = this.scene.add.rectangle(0, 0, text.displayWidth + (textPadding * 2), text.displayHeight + (textPadding * 2), 0xffffff).setOrigin(0, 0);
+    const text = this.scene.add.text(textPadding, textPadding, tooltip.text, {
+      color: '#000',
+    });
+    const background = this.scene.add
+      .rectangle(
+        0,
+        0,
+        text.displayWidth + textPadding * 2,
+        text.displayHeight + textPadding * 2,
+        0xffffff,
+      )
+      .setOrigin(0, 0);
 
     // Put both text and background in a container to easily position them
     this.tooltipContainer = this.scene.add.container(tooltipX, tooltipY);

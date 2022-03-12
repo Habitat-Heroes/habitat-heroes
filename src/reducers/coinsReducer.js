@@ -15,8 +15,8 @@ const coinsSlice = createSlice({
 
     decreaseByAmount: (state, action) => {
       state.amount -= action.payload;
-    }
-  }
+    },
+  },
 });
 
 export const { increaseByAmount, decreaseByAmount } = coinsSlice.actions;

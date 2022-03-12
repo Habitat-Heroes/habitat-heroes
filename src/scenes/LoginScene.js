@@ -50,7 +50,9 @@ export class LoginScene extends Phaser.Scene {
       screenCenterX,
       screenCenterY + 170,
       'loginbutton',
-    ).setDownTexture('loginbutton');
+    )
+      .setDownTexture('loginbutton')
+      .clearTint();
     loginButton.depth = 100;
     loginButton.scale = 0.7;
     loginButton.setButtonName('Get Started!');
