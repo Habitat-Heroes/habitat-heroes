@@ -174,9 +174,7 @@ export class ShopScene extends Phaser.Scene {
     button.setButtonName('Buy');
     button.on('pointerup', () => {
       store.dispatch(decreaseByAmount(cost));
-      const purchased = {};
-      purchased[itemId] = 1;
-      store.dispatch(addToInventory(purchased));
+      store.dispatch(addToInventory({ [itemId]: 1 }));
     });
     this.add.existing(button);
 
