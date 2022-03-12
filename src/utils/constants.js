@@ -79,5 +79,5 @@ export const AVATAR_PANEL_END = [
 
 export const THANK_YOU_TEXT = 'Thank you for helping to build a house for families in \n' +
   'Cambodia! 💖 Click on the panel below to learn more\n' +
-  'about the poverty housing in Cambodia and how\n' +
-  'you can help!';
+  'about the poverty housing situation in Cambodia and' +
+  '\nhow you can help!';
