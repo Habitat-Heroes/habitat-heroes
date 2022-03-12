@@ -114,7 +114,8 @@ export class InventoryScene extends Phaser.Scene {
     this.prevButton.depth = 800;
     this.prevButton.setButtonName('Previous Page');
     this.prevButton.on('pointerup', () => {
-      this.pageIdx = modulo(this.pageIdx - 1, Math.ceil(ITEMS.length / 3));
+      this.pageIdx = modulo(this.pageIdx - 1,
+        Math.ceil(Object.keys(this.currentInv).length / 3));
       this.#destroyPanels();
       this.#addPanels();
     });
@@ -130,7 +131,8 @@ export class InventoryScene extends Phaser.Scene {
     this.nextButton.depth = 800;
     this.nextButton.setButtonName('Next Page');
     this.nextButton.on('pointerup', () => {
-      this.pageIdx = modulo(this.pageIdx + 1, Math.ceil(ITEMS.length / 3));
+      this.pageIdx = modulo(this.pageIdx + 1,
+        Math.ceil(Object.keys(this.currentInv).length / 3));
       this.#destroyPanels();
       this.#addPanels();
     });
