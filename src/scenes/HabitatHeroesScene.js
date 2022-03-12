@@ -34,10 +34,16 @@ import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
 import { updateBuildTime } from '../reducers/houseReducer';
 import { removeFromInventory } from '../reducers/inventoryReducer';
+import buttonclick from '../sounds/buttonclick.mp3';
+import buttonhover from '../sounds/buttonhover.mp3';
+import footstep from '../sounds/footstep.mp3';
+import mainbgm from '../sounds/mainbgm.mp3';
 import store from '../store';
 import {
   AVATAR_PANEL_CENTER,
-  BUILD_DIRECTION_MAPPING, HOUSE_STRUCT_IMAGE,
+  BUILD_DIRECTION_MAPPING,
+  DEFAULT_SFX_CONFIG,
+  HOUSE_STRUCT_IMAGE,
   MAP_HEIGHT,
   MAP_LAYOUT,
   MAP_WIDTH,
@@ -65,6 +71,8 @@ let name;
 let donations;
 let nameText;
 let donationText;
+
+let bgm;
 
 const centerX = MAP_WIDTH * TILE_WIDTH_HALF;
 const centerY = MAP_HEIGHT * TILE_HEIGHT_HALF * 0.3;
@@ -117,32 +125,53 @@ export class HabitatHeroesScene extends Phaser.Scene {
       'avatarpanel',
       USE_ACTUAL_AVATAR_SPRITE ? avatarpanelwithoutlucas : avatarpanel,
     );
+    this.load.audio('mainbgm', mainbgm);
+    this.load.audio('buttonhover', buttonhover);
+    this.load.audio('buttonclick', buttonclick);
+    this.load.audio('footstep', footstep);
     loadItemSprites(this);
   }
 
   create() {
     scene = this;
 
+    bgm = this.sound.add('mainbgm');
+    bgm.play({
+      ...DEFAULT_SFX_CONFIG,
+      loop: true,
+      volume: 0.5,
+    });
+    const downSfx = this.sound.add('buttonclick');
+    const overSfx = this.sound.add('buttonhover');
+    const footstepSfx = this.sound.add('footstep');
+
     this.buildMap();
     this.placeHouses();
     this.addAvatarPanel();
 
-    player = new Avatar(scene, centerX - 100, centerY + 100, 'avatar', {
-      key: 'avatar',
-      frame: 0,
-    }).player;
+    player = new Avatar(
+      scene,
+      centerX - 100,
+      centerY + 100,
+      'avatar',
+      {
+        key: 'avatar',
+        frame: 0,
+      },
+      footstepSfx,
+    ).player;
     player.depth = centerY + 164;
     touchY = centerY + 100;
     touchX = centerX - 100;
     pointer = scene.input.activePointer;
 
-    scene.add.existing(BuildButton(this));
-    scene.add.existing(InventoryButton(this));
-    scene.add.existing(NewsButton(this));
-    scene.add.existing(QuestButton(this));
-    scene.add.existing(ShopButton(this));
-    scene.add.existing(ShareButton(this));
-    scene.add.existing(CoinsButton(this));
+    scene.add.existing(BuildButton(this, downSfx, overSfx));
+    scene.add.existing(InventoryButton(this, downSfx, overSfx));
+    scene.add.existing(NewsButton(this, downSfx, overSfx));
+    scene.add.existing(QuestButton(this, downSfx, overSfx));
+    scene.add.existing(ShopButton(this, downSfx, overSfx));
+    scene.add.existing(ShareButton(this, downSfx, overSfx));
+    scene.add.existing(CoinsButton(this, downSfx, overSfx));
 
     this.events.on('resume', (_scene, data) => {
       if (data == null) {
@@ -153,10 +182,12 @@ export class HabitatHeroesScene extends Phaser.Scene {
       const placingItemImage = this.add.image(
         this.input.x + this.cameras.main.scrollX,
         this.input.y + this.cameras.main.scrollY,
-        spritesheet, frame);
+        spritesheet,
+        frame,
+      );
       placingItemImage.depth = 800;
       placingItemImage.setAlpha(0.6);
-      const placingItemFn = movingPointer => {
+      const placingItemFn = (movingPointer) => {
         placingItemImage.setPosition(movingPointer.x, movingPointer.y);
       };
       this.input.on('pointermove', placingItemFn);
@@ -171,7 +202,6 @@ export class HabitatHeroesScene extends Phaser.Scene {
 
         // TODO save the built item data into store so it will still be there when reloaded
       });
-
     });
   }
 
@@ -234,13 +264,18 @@ export class HabitatHeroesScene extends Phaser.Scene {
       );
     } else if (timerText == null) {
       timerText = scene.add
-        .text(HOUSE_STRUCT_IMAGE[0], HOUSE_STRUCT_IMAGE[1] - 200, remainingBuildTime, {
-          fontFamily: 'Graduate',
-          fontSize: 18,
-          color: '#fff',
-          align: 'left',
-          strokeThickness: 2,
-        })
+        .text(
+          HOUSE_STRUCT_IMAGE[0],
+          HOUSE_STRUCT_IMAGE[1] - 200,
+          remainingBuildTime,
+          {
+            fontFamily: 'Graduate',
+            fontSize: 18,
+            color: '#fff',
+            align: 'left',
+            strokeThickness: 2,
+          },
+        )
         .setShadow(2, 2, '#333333', 2, false, true);
       timerText.depth = 850;
     } else {
@@ -270,19 +305,30 @@ export class HabitatHeroesScene extends Phaser.Scene {
       buildTimerBar = '5bar';
     }
 
-    if (currentBuildTimerBar != null && currentBuildTimerBar === buildTimerBar) {
+    if (
+      currentBuildTimerBar != null &&
+      currentBuildTimerBar === buildTimerBar
+    ) {
       return;
     }
 
     if (currentBuildTimerBar == null) {
-      buildTimerBarImage = scene.add.image(HOUSE_STRUCT_IMAGE[0], HOUSE_STRUCT_IMAGE[1] - 150, buildTimerBar);
+      buildTimerBarImage = scene.add.image(
+        HOUSE_STRUCT_IMAGE[0],
+        HOUSE_STRUCT_IMAGE[1] - 150,
+        buildTimerBar,
+      );
       buildTimerBarImage.depth = 850;
       buildTimerBarImage.scale = 0.4;
       currentBuildTimerBar = buildTimerBar;
     } else {
       buildTimerBarImage.destroy();
       currentBuildTimerBar = buildTimerBar;
-      buildTimerBarImage = scene.add.image(HOUSE_STRUCT_IMAGE[0], HOUSE_STRUCT_IMAGE[1] - 150, buildTimerBar);
+      buildTimerBarImage = scene.add.image(
+        HOUSE_STRUCT_IMAGE[0],
+        HOUSE_STRUCT_IMAGE[1] - 150,
+        buildTimerBar,
+      );
       buildTimerBarImage.scale = 0.4;
       buildTimerBarImage.depth = 850;
     }
@@ -443,7 +489,11 @@ export class HabitatHeroesScene extends Phaser.Scene {
   placeHouses() {
     const { houses } = store.getState();
     if (houses.total_house > 0 && houses.building) {
-      house = scene.add.image(HOUSE_STRUCT_IMAGE[0], HOUSE_STRUCT_IMAGE[1], 'buildingstate');
+      house = scene.add.image(
+        HOUSE_STRUCT_IMAGE[0],
+        HOUSE_STRUCT_IMAGE[1],
+        'buildingstate',
+      );
       house.scale = 1.2;
       house.depth = house.y + 110;
     }

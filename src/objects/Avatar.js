@@ -1,16 +1,29 @@
 // GameObject avatar
 import Phaser from 'phaser';
 
+import { DEFAULT_SFX_CONFIG } from '../utils/constants';
+
 export class Avatar extends Phaser.GameObjects.Sprite {
   player;
 
-  constructor(scene, x, y, key, frame) {
+  constructor(scene, x, y, key, frame, footstepSfx) {
     super(scene, x, y, key, frame);
     this.player = scene.physics.add.sprite(x, y, key);
     this.scene = scene;
     this.setPosition(x, y);
     this.setTexture(key);
     this.setFrame(frame);
+    this.player.on('animationrepeat', (animation) => {
+      const { key: repeatKey } = animation;
+      if (
+        repeatKey === 'left' ||
+        repeatKey === 'right' ||
+        repeatKey === 'up' ||
+        repeatKey === 'down'
+      ) {
+        footstepSfx.play({ ...DEFAULT_SFX_CONFIG });
+      }
+    });
 
     scene.anims.create({
       key: 'left',

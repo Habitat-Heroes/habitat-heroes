@@ -21,17 +21,18 @@ const handleAmtChange = () => {
 
 store.subscribe(handleAmtChange);
 
-export default function CoinsButton(scene) {
+export default function CoinsButton(scene, downSfx, overSfx) {
   // create coin button on top left (x, y) => (1475, 50)
   const [x, y] = COINS_BUTTON_CENTER;
 
-  const coinsButton = new Button(scene, x, y, 'coinsbutton').setDownTexture(
-    'coinsbutton',
-  );
-  coinsButton.depth = 800;
-  coinsButton.scale = 0.35;
-  coinsButton.setButtonName('Coins');
-  coinsButton.setOnDownCallback(() => store.dispatch(increaseByAmount(300)));
+  const coinsButton = new Button(scene, x, y, 'coinsbutton')
+    .setDownTexture('coinsbutton')
+    .setButtonName('Coins')
+    .setDepth(800)
+    .setScale(0.35)
+    .setDownSfx(downSfx)
+    .setOverSfx(overSfx)
+    .setOnDownCallback(() => store.dispatch(increaseByAmount(300)));
 
   textObj = scene.add
     .text(x - 35, y - 20, currentAmt, {

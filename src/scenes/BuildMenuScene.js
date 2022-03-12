@@ -13,6 +13,8 @@ import {
   updateHouse,
   UserAction,
 } from '../reducers/houseReducer';
+import buttonclick from '../sounds/buttonclick.mp3';
+import buttonhover from '../sounds/buttonhover.mp3';
 import store from '../store';
 
 let scene;
@@ -36,10 +38,15 @@ export class BuildMenuScene extends Phaser.Scene {
     screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
     screenCenterY =
       this.cameras.main.worldView.y + this.cameras.main.height / 2;
+    this.load.audio('buttonhover', buttonhover);
+    this.load.audio('buttonclick', buttonclick);
   }
 
   create() {
     scene = this;
+    const downSfx = this.sound.add('buttonclick');
+    const overSfx = this.sound.add('buttonhover');
+
     scene.add
       .image(screenCenterX, screenCenterY + 10, 'buildmenu')
       .setScale(0.75);
@@ -48,10 +55,13 @@ export class BuildMenuScene extends Phaser.Scene {
       screenCenterX - 210,
       screenCenterY + 190,
       'freebutton',
-    ).setDownTexture('freebutton');
-    buildBasicHutButton.depth = 100;
-    buildBasicHutButton.scale = 0.8;
-    buildBasicHutButton.setButtonName('Build Basic Hut');
+    )
+      .setDownTexture('freebutton')
+      .setButtonName('Build Basic Hut')
+      .setDepth(100)
+      .setScale(0.8)
+      .setDownSfx(downSfx)
+      .setOverSfx(overSfx);
     buildBasicHutButton.on('pointerup', () => {
       if (store.getState().houses.total_house === 0) {
         store.dispatch(
@@ -79,9 +89,12 @@ export class BuildMenuScene extends Phaser.Scene {
       screenCenterX + 5,
       screenCenterY + 190,
       'freebutton',
-    ).setDownTexture('freebutton');
-    buildBrickHouseButton.scale = 0.8;
-    buildBrickHouseButton.setButtonName('Build Brick House');
+    )
+      .setDownTexture('freebutton')
+      .setButtonName('Build Brick House')
+      .setScale(0.8)
+      .setDownSfx(downSfx)
+      .setOverSfx(overSfx);
     buildBrickHouseButton.on('pointerup', () => {
       if (
         store.getState().houses.total_house === 1 &&
@@ -109,9 +122,12 @@ export class BuildMenuScene extends Phaser.Scene {
       screenCenterX + 230,
       screenCenterY + 190,
       'purchasebutton',
-    ).setDownTexture('purchasebutton');
-    buildConcreteHouseButton.scale = 0.8;
-    buildConcreteHouseButton.setButtonName('Build Concrete House');
+    )
+      .setDownTexture('purchasebutton')
+      .setButtonName('Build Concrete House')
+      .setScale(0.8)
+      .setDownSfx(downSfx)
+      .setOverSfx(overSfx);
     buildConcreteHouseButton.on('pointerup', () => {
       const state = store.getState();
       if (
@@ -142,9 +158,12 @@ export class BuildMenuScene extends Phaser.Scene {
       screenCenterX + 330,
       screenCenterY - 220,
       'closebutton',
-    ).setDownTexture('closebutton');
-    closeButton.scale = 0.5;
-    closeButton.setButtonName('Close');
+    )
+      .setDownTexture('closebutton')
+      .setButtonName('Close')
+      .setScale(0.5)
+      .setDownSfx(downSfx)
+      .setOverSfx(overSfx);
     closeButton.on('pointerup', () => {
       this.scene.stop('BuildMenuScene');
       this.scene.resume('HabitatHeroesScene');
@@ -155,9 +174,12 @@ export class BuildMenuScene extends Phaser.Scene {
       screenCenterX + 300,
       screenCenterY - 150,
       'resetbutton',
-    ).setDownTexture('resetbutton');
-    resetButton.scale = 0.2;
-    resetButton.setButtonName('Reset');
+    )
+      .setDownTexture('resetbutton')
+      .setButtonName('Reset')
+      .setScale(0.2)
+      .setDownSfx(downSfx)
+      .setOverSfx(overSfx);
     resetButton.on('pointerup', () => {
       store.dispatch(resetHouses());
       this.scene.get('HabitatHeroesScene').removeHouse();
