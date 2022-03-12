@@ -34,15 +34,61 @@ export class NewsBoardScene extends Phaser.Scene {
     scene = this;
 
     scene.add.image(screenCenterX, screenCenterY + 10, 'newsboard').setScale(1);
-    scene.add
-      .image(screenCenterX - 200, screenCenterY + 80, 'panel1')
-      .setScale(1.05);
-    scene.add
-      .image(screenCenterX + 240, screenCenterY - 40, 'panel2')
-      .setScale(1);
-    scene.add
-      .image(screenCenterX + 240, screenCenterY + 200, 'panel3')
-      .setScale(1);
+
+    const panel1Button = new Button(
+      scene,
+      screenCenterX - 200,
+      screenCenterY + 80,
+      'panel1',
+    )
+      .setTint()
+      .setOverTint().setUpTint()
+      .setDisabledTint();
+    panel1Button.scale = 1.05;
+    panel1Button.setButtonName('View Details');
+    panel1Button.on('pointerup', () => {
+      window.open(
+        'https://www.mpamag.com/us/specialty/commercial/amazon-makes-100-million-investment-in-new-affordable-housing/258109',
+        'pop',
+        'width=1200, height=800, scrollbars=no',
+      );
+    });
+
+    const panel2Button = new Button(
+      scene,
+      screenCenterX + 240,
+      screenCenterY - 40,
+      'panel2',
+    )
+      .setTint()
+      .setOverTint().setUpTint()
+      .setDisabledTint();
+    panel2Button.setButtonName('View Details');
+    panel2Button.on('pointerup', () => {
+      window.open(
+        'https://www.habitat.org/newsroom/2022/city-national-bank-renews-partnership-habitat-humanity-third-year',
+        'pop',
+        'width=1200, height=800, scrollbars=no',
+      );
+    });
+
+    const panel3Button = new Button(
+      scene,
+      screenCenterX + 240,
+      screenCenterY + 200,
+      'panel3',
+    )
+      .setTint()
+      .setOverTint().setUpTint()
+      .setDisabledTint();
+    panel3Button.setButtonName('View Details');
+    panel3Button.on('pointerup', () => {
+      window.open(
+        'https://www.un.org/en/observances/habitat-day',
+        'pop',
+        'width=1200, height=800, scrollbars=no',
+      );
+    });
 
     const closeButton = new Button(
       scene,
@@ -57,6 +103,9 @@ export class NewsBoardScene extends Phaser.Scene {
       this.scene.resume('HabitatHeroesScene');
     });
 
+    scene.add.existing(panel1Button);
+    scene.add.existing(panel2Button);
+    scene.add.existing(panel3Button);
     scene.add.existing(closeButton);
   }
 }
