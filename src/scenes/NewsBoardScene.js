@@ -15,7 +15,7 @@ let screenCenterY;
 export class NewsBoardScene extends Phaser.Scene {
   constructor() {
     super({
-      key: 'news',
+      key: 'NewsBoardScene',
     });
   }
 
@@ -53,7 +53,8 @@ export class NewsBoardScene extends Phaser.Scene {
     closeButton.scale = 0.6;
     closeButton.setButtonName('Close');
     closeButton.on('pointerup', () => {
-      this.scene.start('HabitatHeroesScene');
+      this.scene.stop('NewsBoardScene');
+      this.scene.resume('HabitatHeroesScene');
     });
 
     scene.add.existing(closeButton);

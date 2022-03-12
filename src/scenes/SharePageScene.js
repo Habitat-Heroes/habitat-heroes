@@ -19,7 +19,7 @@ let screenCenterY;
 export class SharePageScene extends Phaser.Scene {
   constructor() {
     super({
-      key: 'sharepage',
+      key: 'SharePageScene',
     });
   }
 
@@ -151,7 +151,8 @@ export class SharePageScene extends Phaser.Scene {
     closeButton.scale = 0.8;
     closeButton.setButtonName('Close');
     closeButton.on('pointerup', () => {
-      this.scene.start('HabitatHeroesScene');
+      this.scene.stop('SharePageScene');
+      this.scene.resume('HabitatHeroesScene');
     });
 
     scene.add.existing(closeButton);

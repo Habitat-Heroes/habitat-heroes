@@ -9,7 +9,8 @@ export default function NewsButton(scene) {
   newsButton.scale = 0.35;
   newsButton.setButtonName('News');
   newsButton.setOnDownCallback(() => {
-    scene.scene.start('news');
+    scene.scene.launch('NewsBoardScene');
+    scene.scene.pause('HabitatHeroesScene');
   });
   return newsButton;
 }

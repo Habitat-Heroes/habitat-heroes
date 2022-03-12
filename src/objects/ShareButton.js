@@ -12,7 +12,8 @@ export default function ShareButton(scene) {
   shareButton.scale = 0.35;
   shareButton.setButtonName('Share');
   shareButton.setOnDownCallback(() => {
-    scene.scene.start('sharepage');
+    scene.scene.launch('SharePageScene');
+    scene.scene.pause('HabitatHeroesScene');
   });
   return shareButton;
 }

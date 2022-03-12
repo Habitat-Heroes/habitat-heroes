@@ -111,9 +111,7 @@ module.exports = {
           // Packages. `react` related packages come first.
           ['^react', '^@?\\w'],
           // Internal packages.
-          [
-            '^(app|assets|components|constants|contexts|objects|store|reducers|routes|utils)(/.*|$)',
-          ],
+          ['^(assets|objects|reducers|scenes|utils)(/.*|$)'],
           // Side effect imports.
           ['^\\u0000'],
           // Parent imports. Put `..` last.
