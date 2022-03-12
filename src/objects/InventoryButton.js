@@ -11,5 +11,9 @@ export default function InventoryButton(scene) {
   inventoryButton.depth = 800;
   inventoryButton.scale = 0.35;
   inventoryButton.setButtonName('Inventory');
+  inventoryButton.setOnDownCallback(() => {
+    scene.scene.launch('InventoryScene');
+    scene.scene.pause('HabitatHeroesScene');
+  });
   return inventoryButton;
 }
