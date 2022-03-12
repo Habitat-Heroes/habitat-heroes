@@ -17,6 +17,12 @@ import sbsprite from '../assets/game_menu/shop_button.png';
 import buildingstate from '../assets/house_struct.png';
 import mapjson from '../assets/isometric-grass-and-water.json';
 import tiles from '../assets/isometric-grass-and-water.png';
+import zerobar from '../assets/loading_bar/0bar.png';
+import onebar from '../assets/loading_bar/1bar.png';
+import twobar from '../assets/loading_bar/2bar.png';
+import threebar from '../assets/loading_bar/3bar.png';
+import fourbar from '../assets/loading_bar/4bar.png';
+import fivebar from '../assets/loading_bar/5bar.png';
 import trees from '../assets/tree_tiles.png';
 import { Avatar } from '../objects/Avatar';
 import BuildButton from '../objects/BuildButton';
@@ -26,22 +32,26 @@ import NewsButton from '../objects/NewsButton';
 import QuestButton from '../objects/QuestButton';
 import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
+import {updateBuildTime} from '../reducers/houseReducer';
 import store from '../store';
 import {
   AVATAR_PANEL_CENTER,
-  BUILD_DIRECTION_MAPPING,
+  BUILD_DIRECTION_MAPPING, HOUSE_STRUCT_IMAGE,
   MAP_HEIGHT,
   MAP_LAYOUT,
   MAP_WIDTH,
   TILE_HEIGHT_HALF,
   TILE_WIDTH_HALF,
 } from '../utils/constants';
-import checkInMovableRange from '../utils/GameUtils';
+import checkInMovableRange, {getRemainingBuildTime} from '../utils/GameUtils';
 
 let player;
 let house;
 let buildFrame = 100;
 let buildDirection = 0;
+let timerText;
+let buildTimerBarImage;
+let currentBuildTimerBar;
 
 let pointer;
 
@@ -84,6 +94,12 @@ export class HabitatHeroesScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+    this.load.image('0bar', zerobar);
+    this.load.image('1bar', onebar);
+    this.load.image('2bar', twobar);
+    this.load.image('3bar', threebar);
+    this.load.image('4bar', fourbar);
+    this.load.image('5bar', fivebar);
     this.load.image('buildingstate', buildingstate);
     this.load.image('basichut', basichut);
     this.load.image('brickhouse', brickhouse);
@@ -128,17 +144,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
 
   update() {
     if (store.getState().houses.building) {
-      if (
-        player.x === BUILD_DIRECTION_MAPPING[buildDirection][0] &&
-        player.y === BUILD_DIRECTION_MAPPING[buildDirection][1]
-      ) {
-        this.animateBuilding();
-      } else {
-        this.walkToPoint(
-          BUILD_DIRECTION_MAPPING[buildDirection][0],
-          BUILD_DIRECTION_MAPPING[buildDirection][1],
-        );
-      }
+      this.updateBuilding();
       return;
     }
 
@@ -161,7 +167,92 @@ export class HabitatHeroesScene extends Phaser.Scene {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  /* eslint-disable class-methods-use-this */
+  updateBuilding() {
+    if (
+      player.x === BUILD_DIRECTION_MAPPING[buildDirection][0] &&
+      player.y === BUILD_DIRECTION_MAPPING[buildDirection][1]
+    ) {
+      this.animateBuilding();
+    } else {
+      this.walkToPoint(
+        BUILD_DIRECTION_MAPPING[buildDirection][0],
+        BUILD_DIRECTION_MAPPING[buildDirection][1],
+      );
+    }
+
+    const { houses } = store.getState();
+    const remainingBuildTime = getRemainingBuildTime(houses);
+    this.updateBuildTimerBar(houses.buildTime, remainingBuildTime);
+    if (remainingBuildTime <= 0 && timerText != null) {
+      timerText.destroy();
+      timerText = null;
+      buildTimerBarImage.destroy();
+      this.removeHouse();
+      player.scene.time.delayedCall(
+        100,
+        () => {
+          this.placeHouses();
+        },
+        [],
+        this,
+      );
+    } else if (timerText == null) {
+      timerText = scene.add
+        .text(HOUSE_STRUCT_IMAGE[0], HOUSE_STRUCT_IMAGE[1] - 200, remainingBuildTime, {
+          fontFamily: 'Graduate',
+          fontSize: 18,
+          color: '#fff',
+          align: 'left',
+          strokeThickness: 2,
+        })
+        .setShadow(2, 2, '#333333', 2, false, true);
+      timerText.depth = 850;
+    } else {
+      timerText.setText(remainingBuildTime);
+    }
+    store.dispatch(updateBuildTime());
+  }
+
+  updateBuildTimerBar(totalBuildTime, remainingBuildTime) {
+    function between(x, min, max) {
+      return x >= min && x <= max;
+    }
+
+    let buildTimerBar;
+    const buildFrac = remainingBuildTime/totalBuildTime;
+    if (between(buildFrac, 0, 0.05)) {
+      buildTimerBar = '0bar';
+    } else if (between(buildFrac, 0.05, 0.2)) {
+      buildTimerBar = '1bar';
+    } else if (between(buildFrac, 0.2, 0.4)) {
+      buildTimerBar = '2bar';
+    } else if (between(buildFrac, 0.4, 0.6)) {
+      buildTimerBar = '3bar';
+    } else if (between(buildFrac, 0.6, 0.95)) {
+      buildTimerBar = '4bar';
+    } else {
+      buildTimerBar = '5bar';
+    }
+
+    if (currentBuildTimerBar != null && currentBuildTimerBar === buildTimerBar) {
+      return;
+    }
+
+    if (currentBuildTimerBar == null) {
+      buildTimerBarImage = scene.add.image(HOUSE_STRUCT_IMAGE[0], HOUSE_STRUCT_IMAGE[1] - 150, buildTimerBar);
+      buildTimerBarImage.depth = 850;
+      buildTimerBarImage.scale = 0.4;
+      currentBuildTimerBar = buildTimerBar;
+    } else {
+      buildTimerBarImage.destroy();
+      currentBuildTimerBar = buildTimerBar;
+      buildTimerBarImage = scene.add.image(HOUSE_STRUCT_IMAGE[0], HOUSE_STRUCT_IMAGE[1] - 150, buildTimerBar);
+      buildTimerBarImage.scale = 0.4;
+      buildTimerBarImage.depth = 850;
+    }
+  }
+
   walkToPoint(x, y) {
     if (y > player.y) {
       player.anims.play('up', true);
@@ -185,7 +276,6 @@ export class HabitatHeroesScene extends Phaser.Scene {
     }
   }
 
-  /* eslint-disable class-methods-use-this */
   buildMap() {
     function buildLand() {
       let i = 0;
@@ -318,7 +408,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
   placeHouses() {
     const { houses } = store.getState();
     if (houses.total_house > 0 && houses.building) {
-      house = scene.add.image(650, 370, 'buildingstate');
+      house = scene.add.image(HOUSE_STRUCT_IMAGE[0], HOUSE_STRUCT_IMAGE[1], 'buildingstate');
       house.scale = 1.2;
       house.depth = house.y + 110;
     }

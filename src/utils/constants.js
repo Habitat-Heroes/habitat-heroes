@@ -47,6 +47,7 @@ export const HOUSE_STRUCT_LEFT = [545, 435];
 export const HOUSE_STRUCT_DOWN = [674, 472];
 export const HOUSE_STRUCT_RIGHT = [785, 421];
 export const HOUSE_STRUCT_UP = [582, 350];
+export const HOUSE_STRUCT_IMAGE = [650, 370];
 export const BUILD_DIRECTION_MAPPING = {
   0: HOUSE_STRUCT_LEFT,
   1: HOUSE_STRUCT_UP,

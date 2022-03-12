@@ -13,6 +13,14 @@ import {
   TILE_WIDTH,
 } from './constants';
 
+export function getRemainingBuildTime(houses) {
+  const currentTime = Math.floor(new Date().getTime()/1000);
+  if (currentTime < houses.startBuildTime + houses.buildTime) {
+    return houses.buildTime - (currentTime - houses.startBuildTime);
+  }
+  return 0;
+}
+
 export default function checkInMovableRange(x, y) {
   if (
     x < GAME_SCENE_PADDING ||
