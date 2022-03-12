@@ -34,7 +34,7 @@ export class Avatar extends Phaser.GameObjects.Sprite {
 
     scene.anims.create({
       key: 'down',
-      frames: this.anims.generateFrameNumbers('avatar', { start: 12, end: 16 }),
+      frames: this.anims.generateFrameNumbers('avatar', { start: 12, end: 15 }),
       frameRate: 10,
       repeat: -1,
     });
@@ -42,6 +42,34 @@ export class Avatar extends Phaser.GameObjects.Sprite {
     scene.anims.create({
       key: 'up',
       frames: this.anims.generateFrameNumbers('avatar', { start: 0, end: 3 }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    scene.anims.create({
+      key: 'build_left',
+      frames: this.anims.generateFrameNumbers('avatar', { start: 20, end: 23 }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    scene.anims.create({
+      key: 'build_right',
+      frames: this.anims.generateFrameNumbers('avatar', { start: 24, end: 27 }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    scene.anims.create({
+      key: 'build_up',
+      frames: this.anims.generateFrameNumbers('avatar', { start: 16, end: 19 }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    scene.anims.create({
+      key: 'build_down',
+      frames: this.anims.generateFrameNumbers('avatar', { start: 28, end: 31 }),
       frameRate: 10,
       repeat: -1,
     });
