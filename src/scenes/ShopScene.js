@@ -220,10 +220,7 @@ export class ShopScene extends Phaser.Scene {
 
   #destroyPanels() {
     this.panels?.forEach((panel) => {
-      if (panel == null) {
-        return;
-      }
-      Object.values(panel).forEach((obj) => obj?.destroy?.());
+      Object.values(panel ?? {}).forEach((obj) => obj?.destroy?.());
     });
   }
 }
