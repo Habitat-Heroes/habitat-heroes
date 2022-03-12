@@ -35,13 +35,13 @@ export class NewsBoardScene extends Phaser.Scene {
 
     scene.add.image(screenCenterX, screenCenterY + 10, 'newsboard').setScale(1);
     scene.add
-      .image(screenCenterX - 200, screenCenterY + 60, 'panel1')
+      .image(screenCenterX - 200, screenCenterY + 80, 'panel1')
       .setScale(1.05);
     scene.add
-      .image(screenCenterX + 240, screenCenterY - 60, 'panel2')
+      .image(screenCenterX + 240, screenCenterY - 40, 'panel2')
       .setScale(1);
     scene.add
-      .image(screenCenterX + 240, screenCenterY + 180, 'panel3')
+      .image(screenCenterX + 240, screenCenterY + 200, 'panel3')
       .setScale(1);
 
     const closeButton = new Button(
