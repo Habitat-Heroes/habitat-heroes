@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   name: '',
+  donations: 0,
 };
 
 const userSlice = createSlice({
