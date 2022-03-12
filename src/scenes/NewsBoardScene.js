@@ -84,7 +84,7 @@ export class NewsBoardScene extends Phaser.Scene {
         panel3Button.setButtonName('View Details');
         panel3Button.on('pointerup', () => {
             window.open(
-                'https://www.mpamag.com/us/specialty/commercial/amazon-makes-100-million-investment-in-new-affordable-housing/258109',
+                'https://www.zillow.com/tech/the-home-project/',
                 'pop',
                 'width=1200, height=800, scrollbars=no',
             );
