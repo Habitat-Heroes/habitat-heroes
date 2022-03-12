@@ -34,10 +34,12 @@ import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
 import { updateBuildTime } from '../reducers/houseReducer';
 import { removeFromInventory } from '../reducers/inventoryReducer';
+import building from '../sounds/building.mp3';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
 import footstep from '../sounds/footstep.mp3';
 import mainbgm from '../sounds/mainbgm.mp3';
+import reward from '../sounds/reward.mp3';
 import store from '../store';
 import {
   AVATAR_PANEL_CENTER,
@@ -80,6 +82,10 @@ const centerY = MAP_HEIGHT * TILE_HEIGHT_HALF * 0.3;
 const USE_ACTUAL_AVATAR_SPRITE = false;
 
 export class HabitatHeroesScene extends Phaser.Scene {
+  buildingSfx;
+
+  rewardSfx;
+
   constructor() {
     super({
       key: 'HabitatHeroesScene',
@@ -129,6 +135,8 @@ export class HabitatHeroesScene extends Phaser.Scene {
     this.load.audio('buttonhover', buttonhover);
     this.load.audio('buttonclick', buttonclick);
     this.load.audio('footstep', footstep);
+    this.load.audio('building', building);
+    this.load.audio('reward', reward);
     loadItemSprites(this);
   }
 
@@ -144,6 +152,8 @@ export class HabitatHeroesScene extends Phaser.Scene {
     const downSfx = this.sound.add('buttonclick');
     const overSfx = this.sound.add('buttonhover');
     const footstepSfx = this.sound.add('footstep');
+    this.buildingSfx = this.sound.add('building');
+    this.rewardSfx = this.sound.add('reward');
 
     this.buildMap();
     this.placeHouses();
@@ -236,6 +246,9 @@ export class HabitatHeroesScene extends Phaser.Scene {
       player.x === BUILD_DIRECTION_MAPPING[buildDirection][0] &&
       player.y === BUILD_DIRECTION_MAPPING[buildDirection][1]
     ) {
+      if (!this.buildingSfx.isPlaying) {
+        this.buildingSfx.play({ ...DEFAULT_SFX_CONFIG, loop: true });
+      }
       this.animateBuilding();
     } else {
       this.walkToPoint(
@@ -248,6 +261,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     const remainingBuildTime = getRemainingBuildTime(houses);
     this.updateBuildTimerBar(houses.buildTime, remainingBuildTime);
     if (remainingBuildTime <= 0 && timerText != null) {
+      this.buildingSfx.stop();
       timerText.destroy();
       timerText = null;
       buildTimerBarImage.destroy();
@@ -258,6 +272,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
           this.placeHouses();
           scene.scene.launch('ThankYouScene');
           scene.scene.pause('HabitatHeroesScene');
+          this.rewardSfx.play(DEFAULT_SFX_CONFIG);
         },
         [],
         this,
