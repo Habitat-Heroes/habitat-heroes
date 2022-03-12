@@ -1,21 +1,18 @@
 import Phaser from 'phaser';
 
-import coinimage from '../assets/coins/coin.png';
 import closebutton from '../assets/game_menu/close_button.png';
-import buybutton from '../assets/game_menu/long_button.png';
+import placebutton from '../assets/game_menu/long_button.png';
 import nextbutton from '../assets/game_menu/next_button.png';
 import prevbutton from '../assets/game_menu/prev_button.png';
 import baseboard from '../assets/game_menu/vertical_baseboard.png';
 import background from '../assets/game_menu/woodboard_no_cblogo.png';
 import trees from '../assets/tree_tiles.png';
 import Button from '../objects/Button';
-import { decreaseByAmount } from '../reducers/coinsReducer';
-import { addToInventory } from '../reducers/inventoryReducer';
 import store from '../store';
 import ITEMS from '../utils/items';
 import { modulo } from '../utils/utilFunctions';
 
-export class ShopScene extends Phaser.Scene {
+export class InventoryScene extends Phaser.Scene {
   screenCenterX;
 
   screenCenterY;
@@ -28,25 +25,18 @@ export class ShopScene extends Phaser.Scene {
 
   pageIdx;
 
-  currentAmt;
+  currentInv;
 
   // eslint-disable-next-line class-methods-use-this
-  selectAmt = (state) => state.coins.amount;
+  selectInv = (state) => state.inventory;
 
-  handleAmtChange = () => {
-    this.currentAmt = this.selectAmt(store.getState());
-
-    // disable buy buttons if price go below cost of item
-    this.panels.forEach((panel) => {
-      if (panel?.cost > this.currentAmt) {
-        panel?.button?.setDisabled(true);
-      }
-    });
+  handleInvChange = () => {
+    this.currentInv = this.selectInv(store.getState());
   };
 
   constructor() {
     super({
-      key: 'ShopScene',
+      key: 'InventoryScene',
     });
 
     this.#setUpStore();
@@ -55,8 +45,8 @@ export class ShopScene extends Phaser.Scene {
   }
 
   #setUpStore() {
-    this.currentAmt = this.selectAmt(store.getState());
-    store.subscribe(this.handleAmtChange);
+    this.currentInv = this.selectInv(store.getState());
+    store.subscribe(this.handleInvChange);
   }
 
   preload() {
@@ -65,8 +55,8 @@ export class ShopScene extends Phaser.Scene {
     this.load.image('prevbutton', prevbutton);
     this.load.image('nextbutton', nextbutton);
     this.load.image('baseboard', baseboard);
-    this.load.image('buybutton', buybutton);
-    this.load.image('coinimage', coinimage);
+    this.load.image('placebutton', placebutton);
+
 
     this.load.spritesheet('trees', trees, {
       frameWidth: 120,
@@ -84,9 +74,9 @@ export class ShopScene extends Phaser.Scene {
       .image(this.screenCenterX, this.screenCenterY + 10, 'background')
       .setScale(0.85);
 
-    this.add.text(640, 100, 'Shop', {
+    this.add.text(514, 100, 'Inventory', {
       fontFamily: 'Graduate',
-      fontSize: 90,
+      fontSize: 84,
       color: '#fff',
       strokeThickness: 2,
     });
@@ -107,7 +97,7 @@ export class ShopScene extends Phaser.Scene {
     closeButton.scale = 0.6;
     closeButton.setButtonName('Close');
     closeButton.on('pointerup', () => {
-      this.scene.stop('ShopScene');
+      this.scene.stop('InventoryScene');
       this.scene.resume('HabitatHeroesScene');
     });
     this.add.existing(closeButton);
@@ -145,10 +135,15 @@ export class ShopScene extends Phaser.Scene {
       this.#addPanels();
     });
     this.add.existing(this.nextButton);
+
+    if (Object.keys(this.currentInv).length <= 3) {
+      this.prevButton.setDisabled(true);
+      this.nextButton.setDisabled(true);
+    }
   }
 
-  #addPanel(panelIdx, x, itemId) {
-    const { name, spritesheet, frame, cost } = ITEMS[itemId];
+  #addPanel(panelIdx, x, itemId, qty) {
+    const { name, spritesheet, frame } = ITEMS[itemId];
     const y = 465;
     const panel = this.add.image(x, y, 'baseboard');
     panel.scale = 0.8;
@@ -165,65 +160,68 @@ export class ShopScene extends Phaser.Scene {
 
     const image = this.add.image(x, y, spritesheet, frame);
 
-    const button = new Button(this, x, y + 130, 'buybutton').setDownTexture(
-      'buybutton',
+    const button = new Button(this, x + 44, y + 130, 'placebutton').setDownTexture(
+      'placebutton',
     );
-    button.scale = 0.3;
-    button.setButtonName('Buy');
+    button.scaleY = 0.3;
+    button.scaleX = 0.15;
+    button.setButtonName('Place');
     button.on('pointerup', () => {
-      store.dispatch(decreaseByAmount(cost));
-      const purchased = {};
-      purchased[itemId] = 1;
-      store.dispatch(addToInventory(purchased));
+      // TODO: place on map
     });
     this.add.existing(button);
 
-    if (cost > this.currentAmt) {
-      button.setDisabled(true);
-    }
-
-    const coinImage = this.add.image(x - 60, y + 128, 'coinimage');
-    coinImage.scale = 0.2;
-
-    const costText = this.add.text(x + 10, y + 112, `${cost}`, {
+    const placeText = this.add.text(x + 44, y + 112, 'Place', {
       fontFamily: 'Graduate',
       fontSize: 22,
       color: '#fff',
       strokeThickness: 1,
       align: 'center',
     });
-    costText.setOrigin(0.5, 0);
+    placeText.setOrigin(0.5, 0);
+
+    const qtyText = this.add.text(x - 44, y + 112, `x ${qty}`, {
+      fontFamily: 'Graduate',
+      fontSize: 22,
+      color: '#fff',
+      strokeThickness: 1,
+      align: 'center',
+    });
+    qtyText.setOrigin(0.5, 0);
+
 
     this.panels[panelIdx] = {
       panel,
       itemName,
       image,
       button,
-      coinImage,
-      costText,
-      cost,
+      placeText,
+      qtyText,
     };
   }
+
 
   #addPanels() {
     const panelsX = [580, 800, 1020];
 
+    const invItems = Object.entries(this.currentInv)
+      .sort((a, b) => a[0] - b[0]); // sort by item ID
+
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < 3; i++) {
-      const itemId = this.pageIdx * 3 + i;
-      if (itemId >= ITEMS.length) {
+      const invIdx = this.pageIdx * 3 + i;
+      if (invIdx >= invItems.length) {
         break;
       }
-      this.#addPanel(i, panelsX[i], itemId);
+      const [itemId, qty] = invItems[invIdx];
+      this.#addPanel(i, panelsX[i], itemId, qty);
     }
   }
 
   #destroyPanels() {
     this.panels?.forEach((panel) => {
-      if (panel == null) {
-        return;
-      }
-      Object.values(panel).forEach((obj) => obj?.destroy?.());
+      Object.values(panel ?? []).forEach((obj) => obj?.destroy?.());
     });
   }
 }
+
