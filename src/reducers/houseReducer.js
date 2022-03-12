@@ -61,6 +61,9 @@ const houseSlice = createSlice({
       state.basic_hut = 0;
       state.brick_house = 0;
       state.concrete_house = 0;
+      state.building = false;
+      state.buildTime = 0;
+      state.startBuildTime = 0;
     },
   },
 });
