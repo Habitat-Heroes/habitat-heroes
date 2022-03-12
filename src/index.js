@@ -7,6 +7,7 @@ import { LoginScene } from './scenes/LoginScene';
 import { NewsBoardScene } from './scenes/NewsBoardScene';
 import { SharePageScene } from './scenes/SharePageScene';
 import { ShopScene } from './scenes/ShopScene';
+import { ThankYouScene } from './scenes/ThankYouScene';
 
 class Game extends Phaser.Game {
   constructor() {
@@ -29,6 +30,7 @@ class Game extends Phaser.Game {
         SharePageScene,
         ShopScene,
         InventoryScene,
+        ThankYouScene
       ],
       banner: {
         hidePhaser: true,

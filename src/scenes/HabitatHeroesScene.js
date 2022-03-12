@@ -226,6 +226,8 @@ export class HabitatHeroesScene extends Phaser.Scene {
         100,
         () => {
           this.placeHouses();
+          scene.scene.launch('ThankYouScene');
+          scene.scene.pause('HabitatHeroesScene');
         },
         [],
         this,
