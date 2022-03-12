@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import IsoPlugin from 'phaser3-plugin-isometric';
 
-import avatar from '../assets/avatar1.png';
+import avatar from '../assets/avatar2.png';
 import basichut from '../assets/basic_hut.png';
 import brickhouse from '../assets/brick_house.png';
 import cbsprite from '../assets/coins/coins_panel.png';
@@ -12,6 +12,7 @@ import nbsprite from '../assets/game_menu/news_button.png';
 import qbsprite from '../assets/game_menu/quest_button.png';
 import shbsprite from '../assets/game_menu/share_button.png';
 import sbsprite from '../assets/game_menu/shop_button.png';
+import buildingstate from '../assets/house_struct.png';
 import mapjson from '../assets/isometric-grass-and-water.json';
 import tiles from '../assets/isometric-grass-and-water.png';
 import trees from '../assets/tree_tiles.png';
@@ -24,11 +25,20 @@ import QuestButton from '../objects/QuestButton';
 import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
 import store from '../store';
-import { MAP_HEIGHT, MAP_LAYOUT, MAP_WIDTH, TILE_HEIGHT_HALF, TILE_WIDTH_HALF } from '../utils/constants';
+import {
+  BUILD_DIRECTION_MAPPING,
+  MAP_HEIGHT,
+  MAP_LAYOUT,
+  MAP_WIDTH,
+  TILE_HEIGHT_HALF,
+  TILE_WIDTH_HALF
+} from '../utils/constants';
 import checkInMovableRange from '../utils/GameUtils';
 
 let player;
 let house;
+let buildFrame = 100;
+let buildDirection = 0;
 
 let pointer;
 
@@ -65,6 +75,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+    this.load.image('buildingstate', buildingstate);
     this.load.image('basichut', basichut);
     this.load.image('brickhouse', brickhouse);
     this.load.image('concretehouse', concretehouse);
@@ -102,6 +113,15 @@ export class HabitatHeroesScene extends Phaser.Scene {
   }
 
   update() {
+    if (store.getState().houses.building) {
+      if (player.x === BUILD_DIRECTION_MAPPING[buildDirection][0] && player.y === BUILD_DIRECTION_MAPPING[buildDirection][1]) {
+        this.animateBuilding();
+      } else {
+        this.walkToPoint(BUILD_DIRECTION_MAPPING[buildDirection][0], BUILD_DIRECTION_MAPPING[buildDirection][1]);
+      }
+      return;
+    }
+
     if (pointer.isDown && checkInMovableRange(pointer.x, pointer.y)) {
       touchX = pointer.x;
       touchY = pointer.y;
@@ -116,27 +136,32 @@ export class HabitatHeroesScene extends Phaser.Scene {
         [],
         this,
       );
+    } else {
+      this.walkToPoint(touchX, touchY);
     }
+  }
 
-    if (touchY > player.y) {
+  // eslint-disable-next-line class-methods-use-this
+  walkToPoint(x, y) {
+    if (y > player.y) {
       player.anims.play('up', true);
-      player.y += touchY > player.y + 2 ? 2 : touchY - player.y;
+      player.y += y > player.y + 2 ? 2 : y - player.y;
       player.depth = player.y + 48;
       return;
     }
-    if (touchY < player.y) {
+    if (y < player.y) {
       player.anims.play('down', true);
-      player.y -= touchY + 2 < player.y ? 2 : player.y - touchY;
+      player.y -= y + 2 < player.y ? 2 : player.y - y;
       player.depth = player.y + 64;
       return;
     }
 
-    if (touchX > player.x) {
+    if (x > player.x) {
       player.anims.play('right', true);
-      player.x += touchX > player.x + 2 ? 2 : touchX - player.x;
-    } else if (touchX < player.x) {
+      player.x += x > player.x + 2 ? 2 : x - player.x;
+    } else if (x < player.x) {
       player.anims.play('left', true);
-      player.x -= touchX < player.x - 2 ? 2 : player.x - touchX;
+      player.x -= x < player.x - 2 ? 2 : player.x - x;
     }
   }
 
@@ -187,9 +212,40 @@ export class HabitatHeroesScene extends Phaser.Scene {
     house.destroy();
   }
 
+  animateBuilding() {
+    if (buildFrame === 0) {
+      buildDirection = buildDirection === 3 ? 0 : buildDirection + 1;
+      buildFrame = 100;
+    }
+
+    buildFrame -= 1;
+    switch(buildDirection) {
+      case 0:
+        player.anims.play('build_right', true);
+        break;
+      case 1:
+        player.anims.play('build_up', true);
+        break;
+      case 2:
+        player.anims.play('build_left', true);
+        break;
+      case 3:
+        player.anims.play('build_down', true);
+        break;
+      default:
+        break;
+    }
+  }
+
   placeHouses() {
     const {houses} = store.getState();
-    if (houses.total_house > 0) {
+    if (houses.total_house > 0 && houses.building) {
+      house = scene.add.image(650, 370, 'buildingstate');
+      house.scale = 1.2;
+      house.depth = house.y + 110;
+    }
+
+    if (houses.total_house > 0 && !houses.building) {
       if (houses.basic_hut === 1) {
         house = scene.add.image(680, 370, 'basichut');
         house.scale = 1.5;

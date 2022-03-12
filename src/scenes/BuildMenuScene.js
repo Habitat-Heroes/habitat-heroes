@@ -49,7 +49,6 @@ export class BuildMenuScene extends Phaser.Scene {
             userAction: UserAction.build
           }));
         this.scene.get('HabitatHeroesScene').placeHouses();
-        this.scene.get('HabitatHeroesScene').placeHouses();
         this.scene.stop('BuildMenuScene');
         this.scene.resume('HabitatHeroesScene');
       }
