@@ -3,6 +3,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import coinsReducer from './coinsReducer';
 import houseReducer from './houseReducer';
 import inventoryReducer from './inventoryReducer';
+import quizReducer from './quizReducer';
 import userReducer from './userReducer';
 
 export const rootReducer = combineReducers({
@@ -10,4 +11,5 @@ export const rootReducer = combineReducers({
   coins: coinsReducer,
   inventory: inventoryReducer,
   houses: houseReducer,
+  quiz: quizReducer,
 });
