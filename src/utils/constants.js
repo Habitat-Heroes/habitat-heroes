@@ -77,7 +77,16 @@ export const AVATAR_PANEL_END = [
   AVATAR_PANEL_CENTER[1] + AVATAR_PANEL_SIZE[1] / 2,
 ];
 
-export const THANK_YOU_TEXT = 'Thank you for helping to build a house for families in \n' +
+export const THANK_YOU_TEXT =
+  'Thank you for helping to build a house for families in \n' +
   'Cambodia! 💖 Click on the panel below to learn more\n' +
   'about the poverty housing situation in Cambodia and' +
   '\nhow you can help!';
+
+export const DEFAULT_SFX_CONFIG = {
+  mute: 0,
+  volume: 0.8,
+  seek: 0,
+  loop: false,
+  delay: 0,
+};

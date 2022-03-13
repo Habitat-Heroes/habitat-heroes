@@ -30,7 +30,7 @@ class Game extends Phaser.Game {
         SharePageScene,
         ShopScene,
         InventoryScene,
-        ThankYouScene
+        ThankYouScene,
       ],
       banner: {
         hidePhaser: true,

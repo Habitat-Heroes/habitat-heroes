@@ -4,7 +4,12 @@ import menu from '../assets/login/LoginBoard_NoLoginButton.png';
 import loginbutton from '../assets/login/LoginButton.png';
 import Button from '../objects/Button';
 import { setName } from '../reducers/userReducer';
+import buttonclick from '../sounds/buttonclick.mp3';
+import buttonhover from '../sounds/buttonhover.mp3';
+import loginbgm from '../sounds/loginbgm.mp3';
+import thud from '../sounds/thud.mp3';
 import store from '../store';
+import { DEFAULT_SFX_CONFIG } from '../utils/constants';
 
 let scene;
 
@@ -12,6 +17,8 @@ let screenCenterX;
 let screenCenterY;
 let nameField;
 let canvas;
+
+let bgm;
 
 export class LoginScene extends Phaser.Scene {
   constructor() {
@@ -28,6 +35,10 @@ export class LoginScene extends Phaser.Scene {
       this.cameras.main.worldView.y + this.cameras.main.height / 2;
     nameField = document.getElementById('name');
     canvas = document.querySelector('canvas');
+    this.load.audio('loginbgm', loginbgm);
+    this.load.audio('buttonhover', buttonhover);
+    this.load.audio('buttonclick', buttonclick);
+    this.load.audio('thud', thud);
   }
 
   static selectName(state) {
@@ -36,12 +47,23 @@ export class LoginScene extends Phaser.Scene {
 
   create() {
     scene = this;
+
     const currentName = LoginScene.selectName(store.getState());
     if (currentName !== '') {
       nameField.style.display = 'none';
       this.scene.start('HabitatHeroesScene');
       return;
     }
+
+    bgm = this.sound.add('loginbgm');
+    bgm.play({
+      ...DEFAULT_SFX_CONFIG,
+      loop: true,
+      volume: 0.5,
+    });
+    const downSfx = this.sound.add('buttonclick');
+    const overSfx = this.sound.add('buttonhover');
+    const thudSfx = this.sound.add('thud');
 
     scene.add.image(screenCenterX, screenCenterY + 10, 'menu').setScale(0.75);
 
@@ -52,15 +74,30 @@ export class LoginScene extends Phaser.Scene {
       'loginbutton',
     )
       .setDownTexture('loginbutton')
+      .setButtonName('Get Started!')
+      .setDepth(100)
+      .setScale(0.7)
+      .setDownSfx(downSfx)
+      .setOverSfx(overSfx)
       .clearTint();
-    loginButton.depth = 100;
-    loginButton.scale = 0.7;
-    loginButton.setButtonName('Get Started!');
     loginButton.on('pointerup', this.onGetStartedClick.bind(this));
     scene.add.existing(loginButton);
 
     LoginScene.updateNameField();
     window.addEventListener('resize', LoginScene.updateNameField);
+    nameField.addEventListener('input', () =>
+      LoginScene.onNameChange(overSfx, thudSfx),
+    );
+  }
+
+  static onNameChange(typeSfx, thudSfx) {
+    const { value } = nameField;
+    if (value.length > 10) {
+      thudSfx.play(DEFAULT_SFX_CONFIG);
+      nameField.value = value.substring(0, 10);
+      return;
+    }
+    typeSfx.play(DEFAULT_SFX_CONFIG);
   }
 
   onGetStartedClick() {
@@ -70,6 +107,7 @@ export class LoginScene extends Phaser.Scene {
     }
     nameField.style.display = 'none';
     store.dispatch(setName(value.trim()));
+    bgm.stop();
     this.scene.start('HabitatHeroesScene');
   }
 

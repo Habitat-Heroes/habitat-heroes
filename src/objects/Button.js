@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import { DEFAULT_SFX_CONFIG } from '../utils/constants';
+
 const ORANGE = 0xffad00;
 const LIGHTORANGE = 0xffcd60;
 const GREY = 0x808080;
@@ -29,6 +31,10 @@ export default class Button extends Phaser.GameObjects.Image {
 
   isDisabled;
 
+  downSfx;
+
+  overSfx;
+
   constructor(scene, x, y, texture, tint = ORANGE) {
     super(scene, x, y, texture);
 
@@ -53,6 +59,7 @@ export default class Button extends Phaser.GameObjects.Image {
 
   setButtonName(buttonText) {
     this.buttonText = buttonText;
+    return this;
   }
 
   setUpTexture(texture) {
@@ -75,6 +82,11 @@ export default class Button extends Phaser.GameObjects.Image {
     return this;
   }
 
+  setDownSfx(sfx) {
+    this.downSfx = sfx;
+    return this;
+  }
+
   setOverTexture(texture) {
     this.overTexture = texture;
     return this;
@@ -82,6 +94,11 @@ export default class Button extends Phaser.GameObjects.Image {
 
   setOverTint(tint) {
     this.overTint = tint;
+    return this;
+  }
+
+  setOverSfx(sfx) {
+    this.overSfx = sfx;
     return this;
   }
 
@@ -130,6 +147,9 @@ export default class Button extends Phaser.GameObjects.Image {
     this.setTexture(this.downTexture);
     this.setTint(this.downTint);
     this.tooltipContainer.setVisible(false);
+    if (this.downSfx != null) {
+      this.downSfx.play(DEFAULT_SFX_CONFIG);
+    }
     if (this.onDownCallback != null) {
       this.onDownCallback();
     }
@@ -137,11 +157,16 @@ export default class Button extends Phaser.GameObjects.Image {
 
   setOnDownCallback(callback) {
     this.onDownCallback = callback;
+    return this;
   }
 
   handleOver() {
     this.setTexture(this.overTexture);
     this.setTint(this.overTint);
+
+    if (this.overSfx != null) {
+      this.overSfx.play(DEFAULT_SFX_CONFIG);
+    }
 
     const tooltip = { text: this.buttonText };
 

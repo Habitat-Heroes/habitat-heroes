@@ -7,8 +7,8 @@ import torch from '../assets/shop/torch.png';
 import wishingwell from '../assets/shop/wishingwell.png';
 import trees from '../assets/tree_tiles.png';
 
-
-export function loadItemSprites(scene) {  // call this function in any scene that will render item images
+export function loadItemSprites(scene) {
+  // call this function in any scene that will render item images
   scene.load.spritesheet('trees', trees, {
     frameWidth: 120,
     frameHeight: 171,

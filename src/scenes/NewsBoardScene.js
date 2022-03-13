@@ -6,6 +6,8 @@ import panel1 from '../assets/newsboard/NewsPanelAmazon.png';
 import panel2 from '../assets/newsboard/NewsPanelCityBank.png';
 import panel3 from '../assets/newsboard/NewsPanelZillow.png';
 import Button from '../objects/Button';
+import buttonclick from '../sounds/buttonclick.mp3';
+import buttonhover from '../sounds/buttonhover.mp3';
 
 let scene;
 
@@ -25,6 +27,8 @@ export class NewsBoardScene extends Phaser.Scene {
     this.load.image('panel2', panel2);
     this.load.image('panel3', panel3);
     this.load.image('closebutton', closebutton);
+    this.load.audio('buttonhover', buttonhover);
+    this.load.audio('buttonclick', buttonclick);
     screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
     screenCenterY =
       this.cameras.main.worldView.y + this.cameras.main.height / 2;
@@ -32,6 +36,8 @@ export class NewsBoardScene extends Phaser.Scene {
 
   create() {
     scene = this;
+    const downSfx = this.sound.add('buttonclick');
+    const overSfx = this.sound.add('buttonhover');
 
     scene.add.image(screenCenterX, screenCenterY + 10, 'newsboard').setScale(1);
 
@@ -41,11 +47,14 @@ export class NewsBoardScene extends Phaser.Scene {
       screenCenterY + 80,
       'panel1',
     )
+      .setButtonName('View Details')
       .setTint()
-      .setOverTint().setUpTint()
-      .setDisabledTint();
-    panel1Button.scale = 1.05;
-    panel1Button.setButtonName('View Details');
+      .setOverTint()
+      .setUpTint()
+      .setDisabledTint()
+      .setScale(1.05)
+      .setDownSfx(downSfx)
+      .setOverSfx(overSfx);
     panel1Button.on('pointerup', () => {
       window.open(
         'https://www.mpamag.com/us/specialty/commercial/amazon-makes-100-million-investment-in-new-affordable-housing/258109',
@@ -60,10 +69,13 @@ export class NewsBoardScene extends Phaser.Scene {
       screenCenterY - 40,
       'panel2',
     )
+      .setButtonName('View Details')
       .setTint()
-      .setOverTint().setUpTint()
-      .setDisabledTint();
-    panel2Button.setButtonName('View Details');
+      .setOverTint()
+      .setUpTint()
+      .setDisabledTint()
+      .setDownSfx(downSfx)
+      .setOverSfx(overSfx);
     panel2Button.on('pointerup', () => {
       window.open(
         'https://www.habitat.org/newsroom/2022/city-national-bank-renews-partnership-habitat-humanity-third-year',
@@ -78,10 +90,13 @@ export class NewsBoardScene extends Phaser.Scene {
       screenCenterY + 200,
       'panel3',
     )
+      .setButtonName('View Details')
       .setTint()
-      .setOverTint().setUpTint()
-      .setDisabledTint();
-    panel3Button.setButtonName('View Details');
+      .setOverTint()
+      .setUpTint()
+      .setDisabledTint()
+      .setDownSfx(downSfx)
+      .setOverSfx(overSfx);
     panel3Button.on('pointerup', () => {
       window.open(
         'https://www.un.org/en/observances/habitat-day',
@@ -95,9 +110,12 @@ export class NewsBoardScene extends Phaser.Scene {
       screenCenterX + 450,
       screenCenterY - 330,
       'closebutton',
-    ).setDownTexture('closebutton');
-    closeButton.scale = 0.6;
-    closeButton.setButtonName('Close');
+    )
+      .setDownTexture('closebutton')
+      .setButtonName('Close')
+      .setScale(0.6)
+      .setDownSfx(downSfx)
+      .setOverSfx(overSfx);
     closeButton.on('pointerup', () => {
       this.scene.stop('NewsBoardScene');
       this.scene.resume('HabitatHeroesScene');

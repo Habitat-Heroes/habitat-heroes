@@ -7,6 +7,8 @@ import prevbutton from '../assets/game_menu/prev_button.png';
 import baseboard from '../assets/game_menu/vertical_baseboard.png';
 import background from '../assets/game_menu/woodboard_no_cblogo.png';
 import Button from '../objects/Button';
+import buttonclick from '../sounds/buttonclick.mp3';
+import buttonhover from '../sounds/buttonhover.mp3';
 import store from '../store';
 import ITEMS, { loadItemSprites } from '../utils/items';
 import { modulo } from '../utils/utilFunctions';
@@ -25,6 +27,10 @@ export class InventoryScene extends Phaser.Scene {
   pageIdx;
 
   currentInv;
+
+  downSfx;
+
+  overSfx;
 
   // eslint-disable-next-line class-methods-use-this
   selectInv = (state) => state.inventory;
@@ -55,6 +61,8 @@ export class InventoryScene extends Phaser.Scene {
     this.load.image('nextbutton', nextbutton);
     this.load.image('baseboard', baseboard);
     this.load.image('placebutton', placebutton);
+    this.load.audio('buttonhover', buttonhover);
+    this.load.audio('buttonclick', buttonclick);
 
     loadItemSprites(this);
 
@@ -65,6 +73,9 @@ export class InventoryScene extends Phaser.Scene {
   }
 
   create() {
+    this.downSfx = this.sound.add('buttonclick');
+    this.overSfx = this.sound.add('buttonhover');
+
     this.add
       .image(this.screenCenterX, this.screenCenterY + 10, 'background')
       .setScale(0.85);
@@ -87,10 +98,13 @@ export class InventoryScene extends Phaser.Scene {
       this.screenCenterX + 390,
       this.screenCenterY - 240,
       'closebutton',
-    ).setDownTexture('closebutton');
-    closeButton.depth = 800;
-    closeButton.scale = 0.6;
-    closeButton.setButtonName('Close');
+    )
+      .setDownTexture('closebutton')
+      .setButtonName('Close')
+      .setDepth(800)
+      .setScale(0.6)
+      .setDownSfx(this.downSfx)
+      .setOverSfx(this.overSfx);
     closeButton.on('pointerup', () => {
       this.scene.stop('InventoryScene');
       this.scene.resume('HabitatHeroesScene');
@@ -104,13 +118,18 @@ export class InventoryScene extends Phaser.Scene {
       this.screenCenterX - 360,
       this.screenCenterY + 50,
       'prevbutton',
-    ).setDownTexture('prevbutton');
-    this.prevButton.scale = 0.4;
-    this.prevButton.depth = 800;
-    this.prevButton.setButtonName('Previous Page');
+    )
+      .setDownTexture('prevbutton')
+      .setButtonName('Previous Page')
+      .setDepth(800)
+      .setScale(0.4)
+      .setDownSfx(this.downSfx)
+      .setOverSfx(this.overSfx);
     this.prevButton.on('pointerup', () => {
-      this.pageIdx = modulo(this.pageIdx - 1,
-        Math.ceil(Object.keys(this.currentInv).length / 3));
+      this.pageIdx = modulo(
+        this.pageIdx - 1,
+        Math.ceil(Object.keys(this.currentInv).length / 3),
+      );
       this.#destroyPanels();
       this.#addPanels();
     });
@@ -121,13 +140,18 @@ export class InventoryScene extends Phaser.Scene {
       this.screenCenterX + 368,
       this.screenCenterY + 50,
       'nextbutton',
-    ).setDownTexture('nextbutton');
-    this.nextButton.scale = 0.4;
-    this.nextButton.depth = 800;
-    this.nextButton.setButtonName('Next Page');
+    )
+      .setDownTexture('nextbutton')
+      .setButtonName('Next Page')
+      .setScale(0.4)
+      .setDepth(800)
+      .setDownSfx(this.downSfx)
+      .setOverSfx(this.overSfx);
     this.nextButton.on('pointerup', () => {
-      this.pageIdx = modulo(this.pageIdx + 1,
-        Math.ceil(Object.keys(this.currentInv).length / 3));
+      this.pageIdx = modulo(
+        this.pageIdx + 1,
+        Math.ceil(Object.keys(this.currentInv).length / 3),
+      );
       this.#destroyPanels();
       this.#addPanels();
     });
@@ -163,12 +187,13 @@ export class InventoryScene extends Phaser.Scene {
       image.displayWidth = 200;
     }
 
-    const button = new Button(this, x + 44, y + 130, 'placebutton').setDownTexture(
-      'placebutton',
-    );
+    const button = new Button(this, x + 44, y + 130, 'placebutton')
+      .setDownTexture('placebutton')
+      .setButtonName('Place')
+      .setDownSfx(this.downSfx)
+      .setOverSfx(this.overSfx);
     button.scaleY = 0.3;
     button.scaleX = 0.15;
-    button.setButtonName('Place');
     button.on('pointerup', () => {
       this.scene.stop('InventoryScene');
       this.scene.resume('HabitatHeroesScene', { spritesheet, frame, itemId });
@@ -193,7 +218,6 @@ export class InventoryScene extends Phaser.Scene {
     });
     qtyText.setOrigin(0.5, 0);
 
-
     this.panels[panelIdx] = {
       panel,
       itemName,
@@ -204,12 +228,12 @@ export class InventoryScene extends Phaser.Scene {
     };
   }
 
-
   #addPanels() {
     const panelsX = [580, 800, 1020];
 
-    const invItems = Object.entries(this.currentInv)
-      .sort((a, b) => a[0] - b[0]); // sort by item ID
+    const invItems = Object.entries(this.currentInv).sort(
+      (a, b) => a[0] - b[0],
+    ); // sort by item ID
 
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < 3; i++) {
@@ -228,4 +252,3 @@ export class InventoryScene extends Phaser.Scene {
     });
   }
 }
-
