@@ -37,7 +37,7 @@ import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
 import { updateBuildTime } from '../reducers/houseReducer';
 import { removeFromInventory } from '../reducers/inventoryReducer';
-import {addToMap} from '../reducers/mapItemsReducer';
+import { addToMap } from '../reducers/mapItemsReducer';
 import building from '../sounds/building.mp3';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
@@ -195,13 +195,15 @@ export class HabitatHeroesScene extends Phaser.Scene {
     scene.add.existing(ShareButton(this, openMenuSfx, overSfx));
     scene.add.existing(CoinsButton(this, downSfx, overSfx));
 
-    Object.entries(store.getState().mapItems).forEach( (_k, item) => {
-      this.add.image(
-        item.coordinates[0],
-        item.coordinates[1],
-        item.spritesheet,
-        item.frame,
-      ).setDepth(item.depth);
+    Object.entries(store.getState().mapItems).forEach((_k, item) => {
+      this.add
+        .image(
+          item.coordinates[0],
+          item.coordinates[1],
+          item.spritesheet,
+          item.frame,
+        )
+        .setDepth(item.depth);
     });
 
     this.events.on('resume', (_scene, data) => {
@@ -228,14 +230,14 @@ export class HabitatHeroesScene extends Phaser.Scene {
       this.input.once('pointerup', () => {
         placingItemImage.setAlpha(1).setDepth(pointer.y + 110);
         this.input.off('pointermove', placingItemFn);
-        store.dispatch(addToMap(
-          {
+        store.dispatch(
+          addToMap({
             coordinates: [pointer.x, pointer.y],
             depth: pointer.y + 110,
             spritesheet,
-            frame
-          }
-        ));
+            frame,
+          }),
+        );
         store.dispatch(removeFromInventory({ [itemId]: 1 }));
       });
     });
@@ -550,10 +552,8 @@ export class HabitatHeroesScene extends Phaser.Scene {
         .setScale(1.2)
         .setDepth(HOUSE_STRUCT_IMAGE[1] + 110)
         .setUpTint(0xffffff)
-        // .setDownTint(undefined)
         .setOverTint(0xffffff)
         .setDisabledTint(0xffffff);
-      // .setUpTint()
       house.on('pointerup', () => {
         scene.scene.launch('QuizScene');
         scene.scene.pause('HabitatHeroesScene');
