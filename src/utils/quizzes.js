@@ -72,7 +72,7 @@ export const QUIZZES = [
   {
     id: 4,
     question:
-      'Which of the following is not a correct way of supporting Habitat?',
+      'Which of the following is not a correct way\nof supporting Habitat?',
     options: [
       {
         id: 1,
@@ -91,7 +91,7 @@ export const QUIZZES = [
         text: 'Rent out your house',
       },
     ],
-    correctOptionId: 3,
+    correctOptionId: 4,
   },
   {
     id: 5,
