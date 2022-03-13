@@ -219,7 +219,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
   }
 
   update() {
-    if (store.getState().houses.building) {
+    if (getRemainingBuildTime(store.getState().houses) > 0 || store.getState().houses.building) {
       this.updateBuilding();
       return;
     }
@@ -506,7 +506,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
 
   placeHouses() {
     const { houses } = store.getState();
-    if (houses.total_house > 0 && houses.building) {
+    if (houses.total_house > 0 && getRemainingBuildTime(houses) > 0) {
       house = scene.add.image(
         HOUSE_STRUCT_IMAGE[0],
         HOUSE_STRUCT_IMAGE[1],
@@ -516,7 +516,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
       house.depth = house.y + 110;
     }
 
-    if (houses.total_house > 0 && !houses.building) {
+    if (houses.total_house > 0 && getRemainingBuildTime(houses) <= 0) {
       if (houses.basic_hut === 1) {
         house = scene.add.image(680, 370, 'basichut');
         house.scale = 1.5;
@@ -529,6 +529,13 @@ export class HabitatHeroesScene extends Phaser.Scene {
         house = scene.add.image(530, 370, 'concretehouse');
         house.scale = 0.9;
         house.depth = house.y + 180;
+      }
+
+      if (houses.building) {
+        scene.scene.launch('ThankYouScene');
+        scene.scene.pause('HabitatHeroesScene');
+        this.rewardSfx.play(DEFAULT_SFX_CONFIG);
+        store.dispatch(updateBuildTime());
       }
     }
   }
