@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { AdsScene } from './scenes/AdsScene';
 import { BuildMenuScene } from './scenes/BuildMenuScene';
 import { HabitatHeroesScene } from './scenes/HabitatHeroesScene';
 import { InventoryScene } from './scenes/InventoryScene';
@@ -26,6 +27,7 @@ class Game extends Phaser.Game {
         LoginScene,
         HabitatHeroesScene,
         NewsBoardScene,
+        AdsScene,
         BuildMenuScene,
         SharePageScene,
         ShopScene,
