@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 
 import photo from '../assets/ads/ads_clean.png';
 import closebutton from '../assets/game_menu/close_button.png';
-import playbutton from '../assets/game_menu/tick_button.png';
-import newsboard from '../assets/game_menu/woodboard.png';
+import playbutton from '../assets/video/play_button.png';
+import newsboard from '../assets/video/VideoFull.png';
 import Button from '../objects/Button';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
@@ -38,12 +38,12 @@ export class AdsScene extends Phaser.Scene {
     const overSfx = this.sound.add('buttonhover');
 
     scene.add.image(screenCenterX, screenCenterY + 10, 'newsboard').setScale(0.6);
-    scene.add.image(screenCenterX, screenCenterY + 10, 'photo').setScale(0.17);
+    scene.add.image(screenCenterX + 6, screenCenterY + 72, 'photo').setScale(0.114);
 
     const playButton = new Button(
         scene,
-        screenCenterX,
-        screenCenterY + 10,
+        screenCenterX + 6,
+        screenCenterY + 72,
         'playbutton',
       )
         .setDownTexture('playbutton')
