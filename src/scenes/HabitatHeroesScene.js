@@ -53,7 +53,7 @@ import {
   TILE_HEIGHT_HALF,
   TILE_WIDTH_HALF,
 } from '../utils/constants';
-import checkInMovableRange, { getRemainingBuildTime } from '../utils/GameUtils';
+import checkInMovableRange, {convertSecondsToText, getRemainingBuildTime} from '../utils/GameUtils';
 import { loadItemSprites } from '../utils/items';
 
 let player;
@@ -244,6 +244,14 @@ export class HabitatHeroesScene extends Phaser.Scene {
   }
 
   /* eslint-disable class-methods-use-this */
+  destroyTimer() {
+    if (timerText != null) {
+      timerText.destroy();
+      timerText = null;
+    }
+    buildTimerBarImage.destroy();
+  }
+
   updateBuilding() {
     if (
       player.x === BUILD_DIRECTION_MAPPING[buildDirection][0] &&
@@ -265,9 +273,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     this.updateBuildTimerBar(houses.buildTime, remainingBuildTime);
     if (remainingBuildTime <= 0 && timerText != null) {
       this.buildingSfx.stop();
-      timerText.destroy();
-      timerText = null;
-      buildTimerBarImage.destroy();
+      this.destroyTimer();
       this.removeHouse();
       player.scene.time.delayedCall(
         100,
@@ -283,7 +289,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     } else if (timerText == null) {
       timerText = scene.add
         .text(
-          HOUSE_STRUCT_IMAGE[0],
+          HOUSE_STRUCT_IMAGE[0] - 100,
           HOUSE_STRUCT_IMAGE[1] - 200,
           remainingBuildTime,
           {
@@ -297,7 +303,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
         .setShadow(2, 2, '#333333', 2, false, true);
       timerText.depth = 850;
     } else {
-      timerText.setText(remainingBuildTime);
+      timerText.setText(convertSecondsToText(remainingBuildTime));
     }
     store.dispatch(updateBuildTime());
   }
