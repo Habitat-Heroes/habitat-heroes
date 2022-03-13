@@ -141,7 +141,7 @@ export class BuildMenuScene extends Phaser.Scene {
         this.scene.resume('HabitatHeroesScene');
       }
     });
-    if (houses.brick_house === 0 || houses.building) {
+    if (houses.brick_house === 0 || houses.building || store.getState().coins.amount < 5000) {
       buildConcreteHouseButton.setDisabled(true);
     }
 
