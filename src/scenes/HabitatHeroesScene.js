@@ -24,6 +24,8 @@ import threebar from '../assets/loading_bar/3bar.png';
 import fourbar from '../assets/loading_bar/4bar.png';
 import fivebar from '../assets/loading_bar/5bar.png';
 import trees from '../assets/tree_tiles.png';
+import adssprite from '../assets/video/plus_button.png';
+import AdsButton from '../objects/AdsButton';
 import { Avatar } from '../objects/Avatar';
 import BuildButton from '../objects/BuildButton';
 import CoinsButton from '../objects/CoinsButton';
@@ -124,6 +126,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     this.load.image('concretehouse', concretehouse);
     this.load.image('buildbutton', bbsprite);
     this.load.image('newsbutton', nbsprite);
+    this.load.image('adsbutton', adssprite);
     this.load.image('inventorybutton', ibsprite);
     this.load.image('questbutton', qbsprite);
     this.load.image('shopbutton', sbsprite);
@@ -182,6 +185,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     scene.add.existing(BuildButton(this, openMenuSfx, overSfx));
     scene.add.existing(InventoryButton(this, openMenuSfx, overSfx));
     scene.add.existing(NewsButton(this, openMenuSfx, overSfx));
+    scene.add.existing(AdsButton(this, openMenuSfx, overSfx));
     scene.add.existing(QuestButton(this, openMenuSfx, overSfx));
     scene.add.existing(ShopButton(this, openMenuSfx, overSfx));
     scene.add.existing(ShareButton(this, openMenuSfx, overSfx));
