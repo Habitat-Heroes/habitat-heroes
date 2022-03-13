@@ -34,6 +34,7 @@ import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
 import { updateBuildTime } from '../reducers/houseReducer';
 import { removeFromInventory } from '../reducers/inventoryReducer';
+import {addToMap} from '../reducers/mapItemsReducer';
 import building from '../sounds/building.mp3';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
@@ -186,6 +187,15 @@ export class HabitatHeroesScene extends Phaser.Scene {
     scene.add.existing(ShareButton(this, openMenuSfx, overSfx));
     scene.add.existing(CoinsButton(this, downSfx, overSfx));
 
+    Object.entries(store.getState().mapItems).forEach( (_k, item) => {
+      this.add.image(
+        item.coordinates[0],
+        item.coordinates[1],
+        item.spritesheet,
+        item.frame,
+      ).setDepth(item.depth);
+    });
+
     this.events.on('resume', (_scene, data) => {
       if (data == null) {
         return;
@@ -208,12 +218,17 @@ export class HabitatHeroesScene extends Phaser.Scene {
       // TODO someway to cancel placing item
 
       this.input.once('pointerup', () => {
-        placingItemImage.setAlpha(1);
+        placingItemImage.setAlpha(1).setDepth(pointer.y + 110);
         this.input.off('pointermove', placingItemFn);
-
+        store.dispatch(addToMap(
+          {
+            coordinates: [pointer.x, pointer.y],
+            depth: pointer.y + 110,
+            spritesheet,
+            frame
+          }
+        ));
         store.dispatch(removeFromInventory({ [itemId]: 1 }));
-
-        // TODO save the built item data into store so it will still be there when reloaded
       });
     });
   }
