@@ -195,7 +195,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     scene.add.existing(ShareButton(this, openMenuSfx, overSfx));
     scene.add.existing(CoinsButton(this, downSfx, overSfx));
 
-    Object.entries(store.getState().mapItems).forEach((_k, item) => {
+    Object.entries(store.getState().mapItems).forEach(([, item]) => {
       this.add
         .image(
           item.coordinates[0],
