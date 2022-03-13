@@ -24,6 +24,8 @@ import threebar from '../assets/loading_bar/3bar.png';
 import fourbar from '../assets/loading_bar/4bar.png';
 import fivebar from '../assets/loading_bar/5bar.png';
 import trees from '../assets/tree_tiles.png';
+import adssprite from '../assets/video/plus_button.png';
+import AdsButton from '../objects/AdsButton';
 import { Avatar } from '../objects/Avatar';
 import BuildButton from '../objects/BuildButton';
 import Button from '../objects/Button';
@@ -35,6 +37,7 @@ import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
 import { updateBuildTime } from '../reducers/houseReducer';
 import { removeFromInventory } from '../reducers/inventoryReducer';
+import {addToMap} from '../reducers/mapItemsReducer';
 import building from '../sounds/building.mp3';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
@@ -127,6 +130,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     this.load.image('concretehouse', concretehouse);
     this.load.image('buildbutton', bbsprite);
     this.load.image('newsbutton', nbsprite);
+    this.load.image('adsbutton', adssprite);
     this.load.image('inventorybutton', ibsprite);
     this.load.image('questbutton', qbsprite);
     this.load.image('shopbutton', sbsprite);
@@ -185,10 +189,20 @@ export class HabitatHeroesScene extends Phaser.Scene {
     scene.add.existing(BuildButton(this, openMenuSfx, overSfx));
     scene.add.existing(InventoryButton(this, openMenuSfx, overSfx));
     scene.add.existing(NewsButton(this, openMenuSfx, overSfx));
+    scene.add.existing(AdsButton(this, openMenuSfx, overSfx));
     scene.add.existing(QuestButton(this, openMenuSfx, overSfx));
     scene.add.existing(ShopButton(this, openMenuSfx, overSfx));
     scene.add.existing(ShareButton(this, openMenuSfx, overSfx));
     scene.add.existing(CoinsButton(this, downSfx, overSfx));
+
+    Object.entries(store.getState().mapItems).forEach( (_k, item) => {
+      this.add.image(
+        item.coordinates[0],
+        item.coordinates[1],
+        item.spritesheet,
+        item.frame,
+      ).setDepth(item.depth);
+    });
 
     this.events.on('resume', (_scene, data) => {
       if (data == null) {
@@ -212,12 +226,17 @@ export class HabitatHeroesScene extends Phaser.Scene {
       // TODO someway to cancel placing item
 
       this.input.once('pointerup', () => {
-        placingItemImage.setAlpha(1);
+        placingItemImage.setAlpha(1).setDepth(pointer.y + 110);
         this.input.off('pointermove', placingItemFn);
-
+        store.dispatch(addToMap(
+          {
+            coordinates: [pointer.x, pointer.y],
+            depth: pointer.y + 110,
+            spritesheet,
+            frame
+          }
+        ));
         store.dispatch(removeFromInventory({ [itemId]: 1 }));
-
-        // TODO save the built item data into store so it will still be there when reloaded
       });
     });
   }
