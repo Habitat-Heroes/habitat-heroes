@@ -8,6 +8,10 @@ export default function QuestButton(scene, downSfx, overSfx) {
     .setDepth(800)
     .setScale(0.35)
     .setDownSfx(downSfx)
-    .setOverSfx(overSfx);
+    .setOverSfx(overSfx)
+    .setOnDownCallback(() => {
+      scene.scene.launch('QuestScene');
+      scene.scene.pause('HabitatHeroesScene');
+    });
   return questButton;
 }

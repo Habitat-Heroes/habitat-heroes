@@ -193,4 +193,11 @@ export default class Button extends Phaser.GameObjects.Image {
     this.tooltipContainer.add(background);
     this.tooltipContainer.add(text);
   }
+
+  destroy() {
+    if (this.tooltipContainer) {
+      this.tooltipContainer.destroy();
+    }
+    super.destroy();
+  }
 }

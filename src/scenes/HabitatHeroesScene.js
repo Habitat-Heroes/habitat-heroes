@@ -28,6 +28,7 @@ import adssprite from '../assets/video/plus_button.png';
 import AdsButton from '../objects/AdsButton';
 import { Avatar } from '../objects/Avatar';
 import BuildButton from '../objects/BuildButton';
+import Button from '../objects/Button';
 import CoinsButton from '../objects/CoinsButton';
 import InventoryButton from '../objects/InventoryButton';
 import NewsButton from '../objects/NewsButton';
@@ -36,7 +37,7 @@ import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
 import { updateBuildTime } from '../reducers/houseReducer';
 import { removeFromInventory } from '../reducers/inventoryReducer';
-import {addToMap} from '../reducers/mapItemsReducer';
+import { addToMap } from '../reducers/mapItemsReducer';
 import building from '../sounds/building.mp3';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
@@ -56,7 +57,10 @@ import {
   TILE_HEIGHT_HALF,
   TILE_WIDTH_HALF,
 } from '../utils/constants';
-import checkInMovableRange, {convertSecondsToText, getRemainingBuildTime} from '../utils/GameUtils';
+import checkInMovableRange, {
+  convertSecondsToText,
+  getRemainingBuildTime,
+} from '../utils/GameUtils';
 import { loadItemSprites } from '../utils/items';
 
 let player;
@@ -191,13 +195,15 @@ export class HabitatHeroesScene extends Phaser.Scene {
     scene.add.existing(ShareButton(this, openMenuSfx, overSfx));
     scene.add.existing(CoinsButton(this, downSfx, overSfx));
 
-    Object.entries(store.getState().mapItems).forEach( (_k, item) => {
-      this.add.image(
-        item.coordinates[0],
-        item.coordinates[1],
-        item.spritesheet,
-        item.frame,
-      ).setDepth(item.depth);
+    Object.entries(store.getState().mapItems).forEach((_k, item) => {
+      this.add
+        .image(
+          item.coordinates[0],
+          item.coordinates[1],
+          item.spritesheet,
+          item.frame,
+        )
+        .setDepth(item.depth);
     });
 
     this.events.on('resume', (_scene, data) => {
@@ -224,21 +230,24 @@ export class HabitatHeroesScene extends Phaser.Scene {
       this.input.once('pointerup', () => {
         placingItemImage.setAlpha(1).setDepth(pointer.y + 110);
         this.input.off('pointermove', placingItemFn);
-        store.dispatch(addToMap(
-          {
+        store.dispatch(
+          addToMap({
             coordinates: [pointer.x, pointer.y],
             depth: pointer.y + 110,
             spritesheet,
-            frame
-          }
-        ));
+            frame,
+          }),
+        );
         store.dispatch(removeFromInventory({ [itemId]: 1 }));
       });
     });
   }
 
   update() {
-    if (getRemainingBuildTime(store.getState().houses) > 0 || store.getState().houses.building) {
+    if (
+      getRemainingBuildTime(store.getState().houses) > 0 ||
+      store.getState().houses.building
+    ) {
       this.updateBuilding();
       return;
     }
@@ -532,13 +541,24 @@ export class HabitatHeroesScene extends Phaser.Scene {
   placeHouses() {
     const { houses } = store.getState();
     if (houses.total_house > 0 && getRemainingBuildTime(houses) > 0) {
-      house = scene.add.image(
+      house = new Button(
+        scene,
         HOUSE_STRUCT_IMAGE[0],
         HOUSE_STRUCT_IMAGE[1],
         'buildingstate',
-      );
-      house.scale = 1.2;
-      house.depth = house.y + 110;
+      )
+        .setDownTexture('buildingstate')
+        .setButtonName('Speed up building!')
+        .setScale(1.2)
+        .setDepth(HOUSE_STRUCT_IMAGE[1] + 110)
+        .setUpTint(0xffffff)
+        .setOverTint(0xffffff)
+        .setDisabledTint(0xffffff);
+      house.on('pointerup', () => {
+        scene.scene.launch('QuizScene');
+        scene.scene.pause('HabitatHeroesScene');
+      });
+      scene.add.existing(house);
     }
 
     if (houses.total_house > 0 && getRemainingBuildTime(houses) <= 0) {
