@@ -46,6 +46,7 @@ export class BuildMenuScene extends Phaser.Scene {
     scene = this;
     const downSfx = this.sound.add('buttonclick');
     const overSfx = this.sound.add('buttonhover');
+    const { houses } = store.getState();
 
     scene.add
       .image(screenCenterX, screenCenterY + 10, 'buildmenu')
@@ -63,7 +64,7 @@ export class BuildMenuScene extends Phaser.Scene {
       .setDownSfx(downSfx)
       .setOverSfx(overSfx);
     buildBasicHutButton.on('pointerup', () => {
-      if (store.getState().houses.total_house === 0) {
+      if (houses.total_house === 0) {
         store.dispatch(
           updateHouse({
             houseType: HouseType.basic_hut,
@@ -75,12 +76,7 @@ export class BuildMenuScene extends Phaser.Scene {
         this.scene.resume('HabitatHeroesScene');
       }
     });
-    if (
-      !(
-        store.getState().houses.basic_hut === 0 &&
-        store.getState().houses.total_house === 0
-      )
-    ) {
+    if (!(houses.basic_hut === 0 && houses.total_house === 0) || houses.building) {
       buildBasicHutButton.setDisabled(true);
     }
 
@@ -96,10 +92,7 @@ export class BuildMenuScene extends Phaser.Scene {
       .setDownSfx(downSfx)
       .setOverSfx(overSfx);
     buildBrickHouseButton.on('pointerup', () => {
-      if (
-        store.getState().houses.total_house === 1 &&
-        store.getState().houses.basic_hut === 1
-      ) {
+      if (houses.total_house === 1 && houses.basic_hut === 1) {
         store.dispatch(
           updateHouse({
             houseType: HouseType.basic_hut,
@@ -113,7 +106,7 @@ export class BuildMenuScene extends Phaser.Scene {
         this.scene.resume('HabitatHeroesScene');
       }
     });
-    if (store.getState().houses.basic_hut === 0) {
+    if (houses.basic_hut === 0 || houses.building) {
       buildBrickHouseButton.setDisabled(true);
     }
 
@@ -129,11 +122,10 @@ export class BuildMenuScene extends Phaser.Scene {
       .setDownSfx(downSfx)
       .setOverSfx(overSfx);
     buildConcreteHouseButton.on('pointerup', () => {
-      const state = store.getState();
       if (
-        state.houses.total_house === 1 &&
-        state.houses.brick_house === 1 &&
-        state.coins.amount >= 5000
+        houses.total_house === 1 &&
+        houses.brick_house === 1 &&
+        store.getState().coins.amount >= 5000
       ) {
         store.dispatch(decreaseByAmount(5000));
         store.dispatch(
@@ -149,7 +141,7 @@ export class BuildMenuScene extends Phaser.Scene {
         this.scene.resume('HabitatHeroesScene');
       }
     });
-    if (store.getState().houses.brick_house === 0) {
+    if (houses.brick_house === 0 || houses.building) {
       buildConcreteHouseButton.setDisabled(true);
     }
 
@@ -183,6 +175,7 @@ export class BuildMenuScene extends Phaser.Scene {
     resetButton.on('pointerup', () => {
       store.dispatch(resetHouses());
       this.scene.get('HabitatHeroesScene').removeHouse();
+      this.scene.get('HabitatHeroesScene').destroyTimer();
       this.scene.stop('BuildMenuScene');
       this.scene.resume('HabitatHeroesScene');
     });

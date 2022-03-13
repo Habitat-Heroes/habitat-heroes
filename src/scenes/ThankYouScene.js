@@ -40,13 +40,13 @@ export class ThankYouScene extends Phaser.Scene {
       .image(screenCenterX, screenCenterY + 10, 'gratitudeboard')
       .setScale(0.8);
     const thankYouText = scene.add
-      .text(screenCenterX - 330, screenCenterY - 130, THANK_YOU_TEXT, {
+      .text(screenCenterX - 320, screenCenterY - 130, THANK_YOU_TEXT, {
         fontFamily: 'Quicksand',
-        fontSize: 25,
+        fontSize: 26,
         color: '#fff',
         align: 'left',
         lineSpacing: 12,
-        strokeThickness: 2.5,
+        strokeThickness: 1,
       })
       .setDepth(850);
 
