@@ -225,8 +225,6 @@ export class HabitatHeroesScene extends Phaser.Scene {
       };
       this.input.on('pointermove', placingItemFn);
 
-      // TODO someway to cancel placing item
-
       this.input.once('pointerup', () => {
         placingItemImage.setAlpha(1).setDepth(pointer.y + 110);
         this.input.off('pointermove', placingItemFn);
