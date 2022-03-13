@@ -39,11 +39,11 @@ export class NewsBoardScene extends Phaser.Scene {
     const downSfx = this.sound.add('buttonclick');
     const overSfx = this.sound.add('buttonhover');
 
-    scene.add.image(screenCenterX, screenCenterY + 10, 'newsboard').setScale(1);
+    scene.add.image(screenCenterX, screenCenterY + 10, 'newsboard').setScale(0.9);
 
     const panel1Button = new Button(
       scene,
-      screenCenterX - 200,
+      screenCenterX - 180,
       screenCenterY + 80,
       'panel1',
     )
@@ -52,7 +52,7 @@ export class NewsBoardScene extends Phaser.Scene {
       .setOverTint()
       .setUpTint()
       .setDisabledTint()
-      .setScale(1.05)
+      .setScale(0.95)
       .setDownSfx(downSfx)
       .setOverSfx(overSfx);
     panel1Button.on('pointerup', () => {
@@ -65,12 +65,13 @@ export class NewsBoardScene extends Phaser.Scene {
 
     const panel2Button = new Button(
       scene,
-      screenCenterX + 240,
-      screenCenterY - 40,
+      screenCenterX + 210,
+      screenCenterY - 30,
       'panel2',
     )
       .setButtonName('View Details')
       .setTint()
+      .setScale(0.95)
       .setOverTint()
       .setUpTint()
       .setDisabledTint()
@@ -86,12 +87,13 @@ export class NewsBoardScene extends Phaser.Scene {
 
     const panel3Button = new Button(
       scene,
-      screenCenterX + 240,
-      screenCenterY + 200,
+      screenCenterX + 210,
+      screenCenterY + 180,
       'panel3',
     )
       .setButtonName('View Details')
       .setTint()
+      .setScale(0.95)
       .setOverTint()
       .setUpTint()
       .setDisabledTint()
@@ -107,8 +109,8 @@ export class NewsBoardScene extends Phaser.Scene {
 
     const closeButton = new Button(
       scene,
-      screenCenterX + 450,
-      screenCenterY - 330,
+      screenCenterX + 430,
+      screenCenterY - 250,
       'closebutton',
     )
       .setDownTexture('closebutton')
