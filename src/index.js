@@ -7,6 +7,7 @@ import { HabitatHeroesScene } from './scenes/HabitatHeroesScene';
 import { InventoryScene } from './scenes/InventoryScene';
 import { LoginScene } from './scenes/LoginScene';
 import { NewsBoardScene } from './scenes/NewsBoardScene';
+import { PayScene } from './scenes/PayScene';
 import { QuizScene } from './scenes/QuizScene';
 import { SharePageScene } from './scenes/SharePageScene';
 import { ShopScene } from './scenes/ShopScene';
@@ -32,6 +33,7 @@ class Game extends Phaser.Game {
         AdsScene,
         BuildMenuScene,
         DonateScene,
+        PayScene,
         SharePageScene,
         ShopScene,
         InventoryScene,
