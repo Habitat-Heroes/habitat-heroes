@@ -5,8 +5,10 @@ import closebutton from '../assets/game_menu/close_button.png';
 import playbutton from '../assets/video/play_button.png';
 import newsboard from '../assets/video/VideoFull.png';
 import Button from '../objects/Button';
+import {increaseByAmount} from '../reducers/coinsReducer';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
+import store from '../store';
 
 let scene;
 
@@ -57,6 +59,7 @@ export class AdsScene extends Phaser.Scene {
             'pop',
             'width=1200, height=800, scrollbars=no',
           );
+        store.dispatch(increaseByAmount(100));
       });
 
     const closeButton = new Button(
