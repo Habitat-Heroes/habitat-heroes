@@ -1,7 +1,7 @@
 export const QUIZZES = [
   {
     id: 1,
-    question: 'How many countries is Habitat for Humanity currently helping?',
+    question: 'How many countries is Habitat for Humanity\ncurrently helping?',
     options: [
       {
         id: 1,
@@ -28,19 +28,19 @@ export const QUIZZES = [
     options: [
       {
         id: 1,
-        text: 'It removes the barriers to opportunity, success and health',
+        text: 'Removes barriers to\nopportunity',
       },
       {
         id: 2,
-        text: 'It gives a family a strong foundation to build a better life',
+        text: 'Gives a strong foundation\nto a better life',
       },
       {
         id: 3,
-        text: 'It helps the one in ten people who are stuck in extreme poverty',
+        text: 'Helps those stuck\nin extreme poverty',
       },
       {
         id: 4,
-        text: "It's a lucrative business for everyone involved",
+        text: "It's a lucrative business",
       },
     ],
     correctOptionId: 4,
@@ -48,7 +48,7 @@ export const QUIZZES = [
   {
     id: 3,
     question:
-      'Habitat has supported close to how many individuals in the Asia-Pacific Region since 1983?',
+      'Habitat has supported close to how many individuals\n in the Asia-Pacific Region since 1983?',
     options: [
       {
         id: 1,
@@ -76,19 +76,19 @@ export const QUIZZES = [
     options: [
       {
         id: 1,
-        text: 'Raise awareness about the problem and the solutions',
+        text: 'Raise awareness',
       },
       {
         id: 2,
-        text: 'Raise money to provide proper homes',
+        text: 'Raise money',
       },
       {
         id: 3,
-        text: 'Join a build team so that you can get to travel',
+        text: 'Join a build team',
       },
       {
         id: 4,
-        text: 'Spread the word and get the word out',
+        text: 'Rent out your house',
       },
     ],
     correctOptionId: 3,
@@ -96,7 +96,7 @@ export const QUIZZES = [
   {
     id: 5,
     question:
-      "How many families were helped through Habitat's program for the 2004 Indian Ocean tsunami?",
+      "How many families were helped through Habitat's\n program for the 2004 Indian Ocean tsunami?",
     options: [
       {
         id: 1,
@@ -118,3 +118,19 @@ export const QUIZZES = [
     correctOptionId: 1,
   },
 ];
+
+export const getRandomQuiz = (completedQuizzes) => {
+  const incompleteQuizzes = QUIZZES.filter(
+    (q) => !completedQuizzes.includes(q.id),
+  );
+  if (incompleteQuizzes.length === 0) {
+    return null;
+  }
+  return incompleteQuizzes[
+    // Just in case, we do a min
+    Math.min(
+      Math.floor(Math.random() * incompleteQuizzes.length),
+      incompleteQuizzes.length - 1,
+    )
+  ];
+};

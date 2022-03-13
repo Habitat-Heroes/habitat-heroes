@@ -26,6 +26,7 @@ import fivebar from '../assets/loading_bar/5bar.png';
 import trees from '../assets/tree_tiles.png';
 import { Avatar } from '../objects/Avatar';
 import BuildButton from '../objects/BuildButton';
+import Button from '../objects/Button';
 import CoinsButton from '../objects/CoinsButton';
 import InventoryButton from '../objects/InventoryButton';
 import NewsButton from '../objects/NewsButton';
@@ -53,7 +54,10 @@ import {
   TILE_HEIGHT_HALF,
   TILE_WIDTH_HALF,
 } from '../utils/constants';
-import checkInMovableRange, {convertSecondsToText, getRemainingBuildTime} from '../utils/GameUtils';
+import checkInMovableRange, {
+  convertSecondsToText,
+  getRemainingBuildTime,
+} from '../utils/GameUtils';
 import { loadItemSprites } from '../utils/items';
 
 let player;
@@ -219,7 +223,10 @@ export class HabitatHeroesScene extends Phaser.Scene {
   }
 
   update() {
-    if (getRemainingBuildTime(store.getState().houses) > 0 || store.getState().houses.building) {
+    if (
+      getRemainingBuildTime(store.getState().houses) > 0 ||
+      store.getState().houses.building
+    ) {
       this.updateBuilding();
       return;
     }
@@ -513,13 +520,26 @@ export class HabitatHeroesScene extends Phaser.Scene {
   placeHouses() {
     const { houses } = store.getState();
     if (houses.total_house > 0 && getRemainingBuildTime(houses) > 0) {
-      house = scene.add.image(
+      house = new Button(
+        scene,
         HOUSE_STRUCT_IMAGE[0],
         HOUSE_STRUCT_IMAGE[1],
         'buildingstate',
-      );
-      house.scale = 1.2;
-      house.depth = house.y + 110;
+      )
+        .setDownTexture('buildingstate')
+        .setButtonName('Speed up building!')
+        .setScale(1.2)
+        .setDepth(HOUSE_STRUCT_IMAGE[1] + 110)
+        .setUpTint(0xffffff)
+        // .setDownTint(undefined)
+        .setOverTint(0xffffff)
+        .setDisabledTint(0xffffff);
+      // .setUpTint()
+      house.on('pointerup', () => {
+        scene.scene.launch('QuizScene');
+        scene.scene.pause('HabitatHeroesScene');
+      });
+      scene.add.existing(house);
     }
 
     if (houses.total_house > 0 && getRemainingBuildTime(houses) <= 0) {

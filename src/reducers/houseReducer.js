@@ -72,8 +72,12 @@ const houseSlice = createSlice({
         state.building = false;
       }
     },
+    reduceBuildTime: (state) => {
+      state.buildTime = Math.max(state.buildTime - 3 * 60 * 60, 0); // 3 hours
+    },
   },
 });
-export const { updateHouse, resetHouses, updateBuildTime } = houseSlice.actions;
+export const { updateHouse, resetHouses, updateBuildTime, reduceBuildTime } =
+  houseSlice.actions;
 
 export default houseSlice.reducer;

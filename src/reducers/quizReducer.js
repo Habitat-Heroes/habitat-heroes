@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   currentQuizId: null,
   completedQuizzes: [],
+  lastCompletionTime: null,
 };
 
 const quizSlice = createSlice({
@@ -13,8 +14,10 @@ const quizSlice = createSlice({
     setCurrentQuiz: (state, action) => {
       state.currentQuizId = action.payload;
     },
-    completeQuiz: (state, action) => {
-      state.completedQuizzes = [...state.completedQuizzes, action.payload];
+    completeQuiz: (state) => {
+      state.completedQuizzes = [...state.completedQuizzes, state.currentQuizId];
+      state.currentQuizId = null;
+      state.lastCompletionTime = new Date().getTime();
     },
   },
 });

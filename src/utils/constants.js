@@ -90,3 +90,14 @@ export const DEFAULT_SFX_CONFIG = {
   loop: false,
   delay: 0,
 };
+
+export const QUIZ_WELCOME_TEXT = `Answer some questions related to Habitat for Humanity
+to reduce build time by 3 hours!`;
+export const QUIZ_ALREADY_DONE_TEXT =
+  'You have already done a quiz for today!\nTry again tomorrow!';
+export const QUIZ_ALL_COMPLETED =
+  "We're out of quizzes for you! Try again next time!";
+
+export const QUIZ_CORRECT =
+  'Correct! The build time has been reduced by 3 hours.';
+export const QUIZ_WRONG = 'Uh oh! Try again tomorrow!';
