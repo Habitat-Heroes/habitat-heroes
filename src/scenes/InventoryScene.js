@@ -5,7 +5,7 @@ import placebutton from '../assets/game_menu/long_button.png';
 import nextbutton from '../assets/game_menu/next_button.png';
 import prevbutton from '../assets/game_menu/prev_button.png';
 import baseboard from '../assets/game_menu/vertical_baseboard.png';
-import background from '../assets/game_menu/woodboard_no_cblogo.png';
+import background from '../assets/shop/InventoryboardBase.png';
 import Button from '../objects/Button';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
@@ -79,13 +79,6 @@ export class InventoryScene extends Phaser.Scene {
     this.add
       .image(this.screenCenterX, this.screenCenterY + 10, 'background')
       .setScale(0.85);
-
-    this.add.text(514, 100, 'Inventory', {
-      fontFamily: 'Graduate',
-      fontSize: 84,
-      color: '#fff',
-      strokeThickness: 2,
-    });
 
     this.#addCloseButton();
     this.#addNavButtons();
