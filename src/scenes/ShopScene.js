@@ -10,10 +10,13 @@ import background from '../assets/shop/ShopboardBase.png';
 import Button from '../objects/Button';
 import { decreaseByAmount } from '../reducers/coinsReducer';
 import { addToInventory } from '../reducers/inventoryReducer';
+import { updateQuests } from '../reducers/questReducer';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
 import purchase from '../sounds/purchase.mp3';
+import success from '../sounds/success.mp3';
 import store from '../store';
+import { DEFAULT_SFX_CONFIG } from '../utils/constants';
 import ITEMS, { loadItemSprites } from '../utils/items';
 import { modulo } from '../utils/utilFunctions';
 
@@ -37,6 +40,8 @@ export class ShopScene extends Phaser.Scene {
   overSfx;
 
   purchaseSfx;
+
+  successSfx;
 
   // eslint-disable-next-line class-methods-use-this
   selectAmt = (state) => state.coins.amount;
@@ -78,6 +83,7 @@ export class ShopScene extends Phaser.Scene {
     this.load.audio('buttonhover', buttonhover);
     this.load.audio('buttonclick', buttonclick);
     this.load.audio('purchase', purchase);
+    this.load.audio('success', success);
 
     loadItemSprites(this);
 
@@ -91,6 +97,7 @@ export class ShopScene extends Phaser.Scene {
     this.downSfx = this.sound.add('buttonclick');
     this.overSfx = this.sound.add('buttonhover');
     this.purchaseSfx = this.sound.add('purchase');
+    this.successSfx = this.sound.add('success');
 
     this.add
       .image(this.screenCenterX, this.screenCenterY + 10, 'background')
@@ -192,6 +199,10 @@ export class ShopScene extends Phaser.Scene {
       .setDownSfx(this.purchaseSfx)
       .setOverSfx(this.overSfx);
     button.on('pointerup', () => {
+      if (!store.getState().quest.hasPurchasedFromShop) {
+        this.successSfx.play(DEFAULT_SFX_CONFIG);
+        store.dispatch(updateQuests({ hasPurchasedFromShop: true }));
+      }
       store.dispatch(decreaseByAmount(cost));
       store.dispatch(addToInventory({ [itemId]: 1 }));
     });

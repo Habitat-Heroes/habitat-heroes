@@ -4,6 +4,7 @@ import coinsReducer from './coinsReducer';
 import houseReducer from './houseReducer';
 import inventoryReducer from './inventoryReducer';
 import mapItemsReducer from './mapItemsReducer';
+import questReducer from './questReducer';
 import quizReducer from './quizReducer';
 import userReducer from './userReducer';
 
@@ -14,4 +15,5 @@ export const rootReducer = combineReducers({
   houses: houseReducer,
   quiz: quizReducer,
   mapItems: mapItemsReducer,
+  quest: questReducer,
 });
