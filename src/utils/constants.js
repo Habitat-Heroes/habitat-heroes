@@ -77,11 +77,56 @@ export const AVATAR_PANEL_END = [
   AVATAR_PANEL_CENTER[1] + AVATAR_PANEL_SIZE[1] / 2,
 ];
 
-export const THANK_YOU_TEXT =
-  'Thank you for helping to build a house for families in \n' +
-  'Cambodia! 💖 Click on the panel below to learn more\n' +
-  'about the poverty housing situation in Cambodia and' +
-  '\nhow you can help!';
+export const VILLAGER1_COORD = [570, 470];
+export const VILLAGER2_COORD = [490, 500];
+export const VILLAGER3_COORD = [470, 550];
+
+export const VILLAGER_COUNTRIES = {
+  1: 'Myanmar',
+  2: 'Cambodia',
+  3: 'Batam'
+};
+export const URL_MAPPINGS = {
+  1: 'https://www.habitat.org/where-we-build/myanmar',
+  2: 'http://habitatcambodia.org/what-we-build/land-and-housing-advocacy/',
+  3: 'https://www.habitat.org.sg/batam-build'
+};
+export function THANK_YOU_TEXT(villager) {
+  return 'Thank you for helping to build a house for families in \n'.concat(
+    VILLAGER_COUNTRIES[villager],
+    '! 💖 Click on the panel below to learn more\n' +
+    'about the poverty housing situation in ',
+    VILLAGER_COUNTRIES[villager],
+    '\nand how you can help!');
+}
+export const VILLAGER_NAME_MAPPINGS = {
+  1: 'Mr U Thein Naing',
+  2: 'Mr Phlen',
+  3: 'Mr M. Ali Usman Nasution'
+};
+export const VILLAGER1_TEXT = 'The first time I saw you volunteers, I already felt like\n' +
+  'you were part of the family. No words can express my\n' +
+  'happiness. Without you or Habitat, there is no way we\n' +
+  'could afford a strong house.\n\n' +
+  'My favorite part of the build was when we built the\n' +
+  'stairs and the water tank, because I never had those\n' +
+  'before.\n\n' +
+  '- Mr U Thein Naing';
+export const VILLAGER2_TEXT =
+  'Before, we had to run to our neighbor’s house to use\n' +
+  'the toilet, and it was really difficult, especially at night.\n' +
+  'I love every part of my new house.\n\n' +
+  'Without the help of Habitat and the volunteers, I don’t\n' +
+  'think I will be able to save enough money for a proper\n' +
+  'home for my own family.\n\n' +
+  '- Mr Phlen';
+export const VILLAGER3_TEXT =
+  'I used to stare at my children\'s faces once they are all\n' +
+  'asleep, because I can\'t and shouldn\'t fall asleep before\n' +
+  'them to make sure they have enough space to share...\n' +
+  'This is the biggest thing that has ever happened in our\n' +
+  'lives as a family.\n\n' +
+  '- Mr M. Ali Usman Nasution';
 
 export const DEFAULT_SFX_CONFIG = {
   mute: 0,
