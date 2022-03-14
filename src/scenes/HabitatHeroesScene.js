@@ -551,6 +551,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
         .setDepth(HOUSE_STRUCT_IMAGE[1] + 110)
         .setUpTint(0xffffff)
         .setOverTint(0xffffff)
+        .setTint(0xffffff)
         .setDisabledTint(0xffffff);
       house.on('pointerup', () => {
         scene.scene.launch('QuizScene');
