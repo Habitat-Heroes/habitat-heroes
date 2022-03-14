@@ -1,8 +1,9 @@
-import amazonboard from '../assets/shop/amazon_sponsorboard.png';
 import christmastree from '../assets/shop/christmas_tree.png';
 import pavements from '../assets/shop/expensive_tiles.png';
+import goldpartners from '../assets/shop/gold_partners.png';
 import hfhflag from '../assets/shop/HFHflag.png';
 import merlion from '../assets/shop/merlion.png';
+import silverpartners from '../assets/shop/silver_partners.png';
 import torch from '../assets/shop/torch.png';
 import wishingwell from '../assets/shop/wishingwell.png';
 import trees from '../assets/tree_tiles.png';
@@ -21,7 +22,11 @@ export function loadItemSprites(scene) {
     frameWidth: 138,
     frameHeight: 230,
   });
-  scene.load.spritesheet('amazonboard', amazonboard, {
+  scene.load.spritesheet('goldpartners', goldpartners, {
+    frameWidth: 138,
+    frameHeight: 251,
+  });
+  scene.load.spritesheet('silverpartners', silverpartners, {
     frameWidth: 138,
     frameHeight: 251,
   });
@@ -53,10 +58,16 @@ const ITEMS = [
     cost: 100,
   },
   {
-    name: 'Amazon Board',
-    spritesheet: 'amazonboard',
+    name: 'Corporate Partners (Gold)',
+    spritesheet: 'goldpartners',
     frame: 0,
-    cost: 200,
+    cost: 100,
+  },
+  {
+    name: 'Corporate Partners (Silver)',
+    spritesheet: 'silverpartners',
+    frame: 0,
+    cost: 100,
   },
   {
     name: 'Christmas Tree',
