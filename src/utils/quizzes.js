@@ -117,6 +117,52 @@ export const QUIZZES = [
     ],
     correctOptionId: 1,
   },
+  {
+    id: 6,
+    question: 'How many families were served in Singapore?',
+    options: [
+      {
+        id: 1,
+        text: '3 thousand',
+      },
+      {
+        id: 2,
+        text: '2 thousand',
+      },
+      {
+        id: 3,
+        text: '5 hundred',
+      },
+      {
+        id: 4,
+        text: '1 thousand',
+      },
+    ],
+    correctOptionId: 1,
+  },
+  {
+    id: 7,
+    question: 'What is BlockWalk about?',
+    options: [
+      {
+        id: 1,
+        text: 'Sewing blankets for\nlow-income families',
+      },
+      {
+        id: 2,
+        text: 'Cleaning up your\nneighbourhood',
+      },
+      {
+        id: 3,
+        text: 'Painting houses',
+      },
+      {
+        id: 4,
+        text: 'Exterminating pests',
+      },
+    ],
+    correctOptionId: 2,
+  },
 ];
 
 export const getRandomQuiz = (completedQuizzes) => {
