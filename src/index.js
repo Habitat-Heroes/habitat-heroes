@@ -11,6 +11,7 @@ import { QuizScene } from './scenes/QuizScene';
 import { SharePageScene } from './scenes/SharePageScene';
 import { ShopScene } from './scenes/ShopScene';
 import { ThankYouScene } from './scenes/ThankYouScene';
+import {VillagerConversationScene} from './scenes/VillagerConversationScene';
 
 class Game extends Phaser.Game {
   constructor() {
@@ -37,6 +38,7 @@ class Game extends Phaser.Game {
         ThankYouScene,
         QuizScene,
         QuestScene,
+        VillagerConversationScene
       ],
       banner: {
         hidePhaser: true,

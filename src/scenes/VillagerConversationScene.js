@@ -1,28 +1,26 @@
 import Phaser from 'phaser';
 
-import panel from '../assets/build_menu/GratitudeBoard_NewsButton.png';
 import gratitudeboard from '../assets/build_menu/GratitudeBoardBase.png';
 import closebutton from '../assets/game_menu/close_button.png';
 import Button from '../objects/Button';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
-import {THANK_YOU_TEXT, URL_MAPPINGS} from '../utils/constants';
+import {THANK_YOU_TEXT, VILLAGER1_TEXT, VILLAGER2_TEXT, VILLAGER3_TEXT} from '../utils/constants';
 
 let scene;
 
 let screenCenterX;
 let screenCenterY;
 
-export class ThankYouScene extends Phaser.Scene {
+export class VillagerConversationScene extends Phaser.Scene {
   constructor() {
     super({
-      key: 'ThankYouScene',
+      key: 'VillagerConversationScene',
     });
   }
 
   preload() {
     this.load.image('gratitudeboard', gratitudeboard);
-    this.load.image('panel', panel);
     this.load.image('closebutton', closebutton);
     this.load.audio('buttonhover', buttonhover);
     this.load.audio('buttonclick', buttonclick);
@@ -33,14 +31,23 @@ export class ThankYouScene extends Phaser.Scene {
 
   create(data) {
     scene = this;
-    const {villager} = data;
     const downSfx = this.sound.add('buttonclick');
     const overSfx = this.sound.add('buttonhover');
 
-    const text = THANK_YOU_TEXT(villager);
     scene.add
       .image(screenCenterX, screenCenterY + 10, 'gratitudeboard')
       .setScale(0.8);
+
+    const { villager } = data;
+    let text = THANK_YOU_TEXT(villager);
+    if (villager === 1) {
+      text = VILLAGER1_TEXT;
+    } else if (villager === 2) {
+      text = VILLAGER2_TEXT;
+    } else if (villager === 3) {
+      text = VILLAGER3_TEXT;
+    }
+
     const thankYouText = scene.add
       .text(screenCenterX - 320, screenCenterY - 130, text, {
         fontFamily: 'Quicksand',
@@ -51,28 +58,6 @@ export class ThankYouScene extends Phaser.Scene {
         strokeThickness: 1,
       })
       .setDepth(850);
-
-    const panelButton = new Button(
-      scene,
-      screenCenterX,
-      screenCenterY + 150,
-      'panel',
-    )
-      .setButtonName('Learn More')
-      .setScale(0.6)
-      .setTint()
-      .setOverTint()
-      .setUpTint()
-      .setDisabledTint()
-      .setDownSfx(downSfx)
-      .setOverSfx(overSfx);
-    panelButton.on('pointerup', () => {
-      window.open(
-        URL_MAPPINGS[villager],
-        'pop',
-        'width=1200, height=800, scrollbars=no',
-      );
-    });
 
     const closeButton = new Button(
       scene,
@@ -86,11 +71,10 @@ export class ThankYouScene extends Phaser.Scene {
       .setDownSfx(downSfx)
       .setOverSfx(overSfx);
     closeButton.on('pointerup', () => {
-      this.scene.stop('ThankYouScene');
+      this.scene.stop('VillagerConversationScene');
       this.scene.resume('HabitatHeroesScene');
     });
 
-    scene.add.existing(panelButton);
     scene.add.existing(closeButton);
     scene.add.existing(thankYouText);
   }
