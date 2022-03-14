@@ -240,12 +240,17 @@ export class HabitatHeroesScene extends Phaser.Scene {
       this.input.on('pointermove', placingItemFn);
 
       this.input.once('pointerup', () => {
-        placingItemImage.setAlpha(1).setDepth(pointer.y + 110);
+        let depth = pointer.y + 110;
+        if (spritesheet === 'pavements') {
+          depth -= 90;
+        }
+
+        placingItemImage.setAlpha(1).setDepth(depth);
         this.input.off('pointermove', placingItemFn);
         store.dispatch(
           addToMap({
             coordinates: [pointer.x, pointer.y],
-            depth: pointer.y + 110,
+            depth,
             spritesheet,
             frame,
           }),
