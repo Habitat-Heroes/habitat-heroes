@@ -1,5 +1,7 @@
 # Habitat Heroes
 
+> Note: The current house building time and quiz reset time have been shortened for the purpose of allowing users to try out more features in the MVP.
+
 ## What it does
 
 Habitat Heroes is a virtual house-building game that mirrors the experience of physical volunteering programmes. There are 6 main features that the game supports:
@@ -70,7 +72,7 @@ const handleNameChange = () => {
   if (previousName !== currentName) {
     // Handle name change
   }
-}
+};
 
 const unsubscribeToNameChanges = store.subscribe(handleNameChange);
 unsubscribeToNameChanges(); // to unsubscribe

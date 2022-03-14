@@ -141,7 +141,8 @@ export class QuizScene extends Phaser.Scene {
       return false;
     }
     const currentTime = new Date();
-    return currentTime.getTime() - lastCompletionTime < 1000 * 60 * 60 * 24;
+    // return currentTime.getTime() - lastCompletionTime < 1000 * 60 * 60 * 24;
+    return currentTime.getTime() - lastCompletionTime < 1000 * 60; // Original timing: 1 day
   }
 
   showIntro() {
