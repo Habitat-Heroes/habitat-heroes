@@ -1,5 +1,18 @@
 # Habitat Heroes
 
+<p align="center"><a href="https://youtu.be/iKUKB8h2ZDU"><img width="65%" alt="Habitat Heroes Demo" src="https://img.youtube.com/vi/iKUKB8h2ZDU/maxresdefault.jpg"></img></a></p>
+
+## What it does
+
+Habitat Heroes is a virtual house-building game that mirrors the experience of physical volunteering programmes. There are 6 main features that the game supports:
+
+1. Simulate a virtual house building experience
+2. Update players on news & latest events
+3. Quiz players on housing issues
+4. Provide daily quest challenges
+5. Allow sharing of game experience on social media
+6. Allow donations via purchasing in-game currency
+
 ## Requirements
 
 [Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
