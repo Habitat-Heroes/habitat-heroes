@@ -54,7 +54,7 @@ export class DonateScene extends Phaser.Scene {
             screenCenterY + 40,
             'd1',
         )
-            .setButtonName('Donate SGD1')
+            .setButtonName('Donate SGD 1')
             .setTint()
             .setScale(0.8)
             .setOverTint()
@@ -69,10 +69,10 @@ export class DonateScene extends Phaser.Scene {
 
         const d5Button = new Button(
             scene,
-            screenCenterX + 135, screenCenterY + 40, 
+            screenCenterX + 135, screenCenterY + 40,
             'd5',
         )
-            .setButtonName('Donate SGD5')
+            .setButtonName('Donate SGD 5')
             .setTint()
             .setScale(0.8)
             .setOverTint()
@@ -90,7 +90,7 @@ export class DonateScene extends Phaser.Scene {
             screenCenterX - 120, screenCenterY + 215,
             'd10',
         )
-            .setButtonName('Donate SGD10')
+            .setButtonName('Donate SGD 10')
             .setTint()
             .setScale(0.8)
             .setOverTint()
@@ -108,7 +108,7 @@ export class DonateScene extends Phaser.Scene {
             screenCenterX + 135, screenCenterY + 215,
             'd20',
         )
-            .setButtonName('Donate SGD20')
+            .setButtonName('Donate SGD 20')
             .setTint()
             .setScale(0.8)
             .setOverTint()
@@ -123,7 +123,7 @@ export class DonateScene extends Phaser.Scene {
 
         const closeButton = new Button(
             scene,
-            screenCenterX + 338,
+            screenCenterX + 280,
             screenCenterY - 250,
             'closebutton',
         )
