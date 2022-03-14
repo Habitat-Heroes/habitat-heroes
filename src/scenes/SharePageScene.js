@@ -10,8 +10,12 @@ import telebutton from '../assets/social_media/TelegramButton.png';
 import twibutton from '../assets/social_media/TwitterButton.png';
 import whatsbutton from '../assets/social_media/WhatsappButton.png';
 import Button from '../objects/Button';
+import { updateQuests } from '../reducers/questReducer';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
+import success from '../sounds/success.mp3';
+import store from '../store';
+import { DEFAULT_SFX_CONFIG } from '../utils/constants';
 
 let scene;
 
@@ -37,6 +41,7 @@ export class SharePageScene extends Phaser.Scene {
     this.load.image('closebutton', closebutton);
     this.load.audio('buttonhover', buttonhover);
     this.load.audio('buttonclick', buttonclick);
+    this.load.audio('success', success);
     screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
     screenCenterY =
       this.cameras.main.worldView.y + this.cameras.main.height / 2;
@@ -46,6 +51,7 @@ export class SharePageScene extends Phaser.Scene {
     scene = this;
     const downSfx = this.sound.add('buttonclick');
     const overSfx = this.sound.add('buttonhover');
+    const successSfx = this.sound.add('success');
     scene.add
       .image(screenCenterX, screenCenterY + 10, 'shareboard')
       .setScale(0.8);
@@ -70,6 +76,10 @@ export class SharePageScene extends Phaser.Scene {
       .setDownSfx(downSfx)
       .setOverSfx(overSfx);
     fbButton.on('pointerup', () => {
+      if (!store.getState().quest.hasSharedOnSocialMedia) {
+        successSfx.play(DEFAULT_SFX_CONFIG);
+        store.dispatch(updateQuests({ hasSharedOnSocialMedia: true }));
+      }
       window.open(
         'https://www.facebook.com/sharer/sharer.php?u=https://ibb.co/brg0qtD',
         'pop',
@@ -94,6 +104,10 @@ export class SharePageScene extends Phaser.Scene {
       .setDownSfx(downSfx)
       .setOverSfx(overSfx);
     insButton.on('pointerup', () => {
+      if (!store.getState().quest.hasSharedOnSocialMedia) {
+        successSfx.play(DEFAULT_SFX_CONFIG);
+        store.dispatch(updateQuests({ hasSharedOnSocialMedia: true }));
+      }
       window.open(
         'https://www.instagram.com/?url=https://www.drdrop.co/',
         'pop',
@@ -118,6 +132,10 @@ export class SharePageScene extends Phaser.Scene {
       .setDownSfx(downSfx)
       .setOverSfx(overSfx);
     teleButton.on('pointerup', () => {
+      if (!store.getState().quest.hasSharedOnSocialMedia) {
+        successSfx.play(DEFAULT_SFX_CONFIG);
+        store.dispatch(updateQuests({ hasSharedOnSocialMedia: true }));
+      }
       window.open(
         'https://t.me/share/url?url=https://ibb.co/brg0qtD&text=Join me to build houses at Habitat Heroes!',
         'pop',
@@ -142,6 +160,10 @@ export class SharePageScene extends Phaser.Scene {
       .setDownSfx(downSfx)
       .setOverSfx(overSfx);
     twiButton.on('pointerup', () => {
+      if (!store.getState().quest.hasSharedOnSocialMedia) {
+        successSfx.play(DEFAULT_SFX_CONFIG);
+        store.dispatch(updateQuests({ hasSharedOnSocialMedia: true }));
+      }
       window.open(
         'https://twitter.com/intent/tweet?text=Join me to build houses at Habitat Heroes!',
         'pop',
@@ -166,6 +188,10 @@ export class SharePageScene extends Phaser.Scene {
       .setDownSfx(downSfx)
       .setOverSfx(overSfx);
     whatsButton.on('pointerup', () => {
+      if (!store.getState().quest.hasSharedOnSocialMedia) {
+        successSfx.play(DEFAULT_SFX_CONFIG);
+        store.dispatch(updateQuests({ hasSharedOnSocialMedia: true }));
+      }
       window.open(
         'https://wa.me/?text=https://ibb.co/brg0qtD',
         'pop',

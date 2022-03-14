@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 
 import closebutton from '../assets/game_menu/close_button.png';
 import newsboard from '../assets/newsboard/NewsboardBase.png';
-import panel1 from '../assets/newsboard/NewsPanelAmazon.png';
 import panel2 from '../assets/newsboard/NewsPanelCityBank.png';
+import panel1 from '../assets/newsboard/NewsPanelThrivent.png';
 import panel3 from '../assets/newsboard/NewsPanelZillow.png';
 import Button from '../objects/Button';
 import buttonclick from '../sounds/buttonclick.mp3';
@@ -57,7 +57,7 @@ export class NewsBoardScene extends Phaser.Scene {
       .setOverSfx(overSfx);
     panel1Button.on('pointerup', () => {
       window.open(
-        'https://www.mpamag.com/us/specialty/commercial/amazon-makes-100-million-investment-in-new-affordable-housing/258109',
+        'https://www.habitat.org/volunteer/group-opportunities/habitat-thrivent',
         'pop',
         'width=1200, height=800, scrollbars=no',
       );

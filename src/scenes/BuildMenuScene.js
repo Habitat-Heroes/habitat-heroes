@@ -13,9 +13,13 @@ import {
   updateHouse,
   UserAction,
 } from '../reducers/houseReducer';
+import { updateQuests } from '../reducers/questReducer';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
+import purchase from '../sounds/purchase.mp3';
+import success from '../sounds/success.mp3';
 import store from '../store';
+import { DEFAULT_SFX_CONFIG } from '../utils/constants';
 
 let scene;
 
@@ -40,12 +44,16 @@ export class BuildMenuScene extends Phaser.Scene {
       this.cameras.main.worldView.y + this.cameras.main.height / 2;
     this.load.audio('buttonhover', buttonhover);
     this.load.audio('buttonclick', buttonclick);
+    this.load.audio('purchase', purchase);
+    this.load.audio('success', success);
   }
 
   create() {
     scene = this;
     const downSfx = this.sound.add('buttonclick');
     const overSfx = this.sound.add('buttonhover');
+    const purchaseSfx = this.sound.add('purchase');
+    const successSfx = this.sound.add('success');
     const { houses } = store.getState();
 
     scene.add
@@ -61,7 +69,7 @@ export class BuildMenuScene extends Phaser.Scene {
       .setButtonName('Build Basic Hut')
       .setDepth(100)
       .setScale(0.8)
-      .setDownSfx(downSfx)
+      .setDownSfx(purchaseSfx)
       .setOverSfx(overSfx);
     buildBasicHutButton.on('pointerup', () => {
       if (houses.total_house === 0) {
@@ -71,12 +79,19 @@ export class BuildMenuScene extends Phaser.Scene {
             userAction: UserAction.build,
           }),
         );
+        if (!store.getState().quest.hasBuiltHouse) {
+          successSfx.play(DEFAULT_SFX_CONFIG);
+          store.dispatch(updateQuests({ hasBuiltHouse: true }));
+        }
         this.scene.get('HabitatHeroesScene').placeHouses();
         this.scene.stop('BuildMenuScene');
         this.scene.resume('HabitatHeroesScene');
       }
     });
-    if (!(houses.basic_hut === 0 && houses.total_house === 0) || houses.building) {
+    if (
+      !(houses.basic_hut === 0 && houses.total_house === 0) ||
+      houses.building
+    ) {
       buildBasicHutButton.setDisabled(true);
     }
 
@@ -89,7 +104,7 @@ export class BuildMenuScene extends Phaser.Scene {
       .setDownTexture('freebutton')
       .setButtonName('Build Brick House')
       .setScale(0.8)
-      .setDownSfx(downSfx)
+      .setDownSfx(purchaseSfx)
       .setOverSfx(overSfx);
     buildBrickHouseButton.on('pointerup', () => {
       if (houses.total_house === 1 && houses.basic_hut === 1) {
@@ -100,6 +115,10 @@ export class BuildMenuScene extends Phaser.Scene {
             upgradeHouseType: HouseType.brick_house,
           }),
         );
+        if (!store.getState().quest.hasBuiltHouse) {
+          successSfx.play(DEFAULT_SFX_CONFIG);
+          store.dispatch(updateQuests({ hasBuiltHouse: true }));
+        }
         this.scene.get('HabitatHeroesScene').removeHouse();
         this.scene.get('HabitatHeroesScene').placeHouses();
         this.scene.stop('BuildMenuScene');
@@ -119,7 +138,7 @@ export class BuildMenuScene extends Phaser.Scene {
       .setDownTexture('purchasebutton')
       .setButtonName('Build Concrete House')
       .setScale(0.8)
-      .setDownSfx(downSfx)
+      .setDownSfx(purchaseSfx)
       .setOverSfx(overSfx);
     buildConcreteHouseButton.on('pointerup', () => {
       if (
@@ -135,13 +154,21 @@ export class BuildMenuScene extends Phaser.Scene {
             upgradeHouseType: HouseType.concrete_house,
           }),
         );
+        if (!store.getState().quest.hasBuiltHouse) {
+          successSfx.play(DEFAULT_SFX_CONFIG);
+          store.dispatch(updateQuests({ hasBuiltHouse: true }));
+        }
         this.scene.get('HabitatHeroesScene').removeHouse();
         this.scene.get('HabitatHeroesScene').placeHouses();
         this.scene.stop('BuildMenuScene');
         this.scene.resume('HabitatHeroesScene');
       }
     });
-    if (houses.brick_house === 0 || houses.building || store.getState().coins.amount < 5000) {
+    if (
+      houses.brick_house === 0 ||
+      houses.building ||
+      store.getState().coins.amount < 5000
+    ) {
       buildConcreteHouseButton.setDisabled(true);
     }
 
