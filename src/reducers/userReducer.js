@@ -13,9 +13,12 @@ const userSlice = createSlice({
     setName: (state, action) => {
       state.name = action.payload;
     },
+    addDonation: (state, action) => {
+      state.donations += action.payload;
+    },
   },
 });
 
-export const { setName } = userSlice.actions;
+export const { setName, addDonation } = userSlice.actions;
 
 export default userSlice.reducer;

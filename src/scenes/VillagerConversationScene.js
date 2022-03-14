@@ -5,7 +5,12 @@ import closebutton from '../assets/game_menu/close_button.png';
 import Button from '../objects/Button';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
-import {THANK_YOU_TEXT, VILLAGER1_TEXT, VILLAGER2_TEXT, VILLAGER3_TEXT} from '../utils/constants';
+import {
+  THANK_YOU_TEXT,
+  VILLAGER1_TEXT,
+  VILLAGER2_TEXT,
+  VILLAGER3_TEXT,
+} from '../utils/constants';
 
 let scene;
 

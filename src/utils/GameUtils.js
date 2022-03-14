@@ -22,18 +22,18 @@ export function getRemainingBuildTime(houses) {
 }
 
 export function convertSecondsToText(time) {
-    const secNum = parseInt(time, 10);
-    const hours   = Math.floor(secNum / 3600);
-    const minutes = Math.floor((secNum - (hours * 3600)) / 60);
-    const seconds = secNum - (hours * 3600) - (minutes * 60);
+  const secNum = parseInt(time, 10);
+  const hours = Math.floor(secNum / 3600);
+  const minutes = Math.floor((secNum - hours * 3600) / 60);
+  const seconds = secNum - hours * 3600 - minutes * 60;
 
-    if (hours > 0) {
-      return `${hours  } hr ${ minutes } min ${ seconds  } s`;
-    } if (minutes > 0) {
-      return `        ${  minutes  } min ${ seconds  } s`;
-    } 
-      return `             ${  seconds  } s`;
-    
+  if (hours > 0) {
+    return `${hours} hr ${minutes} min ${seconds} s`;
+  }
+  if (minutes > 0) {
+    return `        ${minutes} min ${seconds} s`;
+  }
+  return `             ${seconds} s`;
 }
 
 export default function checkInMovableRange(x, y) {

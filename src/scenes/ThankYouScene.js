@@ -6,7 +6,7 @@ import closebutton from '../assets/game_menu/close_button.png';
 import Button from '../objects/Button';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
-import {THANK_YOU_TEXT, URL_MAPPINGS} from '../utils/constants';
+import { THANK_YOU_TEXT, URL_MAPPINGS } from '../utils/constants';
 
 let scene;
 
@@ -33,7 +33,7 @@ export class ThankYouScene extends Phaser.Scene {
 
   create(data) {
     scene = this;
-    const {villager} = data;
+    const { villager } = data;
     const downSfx = this.sound.add('buttonclick');
     const overSfx = this.sound.add('buttonhover');
 

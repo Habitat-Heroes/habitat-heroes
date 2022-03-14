@@ -33,9 +33,8 @@ export default function CoinsButton(scene, downSfx, overSfx) {
     .setDownSfx(downSfx)
     .setOverSfx(overSfx)
     .setOnDownCallback(() => {
-        // store.dispatch(increaseByAmount(300));
-        scene.scene.launch('DonateScene');
-        scene.scene.pause('HabitatHeroesScene');
+      scene.scene.launch('DonateScene');
+      scene.scene.pause('HabitatHeroesScene');
     });
 
   textObj = scene.add

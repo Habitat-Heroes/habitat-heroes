@@ -39,7 +39,9 @@ export class NewsBoardScene extends Phaser.Scene {
     const downSfx = this.sound.add('buttonclick');
     const overSfx = this.sound.add('buttonhover');
 
-    scene.add.image(screenCenterX, screenCenterY + 10, 'newsboard').setScale(0.9);
+    scene.add
+      .image(screenCenterX, screenCenterY + 10, 'newsboard')
+      .setScale(0.9);
 
     const panel1Button = new Button(
       scene,

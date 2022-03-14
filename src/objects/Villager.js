@@ -1,11 +1,16 @@
-import {VILLAGER_NAME_MAPPINGS,VILLAGER1_COORD, VILLAGER2_COORD, VILLAGER3_COORD} from '../utils/constants';
+import {
+  VILLAGER_NAME_MAPPINGS,
+  VILLAGER1_COORD,
+  VILLAGER2_COORD,
+  VILLAGER3_COORD,
+} from '../utils/constants';
 
 import Button from './Button';
 
 export default function Villager(scene, villagerIdx, downSfx, overSfx) {
   let x;
   let y;
-  switch(villagerIdx) {
+  switch (villagerIdx) {
     case 1:
       [x, y] = VILLAGER1_COORD;
       break;
@@ -18,11 +23,11 @@ export default function Villager(scene, villagerIdx, downSfx, overSfx) {
     default:
       break;
   }
-  const villager = new Button(scene, x, y, `villager${  villagerIdx}`)
+  const villager = new Button(scene, x, y, `villager${villagerIdx}`)
     .setDepth(y + 100)
     .setScale(2)
-    .setDownTexture(`villager${  villagerIdx}`)
-    .setButtonName(`Talk to ${  VILLAGER_NAME_MAPPINGS[villagerIdx]}`)
+    .setDownTexture(`villager${villagerIdx}`)
+    .setButtonName(`Talk to ${VILLAGER_NAME_MAPPINGS[villagerIdx]}`)
     .setUpTint(0xffffff)
     .setDownTint(0xffffff)
     .setOverTint(0xffffff)
@@ -31,8 +36,10 @@ export default function Villager(scene, villagerIdx, downSfx, overSfx) {
     .setDownSfx(downSfx)
     .setOverSfx(overSfx)
     .setOnDownCallback(() => {
-    scene.scene.launch('VillagerConversationScene', {villager: villagerIdx});
-    scene.scene.pause('HabitatHeroesScene');
+      scene.scene.launch('VillagerConversationScene', {
+        villager: villagerIdx,
+      });
+      scene.scene.pause('HabitatHeroesScene');
     });
   return villager;
 }

@@ -1,8 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-};
+const initialState = {};
 
 const mapItemsSlice = createSlice({
   name: 'mapItems',
@@ -15,7 +14,7 @@ const mapItemsSlice = createSlice({
         coordinates: action.payload.coordinates,
         depth: action.payload.depth,
         spritesheet: action.payload.spritesheet,
-        frame: action.payload.frame
+        frame: action.payload.frame,
       };
     },
   },
