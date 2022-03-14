@@ -74,7 +74,12 @@ export class PayScene1 extends Phaser.Scene {
             .setOverSfx(overSfx);
         pay1Button.on('pointerup', () => {
             this.scene.stop('PayScene1');
-            this.scene.resume('DonateScene');
+            this.scene.launch('PaySuccess');
+            // this.scene.resume('DonateScene');
+            // store.dispatch(increaseByAmount(10000));
+            // this.scene.pause('PayScene1');
+            // this.scene.launch('PaySuccess');
+
             store.dispatch(increaseByAmount(1000));
 
             textObj = scene.add
@@ -87,6 +92,10 @@ export class PayScene1 extends Phaser.Scene {
                 })
                 .setShadow(2, 2, '#333333', 2, false, true);
             textObj.depth = 850;
+            
+            
+            // this.scene.resume('DonateScene');
+            
         });
 
         const crossButton = new Button(
