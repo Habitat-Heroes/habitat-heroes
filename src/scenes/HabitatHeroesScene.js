@@ -386,7 +386,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
       buildTimerBarImage.scale = 0.4;
       currentBuildTimerBar = buildTimerBar;
     } else {
-      if (buildTimerBar != null) {
+      if (buildTimerBarImage != null) {
         buildTimerBarImage.destroy();
       }
       currentBuildTimerBar = buildTimerBar;
