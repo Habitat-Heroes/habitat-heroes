@@ -6,6 +6,7 @@ import { HabitatHeroesScene } from './scenes/HabitatHeroesScene';
 import { InventoryScene } from './scenes/InventoryScene';
 import { LoginScene } from './scenes/LoginScene';
 import { NewsBoardScene } from './scenes/NewsBoardScene';
+import { QuestScene } from './scenes/QuestScene';
 import { QuizScene } from './scenes/QuizScene';
 import { SharePageScene } from './scenes/SharePageScene';
 import { ShopScene } from './scenes/ShopScene';
@@ -35,6 +36,7 @@ class Game extends Phaser.Game {
         InventoryScene,
         ThankYouScene,
         QuizScene,
+        QuestScene,
       ],
       banner: {
         hidePhaser: true,
