@@ -3,9 +3,9 @@ import Phaser from 'phaser';
 import sharenewsbutton from '../assets/build_menu/GratitudeBoard_NewsButton.png';
 import closebutton from '../assets/game_menu/close_button.png';
 import shareboard from '../assets/game_menu/woodboard.png';
+import photo from '../assets/social_media/demo_house.png';
 import fbbutton from '../assets/social_media/FacebookButton.png';
 import insbutton from '../assets/social_media/InstagramButton.png';
-import photo from '../assets/social_media/My_Large_House_At_HarbitatHeroes.png';
 import telebutton from '../assets/social_media/TelegramButton.png';
 import twibutton from '../assets/social_media/TwitterButton.png';
 import whatsbutton from '../assets/social_media/WhatsappButton.png';
@@ -58,7 +58,7 @@ export class SharePageScene extends Phaser.Scene {
     scene.add
       .image(screenCenterX, screenCenterY - 40, 'sharenewsbutton')
       .setDisplaySize(600, 300); // setScale(0.9);
-    scene.add.image(screenCenterX, screenCenterY - 40, 'photo').setScale(0.8); // .setDisplaySize(600, 300)
+    scene.add.image(screenCenterX, screenCenterY - 40, 'photo').setScale(0.28); // .setDisplaySize(600, 300)
     const fbButton = new Button(
       scene,
       screenCenterX - 240,
@@ -81,7 +81,7 @@ export class SharePageScene extends Phaser.Scene {
         store.dispatch(updateQuests({ hasSharedOnSocialMedia: true }));
       }
       window.open(
-        'https://www.facebook.com/sharer/sharer.php?u=https://ibb.co/brg0qtD',
+        'https://www.facebook.com/sharer/sharer.php?u=https://habitatheroes.web.app/',
         'pop',
         'width=600, height=400, scrollbars=no',
       );
@@ -137,7 +137,7 @@ export class SharePageScene extends Phaser.Scene {
         store.dispatch(updateQuests({ hasSharedOnSocialMedia: true }));
       }
       window.open(
-        'https://t.me/share/url?url=https://ibb.co/brg0qtD&text=Join me to build houses at Habitat Heroes!',
+        'https://t.me/share/url?url=https://habitatheroes.web.app/&text=Join me to build houses at Habitat Heroes!',
         'pop',
         'width=600, height=400, scrollbars=no',
       );
@@ -165,7 +165,7 @@ export class SharePageScene extends Phaser.Scene {
         store.dispatch(updateQuests({ hasSharedOnSocialMedia: true }));
       }
       window.open(
-        'https://twitter.com/intent/tweet?text=Join me to build houses at Habitat Heroes!',
+        'https://twitter.com/intent/tweet?text=Join me to build houses at Habitat Heroes! at https://habitatheroes.web.app/',
         'pop',
         'width=600, height=400, scrollbars=no',
       );
@@ -193,7 +193,7 @@ export class SharePageScene extends Phaser.Scene {
         store.dispatch(updateQuests({ hasSharedOnSocialMedia: true }));
       }
       window.open(
-        'https://wa.me/?text=https://ibb.co/brg0qtD',
+        'https://wa.me/?text=Join me at Habitat Heroes to build your own house! https://habitatheroes.web.app/',
         'pop',
         'width=600, height=400, scrollbars=no',
       );
