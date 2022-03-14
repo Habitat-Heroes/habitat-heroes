@@ -323,7 +323,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
         100,
         () => {
           this.placeHouses();
-          scene.scene.launch('ThankYouScene', {villager: villagerIdx});
+          scene.scene.launch('ThankYouScene', { villager: villagerIdx });
           scene.scene.pause('HabitatHeroesScene');
           this.rewardSfx.play(DEFAULT_SFX_CONFIG);
         },
@@ -607,7 +607,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
       scene.add.existing(villager);
 
       if (houses.building) {
-        scene.scene.launch('ThankYouScene', {villager: villagerIdx});
+        scene.scene.launch('ThankYouScene', { villager: villagerIdx });
         scene.scene.pause('HabitatHeroesScene');
         this.rewardSfx.play(DEFAULT_SFX_CONFIG);
         store.dispatch(updateBuildTime());
