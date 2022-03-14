@@ -45,6 +45,7 @@ import footstep from '../sounds/footstep.mp3';
 import mainbgm from '../sounds/mainbgm.mp3';
 import openmenu from '../sounds/openmenu.mp3';
 import reward from '../sounds/reward.mp3';
+import thud from '../sounds/thud.mp3';
 import store from '../store';
 import {
   AVATAR_PANEL_CENTER,
@@ -147,6 +148,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     this.load.audio('building', building);
     this.load.audio('reward', reward);
     this.load.audio('openmenu', openmenu);
+    this.load.audio('thud', thud);
     loadItemSprites(this);
   }
 
@@ -163,6 +165,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     const overSfx = this.sound.add('buttonhover');
     const openMenuSfx = this.sound.add('openmenu');
     const footstepSfx = this.sound.add('footstep');
+    const thudSfx = this.sound.add('thud');
     this.buildingSfx = this.sound.add('building');
     this.rewardSfx = this.sound.add('reward');
 
@@ -237,6 +240,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
           }),
         );
         store.dispatch(removeFromInventory({ [itemId]: 1 }));
+        thudSfx.play(DEFAULT_SFX_CONFIG);
       });
     });
   }
