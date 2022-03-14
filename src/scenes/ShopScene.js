@@ -5,8 +5,8 @@ import closebutton from '../assets/game_menu/close_button.png';
 import buybutton from '../assets/game_menu/long_button.png';
 import nextbutton from '../assets/game_menu/next_button.png';
 import prevbutton from '../assets/game_menu/prev_button.png';
-import baseboard from '../assets/game_menu/vertical_baseboard.png';
-import background from '../assets/shop/ShopboardBase.png';
+import shopbaseboard from '../assets/game_menu/vertical_baseboard.png';
+import shopboard from '../assets/shop/ShopboardBase.png';
 import Button from '../objects/Button';
 import { decreaseByAmount } from '../reducers/coinsReducer';
 import { addToInventory } from '../reducers/inventoryReducer';
@@ -73,11 +73,11 @@ export class ShopScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('background', background);
+    this.load.image('shopboard', shopboard);
     this.load.image('closebutton', closebutton);
     this.load.image('prevbutton', prevbutton);
     this.load.image('nextbutton', nextbutton);
-    this.load.image('baseboard', baseboard);
+    this.load.image('shopbaseboard', shopbaseboard);
     this.load.image('buybutton', buybutton);
     this.load.image('coinimage', coinimage);
     this.load.audio('buttonhover', buttonhover);
@@ -100,7 +100,7 @@ export class ShopScene extends Phaser.Scene {
     this.successSfx = this.sound.add('success');
 
     this.add
-      .image(this.screenCenterX, this.screenCenterY + 10, 'background')
+      .image(this.screenCenterX, this.screenCenterY + 10, 'shopboard')
       .setScale(0.85);
 
     this.#addCloseButton();
@@ -171,7 +171,7 @@ export class ShopScene extends Phaser.Scene {
   #addPanel(panelIdx, x, itemId) {
     const { name, spritesheet, frame, cost } = ITEMS[itemId];
     const y = 465;
-    const panel = this.add.image(x, y, 'baseboard');
+    const panel = this.add.image(x, y, 'shopbaseboard');
     panel.scale = 0.8;
 
     const itemName = this.add.text(x, y - 150, name, {

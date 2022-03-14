@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import panel from '../assets/build_menu/GratitudeBoard_NewsButton.png';
+import gratitudenewsbutton from '../assets/build_menu/GratitudeBoard_NewsButton.png';
 import gratitudeboard from '../assets/build_menu/GratitudeBoardBase.png';
 import closebutton from '../assets/game_menu/close_button.png';
 import Button from '../objects/Button';
@@ -22,7 +22,7 @@ export class ThankYouScene extends Phaser.Scene {
 
   preload() {
     this.load.image('gratitudeboard', gratitudeboard);
-    this.load.image('panel', panel);
+    this.load.image('gratitudenewbutton', gratitudenewsbutton);
     this.load.image('closebutton', closebutton);
     this.load.audio('buttonhover', buttonhover);
     this.load.audio('buttonclick', buttonclick);
@@ -54,7 +54,7 @@ export class ThankYouScene extends Phaser.Scene {
       scene,
       screenCenterX,
       screenCenterY + 150,
-      'panel',
+      'gratitudenewbutton',
     )
       .setButtonName('Learn More')
       .setScale(0.6)
