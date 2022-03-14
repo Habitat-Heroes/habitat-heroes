@@ -8,24 +8,6 @@ import { increaseByAmount } from '../../reducers/coinsReducer';
 import buttonclick from '../../sounds/buttonclick.mp3';
 import buttonhover from '../../sounds/buttonhover.mp3';
 import store from '../../store';
-import { COINS_BUTTON_CENTER } from '../../utils/constants';
-
-let textObj;
-
-const selectAmt = (state) => state.coins.amount;
-
-let currentAmt = selectAmt(store.getState());
-
-const handleAmtChange = () => {
-    const previousAmt = currentAmt;
-    currentAmt = selectAmt(store.getState());
-
-    if (textObj != null && previousAmt !== currentAmt) {
-        textObj.text = currentAmt;
-    }
-};
-
-store.subscribe(handleAmtChange);
 
 let scene;
 
@@ -58,7 +40,6 @@ export class PayScene1 extends Phaser.Scene {
         scene.add.image(screenCenterX, screenCenterY + 10, 'payment').setScale(0.9);
         scene.add.image(screenCenterX, screenCenterY + 210, 'pay1').setScale(0.9);
 
-        const [x, y] = COINS_BUTTON_CENTER;
         const pay1Button = new Button(
             scene,
             screenCenterX, screenCenterY + 210,
@@ -74,19 +55,8 @@ export class PayScene1 extends Phaser.Scene {
             .setOverSfx(overSfx);
         pay1Button.on('pointerup', () => {
             this.scene.stop('PayScene1');
-            this.scene.resume('DonateScene');
+            this.scene.launch('PaySuccess');
             store.dispatch(increaseByAmount(1000));
-
-            textObj = scene.add
-                .text(x - 35, y - 20, currentAmt, {
-                    fontFamily: 'Graduate',
-                    fontSize: 28,
-                    color: '#fff',
-                    align: 'right',
-                    strokeThickness: 2,
-                })
-                .setShadow(2, 2, '#333333', 2, false, true);
-            textObj.depth = 850;
         });
 
         const crossButton = new Button(

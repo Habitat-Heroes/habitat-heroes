@@ -25,6 +25,9 @@ import fourbar from '../assets/loading_bar/4bar.png';
 import fivebar from '../assets/loading_bar/5bar.png';
 import trees from '../assets/tree_tiles.png';
 import adssprite from '../assets/video/plus_button.png';
+import villager1 from '../assets/villager1.png';
+import villager2 from '../assets/villager2.png';
+import villager3 from '../assets/villager3.png';
 import AdsButton from '../objects/AdsButton';
 import { Avatar } from '../objects/Avatar';
 import BuildButton from '../objects/BuildButton';
@@ -35,6 +38,7 @@ import NewsButton from '../objects/NewsButton';
 import QuestButton from '../objects/QuestButton';
 import ShareButton from '../objects/ShareButton';
 import ShopButton from '../objects/ShopButton';
+import Villager from '../objects/Villager';
 import { updateBuildTime } from '../reducers/houseReducer';
 import { removeFromInventory } from '../reducers/inventoryReducer';
 import { addToMap } from '../reducers/mapItemsReducer';
@@ -65,6 +69,8 @@ import checkInMovableRange, {
 import { loadItemSprites } from '../utils/items';
 
 let player;
+let villager;
+let villagerIdx = 1;
 let house;
 let buildFrame = 100;
 let buildDirection = 0;
@@ -84,6 +90,8 @@ let nameText;
 let donationText;
 
 let bgm;
+let openMenuSfx;
+let overSfx;
 
 const centerX = MAP_WIDTH * TILE_WIDTH_HALF;
 const centerY = MAP_HEIGHT * TILE_HEIGHT_HALF * 0.3;
@@ -137,6 +145,9 @@ export class HabitatHeroesScene extends Phaser.Scene {
     this.load.image('shopbutton', sbsprite);
     this.load.image('sharebutton', shbsprite);
     this.load.image('coinsbutton', cbsprite);
+    this.load.image('villager1', villager1);
+    this.load.image('villager2', villager2);
+    this.load.image('villager3', villager3);
     this.load.image(
       'avatarpanel',
       USE_ACTUAL_AVATAR_SPRITE ? avatarpanelwithoutlucas : avatarpanel,
@@ -162,8 +173,8 @@ export class HabitatHeroesScene extends Phaser.Scene {
       volume: 0.5,
     });
     const downSfx = this.sound.add('buttonclick');
-    const overSfx = this.sound.add('buttonhover');
-    const openMenuSfx = this.sound.add('openmenu');
+    overSfx = this.sound.add('buttonhover');
+    openMenuSfx = this.sound.add('openmenu');
     const footstepSfx = this.sound.add('footstep');
     const thudSfx = this.sound.add('thud');
     this.buildingSfx = this.sound.add('building');
@@ -279,7 +290,10 @@ export class HabitatHeroesScene extends Phaser.Scene {
       timerText.destroy();
       timerText = null;
     }
-    buildTimerBarImage.destroy();
+    if (buildTimerBarImage != null) {
+      buildTimerBarImage.destroy();
+      buildTimerBarImage = null;
+    }
   }
 
   updateBuilding() {
@@ -309,7 +323,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
         100,
         () => {
           this.placeHouses();
-          scene.scene.launch('ThankYouScene');
+          scene.scene.launch('ThankYouScene', {villager: villagerIdx});
           scene.scene.pause('HabitatHeroesScene');
           this.rewardSfx.play(DEFAULT_SFX_CONFIG);
         },
@@ -376,7 +390,9 @@ export class HabitatHeroesScene extends Phaser.Scene {
       buildTimerBarImage.scale = 0.4;
       currentBuildTimerBar = buildTimerBar;
     } else {
-      buildTimerBarImage.destroy();
+      if (buildTimerBarImage != null) {
+        buildTimerBarImage.destroy();
+      }
       currentBuildTimerBar = buildTimerBar;
       buildTimerBarImage = scene.add.image(
         HOUSE_STRUCT_IMAGE[0],
@@ -512,6 +528,10 @@ export class HabitatHeroesScene extends Phaser.Scene {
   }
 
   removeHouse() {
+    if (villager != null) {
+      villager.destroy();
+      villager = null;
+    }
     house.destroy();
   }
 
@@ -555,6 +575,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
         .setDepth(HOUSE_STRUCT_IMAGE[1] + 110)
         .setUpTint(0xffffff)
         .setOverTint(0xffffff)
+        .setTint(0xffffff)
         .setDisabledTint(0xffffff);
       house.on('pointerup', () => {
         scene.scene.launch('QuizScene');
@@ -568,18 +589,25 @@ export class HabitatHeroesScene extends Phaser.Scene {
         house = scene.add.image(680, 370, 'basichut');
         house.scale = 1.5;
         house.depth = house.y + 120;
+        villager = new Villager(this, 1, openMenuSfx, overSfx);
+        villagerIdx = 1;
       } else if (houses.brick_house === 1) {
         house = scene.add.image(550, 370, 'brickhouse');
         house.scale = 0.35;
         house.depth = house.y + 160;
+        villager = new Villager(this, 2, openMenuSfx, overSfx);
+        villagerIdx = 2;
       } else if (houses.concrete_house === 1) {
         house = scene.add.image(530, 370, 'concretehouse');
         house.scale = 0.9;
         house.depth = house.y + 180;
+        villager = new Villager(this, 3, openMenuSfx, overSfx);
+        villagerIdx = 3;
       }
+      scene.add.existing(villager);
 
       if (houses.building) {
-        scene.scene.launch('ThankYouScene');
+        scene.scene.launch('ThankYouScene', {villager: villagerIdx});
         scene.scene.pause('HabitatHeroesScene');
         this.rewardSfx.play(DEFAULT_SFX_CONFIG);
         store.dispatch(updateBuildTime());
