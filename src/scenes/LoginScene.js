@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import menu from '../assets/login/LoginBoard_NoLoginButton.png';
+import loginboard from '../assets/login/LoginBoard_NoLoginButton.png';
 import loginbutton from '../assets/login/LoginButton.png';
 import Button from '../objects/Button';
 import { setName } from '../reducers/userReducer';
@@ -28,7 +28,7 @@ export class LoginScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('menu', menu);
+    this.load.image('loginboard', loginboard);
     this.load.image('loginbutton', loginbutton);
     screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
     screenCenterY =
@@ -65,7 +65,9 @@ export class LoginScene extends Phaser.Scene {
     const overSfx = this.sound.add('buttonhover');
     const thudSfx = this.sound.add('thud');
 
-    scene.add.image(screenCenterX, screenCenterY + 10, 'menu').setScale(0.75);
+    scene.add
+      .image(screenCenterX, screenCenterY + 10, 'loginboard')
+      .setScale(0.75);
 
     const loginButton = new Button(
       scene,

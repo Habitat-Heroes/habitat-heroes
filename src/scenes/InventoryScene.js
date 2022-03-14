@@ -5,7 +5,7 @@ import placebutton from '../assets/game_menu/long_button.png';
 import nextbutton from '../assets/game_menu/next_button.png';
 import prevbutton from '../assets/game_menu/prev_button.png';
 import baseboard from '../assets/game_menu/vertical_baseboard.png';
-import background from '../assets/shop/InventoryboardBase.png';
+import inventorybase from '../assets/shop/InventoryboardBase.png';
 import Button from '../objects/Button';
 import buttonclick from '../sounds/buttonclick.mp3';
 import buttonhover from '../sounds/buttonhover.mp3';
@@ -55,7 +55,7 @@ export class InventoryScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('background', background);
+    this.load.image('inventorybase', inventorybase);
     this.load.image('closebutton', closebutton);
     this.load.image('prevbutton', prevbutton);
     this.load.image('nextbutton', nextbutton);
@@ -77,7 +77,7 @@ export class InventoryScene extends Phaser.Scene {
     this.overSfx = this.sound.add('buttonhover');
 
     this.add
-      .image(this.screenCenterX, this.screenCenterY + 10, 'background')
+      .image(this.screenCenterX, this.screenCenterY + 10, 'inventorybase')
       .setScale(0.85);
 
     this.#addCloseButton();

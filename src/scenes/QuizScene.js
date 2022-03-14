@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import closebutton from '../assets/game_menu/close_button.png';
 import takequiz from '../assets/game_menu/takequiz_longbutton.png';
 import tick from '../assets/game_menu/tick_button.png';
-import background from '../assets/game_menu/woodboard_no_cblogo.png';
+import quizboard from '../assets/game_menu/woodboard_no_cblogo.png';
 import Button from '../objects/Button';
 import { reduceBuildTime } from '../reducers/houseReducer';
 import { completeQuiz, setCurrentQuiz } from '../reducers/quizReducer';
@@ -68,7 +68,7 @@ export class QuizScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('background', background);
+    this.load.image('quizboard', quizboard);
     this.load.image('closebutton', closebutton);
     this.load.image('takequiz', takequiz);
     this.load.image('tick', tick);
@@ -89,7 +89,7 @@ export class QuizScene extends Phaser.Scene {
     this.wrongSfx = this.sound.add('wrong');
 
     this.add
-      .image(this.screenCenterX, this.screenCenterY + 10, 'background')
+      .image(this.screenCenterX, this.screenCenterY + 10, 'quizboard')
       .setScale(0.85);
 
     this.add.text(this.screenCenterX - 200, 105, 'Quizzes', {

@@ -3,9 +3,9 @@ import Phaser from 'phaser';
 import basichut from '../assets/basic_hut.png';
 import closebutton from '../assets/game_menu/close_button.png';
 import longbutton from '../assets/game_menu/long_button.png';
-import baseboard from '../assets/game_menu/vertical_baseboard.png';
+import questbaseboard from '../assets/game_menu/vertical_baseboard.png';
 import completed from '../assets/quest/completed.png';
-import background from '../assets/quest/QuestboardBase.png';
+import questboard from '../assets/quest/QuestboardBase.png';
 import hfhflag from '../assets/shop/HFHflag.png';
 import facebook from '../assets/social_media/FacebookButton.png';
 import Button from '../objects/Button';
@@ -29,10 +29,10 @@ export class QuestScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('background', background);
+    this.load.image('questboard', questboard);
     this.load.image('closebutton', closebutton);
     this.load.image('completed', completed);
-    this.load.image('baseboard', baseboard);
+    this.load.image('questbaseboard', questbaseboard);
     this.load.image('basichut', basichut);
     this.load.image('facebook', facebook);
     this.load.image('longbutton', longbutton);
@@ -53,7 +53,7 @@ export class QuestScene extends Phaser.Scene {
     this.overSfx = this.sound.add('buttonhover');
 
     this.add
-      .image(this.screenCenterX, this.screenCenterY, 'background')
+      .image(this.screenCenterX, this.screenCenterY, 'questboard')
       .setScale(0.85);
     const closeButton = new Button(
       this,
@@ -118,7 +118,7 @@ export class QuestScene extends Phaser.Scene {
         questText = 'Share on\nSocial Media';
         image = 'facebook';
     }
-    const panel = this.add.image(x, y, 'baseboard');
+    const panel = this.add.image(x, y, 'questbaseboard');
     panel.scale = 0.8;
 
     const questName = this.add.text(x, y - 150, questText, {
