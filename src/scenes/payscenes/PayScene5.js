@@ -56,10 +56,10 @@ export class PayScene5 extends Phaser.Scene {
         const overSfx = this.sound.add('buttonhover');
 
         scene.add.image(screenCenterX, screenCenterY + 10, 'payment').setScale(0.9);
-        scene.add.image(screenCenterX, screenCenterY + 210, 'pay1').setScale(0.9);
+        scene.add.image(screenCenterX, screenCenterY + 210, 'pay5').setScale(0.9);
 
         const [x, y] = COINS_BUTTON_CENTER;
-        const pay1Button = new Button(
+        const pay5Button = new Button(
             scene,
             screenCenterX, screenCenterY + 210,
             'pay5',
@@ -72,7 +72,7 @@ export class PayScene5 extends Phaser.Scene {
             .setDisabledTint()
             .setDownSfx(downSfx)
             .setOverSfx(overSfx);
-        pay1Button.on('pointerup', () => {
+        pay5Button.on('pointerup', () => {
             this.scene.stop('PayScene5');
             this.scene.resume('DonateScene');
             store.dispatch(increaseByAmount(5000));
@@ -105,7 +105,7 @@ export class PayScene5 extends Phaser.Scene {
             this.scene.resume('DonateScene');
         });
 
-        scene.add.existing(pay1Button);
+        scene.add.existing(pay5Button);
         scene.add.existing(crossButton);
     }
 }
