@@ -163,6 +163,78 @@ export const QUIZZES = [
     ],
     correctOptionId: 2,
   },
+  {
+    id: 8,
+    question:
+      'When did direct project implementation begin\nin Myanmar for Habitat for Humanity?',
+    options: [
+      {
+        id: 1,
+        text: '2016',
+      },
+      {
+        id: 2,
+        text: '2014',
+      },
+      {
+        id: 3,
+        text: '2008',
+      },
+      {
+        id: 4,
+        text: '2011',
+      },
+    ],
+    correctOptionId: 1,
+  },
+  {
+    id: 9,
+    question:
+      'In 2014, close to how many % of housing units in Myanmar\nwere made of non-durable wood and bamboo?',
+    options: [
+      {
+        id: 1,
+        text: '81%',
+      },
+      {
+        id: 2,
+        text: '76%',
+      },
+      {
+        id: 3,
+        text: '43%',
+      },
+      {
+        id: 4,
+        text: '25%',
+      },
+    ],
+    correctOptionId: 1,
+  },
+  {
+    id: 10,
+    question:
+      'Around how many % of Cambodians live in extreme\npoverty and lack decent housing conditions?',
+    options: [
+      {
+        id: 1,
+        text: '12%',
+      },
+      {
+        id: 2,
+        text: '8%',
+      },
+      {
+        id: 3,
+        text: '3%',
+      },
+      {
+        id: 4,
+        text: '16%',
+      },
+    ],
+    correctOptionId: 4,
+  },
 ];
 
 export const getRandomQuiz = (completedQuizzes) => {
