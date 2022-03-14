@@ -37,22 +37,23 @@ export class PayScene10 extends Phaser.Scene {
         const downSfx = this.sound.add('buttonclick');
         const overSfx = this.sound.add('buttonhover');
 
-        scene.add.image(screenCenterX, screenCenterY + 10, 'payment').setScale(0.9);
-        scene.add.image(screenCenterX, screenCenterY + 210, 'pay10').setScale(0.9);
+        scene.add.image(screenCenterX, screenCenterY + 10, 'payment').setScale(0.6);
 
         const pay10Button = new Button(
-            scene,
-            screenCenterX, screenCenterY + 210,
-            'pay10',
+          scene,
+          screenCenterX, screenCenterY + 150,
+          'pay10',
         )
-            .setButtonName('Pay SGD10')
-            .setTint()
-            .setScale(0.9)
-            .setOverTint()
-            .setUpTint()
-            .setDisabledTint()
-            .setDownSfx(downSfx)
-            .setOverSfx(overSfx);
+          .setDownTexture('pay10')
+          .setButtonName('Pay SGD 10')
+          .setUpTint(0xffffff)
+          .setOverTint(0xffffff)
+          .setDownTint(0xffffff)
+          .setTint(0xffffff)
+          .setDisabledTint(0xffffff)
+          .setScale(0.6)
+          .setDownSfx(downSfx)
+          .setOverSfx(overSfx);
         pay10Button.on('pointerup', () => {
             this.scene.stop('PayScene10');
             this.scene.launch('PaySuccess');
@@ -61,8 +62,8 @@ export class PayScene10 extends Phaser.Scene {
 
         const crossButton = new Button(
             scene,
-            screenCenterX + 298,
-            screenCenterY - 250,
+            screenCenterX + 230,
+            screenCenterY - 180,
             'crossbutton',
         )
             .setDownTexture('crossbutton')
