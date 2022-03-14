@@ -81,7 +81,7 @@ export class DonateScene extends Phaser.Scene {
             .setDownSfx(downSfx)
             .setOverSfx(overSfx);
         d5Button.on('pointerup', () => {
-            scene.scene.launch('PayScene');
+            scene.scene.launch('PayScene5');
             scene.scene.pause('DonateScene');
         });
 

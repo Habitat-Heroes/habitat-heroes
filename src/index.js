@@ -9,6 +9,7 @@ import { LoginScene } from './scenes/LoginScene';
 import { NewsBoardScene } from './scenes/NewsBoardScene';
 import { PayScene } from './scenes/PayScene';
 import { PayScene1 } from './scenes/payscenes/PayScene1';
+import { PayScene5 } from './scenes/payscenes/PayScene5';
 import { QuizScene } from './scenes/QuizScene';
 import { SharePageScene } from './scenes/SharePageScene';
 import { ShopScene } from './scenes/ShopScene';
@@ -36,6 +37,7 @@ class Game extends Phaser.Game {
         DonateScene,
         PayScene,
         PayScene1,
+        PayScene5,
         SharePageScene,
         ShopScene,
         InventoryScene,
