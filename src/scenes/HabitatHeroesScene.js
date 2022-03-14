@@ -586,6 +586,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
         house.scale = 1.5;
         house.depth = house.y + 120;
         villager = new Villager(this, 1, openMenuSfx, overSfx);
+        villagerIdx = 1;
       } else if (houses.brick_house === 1) {
         house = scene.add.image(550, 370, 'brickhouse');
         house.scale = 0.35;
