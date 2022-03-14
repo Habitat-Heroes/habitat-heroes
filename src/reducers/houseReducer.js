@@ -10,7 +10,7 @@ export const BuildTime = {
   // in seconds
   basic_hut: 10, // original time is 129600 (36 hours)
   brick_house: 20, // original time is 259200 (72 hours)
-  concrete_house: 5, // original time is 518400 (144 hours)
+  concrete_house: 10860, // original time is 518400 (144 hours)
 };
 export const UserAction = {
   build: 'build',
