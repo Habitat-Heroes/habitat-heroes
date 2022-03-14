@@ -63,7 +63,7 @@ export class DonateScene extends Phaser.Scene {
             .setDownSfx(downSfx)
             .setOverSfx(overSfx);
         d1Button.on('pointerup', () => {
-            scene.scene.launch('PayScene');
+            scene.scene.launch('PayScene1');
             scene.scene.pause('DonateScene');
         });
 
@@ -123,7 +123,7 @@ export class DonateScene extends Phaser.Scene {
 
         const closeButton = new Button(
             scene,
-            screenCenterX + 288,
+            screenCenterX + 338,
             screenCenterY - 250,
             'closebutton',
         )

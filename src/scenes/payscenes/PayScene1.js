@@ -1,14 +1,14 @@
 import Phaser from 'phaser';
 
-import payment from '../assets/donate/StripePaymentBase.png';
-import pay1 from '../assets/donate/StripeSGD1.png';
-import closebutton from '../assets/game_menu/close_button.png';
-import Button from '../objects/Button';
-import { increaseByAmount } from '../reducers/coinsReducer';
-import buttonclick from '../sounds/buttonclick.mp3';
-import buttonhover from '../sounds/buttonhover.mp3';
-import store from '../store';
-import { COINS_BUTTON_CENTER } from '../utils/constants';
+import crossbutton from '../../assets/donate/cross.png';
+import payment from '../../assets/donate/StripePaymentBase.png';
+import pay1 from '../../assets/donate/StripeSGD1.png';
+import Button from '../../objects/Button';
+import { increaseByAmount } from '../../reducers/coinsReducer';
+import buttonclick from '../../sounds/buttonclick.mp3';
+import buttonhover from '../../sounds/buttonhover.mp3';
+import store from '../../store';
+import { COINS_BUTTON_CENTER } from '../../utils/constants';
 
 let textObj;
 
@@ -32,17 +32,17 @@ let scene;
 let screenCenterX;
 let screenCenterY;
 
-export class PayScene extends Phaser.Scene {
+export class PayScene1 extends Phaser.Scene {
     constructor() {
         super({
-            key: 'PayScene',
+            key: 'PayScene1',
         });
     }
 
     preload() {
         this.load.image('payment', payment);
         this.load.image('pay1', pay1);
-        this.load.image('closebutton', closebutton);
+        this.load.image('crossbutton', crossbutton);
         this.load.audio('buttonhover', buttonhover);
         this.load.audio('buttonclick', buttonclick);
         screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
@@ -73,7 +73,7 @@ export class PayScene extends Phaser.Scene {
             .setDownSfx(downSfx)
             .setOverSfx(overSfx);
         pay1Button.on('pointerup', () => {
-            this.scene.stop('PayScene');
+            this.scene.stop('PayScene1');
             this.scene.resume('DonateScene');
             store.dispatch(increaseByAmount(1000));
 
@@ -89,23 +89,23 @@ export class PayScene extends Phaser.Scene {
             textObj.depth = 850;
         });
 
-        const closeButton = new Button(
+        const crossButton = new Button(
             scene,
-            screenCenterX + 288,
+            screenCenterX + 298,
             screenCenterY - 250,
-            'closebutton',
+            'crossbutton',
         )
-            .setDownTexture('closebutton')
+            .setDownTexture('crossbutton')
             .setButtonName('Close')
-            .setScale(0.4)
+            .setScale(0.03)
             .setDownSfx(downSfx)
             .setOverSfx(overSfx);
-        closeButton.on('pointerup', () => {
-            this.scene.stop('PayScene');
+        crossButton.on('pointerup', () => {
+            this.scene.stop('PayScene1');
             this.scene.resume('DonateScene');
         });
 
         scene.add.existing(pay1Button);
-        scene.add.existing(closeButton);
+        scene.add.existing(crossButton);
     }
 }
