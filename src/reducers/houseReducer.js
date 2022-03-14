@@ -73,7 +73,7 @@ const houseSlice = createSlice({
       }
     },
     reduceBuildTime: (state) => {
-      state.buildTime = Math.max(state.buildTime - 3 * 60 * 60, 0); // 3 hours
+      state.startBuildTime -= 3 * 60 * 60; // 3 hours
     },
   },
 });
