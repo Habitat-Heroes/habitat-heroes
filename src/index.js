@@ -2,10 +2,16 @@ import Phaser from 'phaser';
 
 import { AdsScene } from './scenes/AdsScene';
 import { BuildMenuScene } from './scenes/BuildMenuScene';
+import { DonateScene } from './scenes/DonateScene';
 import { HabitatHeroesScene } from './scenes/HabitatHeroesScene';
 import { InventoryScene } from './scenes/InventoryScene';
 import { LoginScene } from './scenes/LoginScene';
 import { NewsBoardScene } from './scenes/NewsBoardScene';
+import { PayScene } from './scenes/PayScene';
+import { PayScene1 } from './scenes/payscenes/PayScene1';
+import { PayScene5 } from './scenes/payscenes/PayScene5';
+import { PayScene10 } from './scenes/payscenes/PayScene10';
+import { PayScene20 } from './scenes/payscenes/PayScene20';
 import { QuestScene } from './scenes/QuestScene';
 import { QuizScene } from './scenes/QuizScene';
 import { SharePageScene } from './scenes/SharePageScene';
@@ -31,6 +37,12 @@ class Game extends Phaser.Game {
         NewsBoardScene,
         AdsScene,
         BuildMenuScene,
+        DonateScene,
+        PayScene,
+        PayScene1,
+        PayScene5,
+        PayScene10,
+        PayScene20,
         SharePageScene,
         ShopScene,
         InventoryScene,

@@ -1,4 +1,4 @@
-import { increaseByAmount } from '../reducers/coinsReducer';
+// import { increaseByAmount } from '../reducers/coinsReducer';
 import store from '../store';
 import { COINS_BUTTON_CENTER } from '../utils/constants';
 
@@ -32,7 +32,11 @@ export default function CoinsButton(scene, downSfx, overSfx) {
     .setScale(0.35)
     .setDownSfx(downSfx)
     .setOverSfx(overSfx)
-    .setOnDownCallback(() => store.dispatch(increaseByAmount(300)));
+    .setOnDownCallback(() => {
+        // store.dispatch(increaseByAmount(300));
+        scene.scene.launch('DonateScene');
+        scene.scene.pause('HabitatHeroesScene');
+    });
 
   textObj = scene.add
     .text(x - 35, y - 20, currentAmt, {
