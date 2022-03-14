@@ -1,7 +1,5 @@
 # Habitat Heroes
 
-<p align="center"><a href="https://youtu.be/iKUKB8h2ZDU"><img width="65%" alt="Habitat Heroes Demo" src="https://img.youtube.com/vi/iKUKB8h2ZDU/maxresdefault.jpg"></img></a></p>
-
 ## What it does
 
 Habitat Heroes is a virtual house-building game that mirrors the experience of physical volunteering programmes. There are 6 main features that the game supports:
@@ -12,6 +10,10 @@ Habitat Heroes is a virtual house-building game that mirrors the experience of p
 4. Provide daily quest challenges
 5. Allow sharing of game experience on social media
 6. Allow donations via purchasing in-game currency
+
+## Demo Video
+
+<p align="center"><a href="https://youtu.be/iKUKB8h2ZDU"><img width="65%" alt="Habitat Heroes Demo" src="https://img.youtube.com/vi/iKUKB8h2ZDU/maxresdefault.jpg"></img></a></p>
 
 ## Requirements
 
