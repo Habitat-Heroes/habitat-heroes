@@ -55,7 +55,7 @@ export class PayScene1 extends Phaser.Scene {
             .setOverSfx(overSfx);
         pay1Button.on('pointerup', () => {
             this.scene.stop('PayScene1');
-            this.scene.resume('DonateScene');
+            this.scene.launch('PaySuccess');
             store.dispatch(increaseByAmount(1000));
         });
 

@@ -12,6 +12,7 @@ import { PayScene1 } from './scenes/payscenes/PayScene1';
 import { PayScene5 } from './scenes/payscenes/PayScene5';
 import { PayScene10 } from './scenes/payscenes/PayScene10';
 import { PayScene20 } from './scenes/payscenes/PayScene20';
+import { PaySuccessScene } from './scenes/payscenes/PaySuccessScene';
 import { QuestScene } from './scenes/QuestScene';
 import { QuizScene } from './scenes/QuizScene';
 import { SharePageScene } from './scenes/SharePageScene';
@@ -39,6 +40,7 @@ class Game extends Phaser.Game {
         BuildMenuScene,
         DonateScene,
         PayScene,
+        PaySuccessScene,
         PayScene1,
         PayScene5,
         PayScene10,
