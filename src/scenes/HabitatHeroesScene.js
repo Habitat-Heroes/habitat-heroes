@@ -14,6 +14,7 @@ import nbsprite from '../assets/game_menu/news_button.png';
 import qbsprite from '../assets/game_menu/quest_button.png';
 import shbsprite from '../assets/game_menu/share_button.png';
 import sbsprite from '../assets/game_menu/shop_button.png';
+import green from '../assets/green.png';
 import buildingstate from '../assets/house_struct.png';
 import mapjson from '../assets/isometric-grass-and-water.json';
 import tiles from '../assets/isometric-grass-and-water.png';
@@ -59,6 +60,7 @@ import {
   MAP_HEIGHT,
   MAP_LAYOUT,
   MAP_WIDTH,
+  TILE_HEIGHT,
   TILE_HEIGHT_HALF,
   TILE_WIDTH_HALF,
 } from '../utils/constants';
@@ -67,6 +69,7 @@ import checkInMovableRange, {
   getRemainingBuildTime,
 } from '../utils/GameUtils';
 import { loadItemSprites } from '../utils/items';
+import { addHighlightSquare, setIsBuilding } from '../utils/placementUtils';
 
 let player;
 let villager;
@@ -152,6 +155,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
       'avatarpanel',
       USE_ACTUAL_AVATAR_SPRITE ? avatarpanelwithoutlucas : avatarpanel,
     );
+    this.load.image('green', green);
     this.load.audio('mainbgm', mainbgm);
     this.load.audio('buttonhover', buttonhover);
     this.load.audio('buttonclick', buttonclick);
@@ -234,6 +238,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
       );
       placingItemImage.depth = 800;
       placingItemImage.setAlpha(0.6);
+      setIsBuilding(true);
       const placingItemFn = (movingPointer) => {
         placingItemImage.setPosition(movingPointer.x, movingPointer.y);
       };
@@ -257,6 +262,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
         );
         store.dispatch(removeFromInventory({ [itemId]: 1 }));
         thudSfx.play(DEFAULT_SFX_CONFIG);
+        setIsBuilding(false);
       });
     });
   }
@@ -444,8 +450,44 @@ export class HabitatHeroesScene extends Phaser.Scene {
           }
           const tx = (x - y) * TILE_WIDTH_HALF;
           const ty = (x + y) * TILE_HEIGHT_HALF;
-          const tile = scene.add.image(centerX + tx, centerY + ty, 'tiles', id);
+          if (centerX + tx < 0 || centerY + ty < 0) {
+            // eslint-disable-next-line no-continue
+            continue;
+          }
+          const tile = scene.add
+            .image(centerX + tx, centerY + ty, 'tiles', id)
+            .setInteractive();
           tile.depth = centerY + ty;
+          // eslint-disable-next-line no-shadow, no-loop-func
+          tile.on('pointerover', (pointer) => {
+            const topLeft = [
+              tile.x - TILE_WIDTH_HALF,
+              tile.y - TILE_HEIGHT_HALF,
+            ];
+            const topRight = [
+              tile.x + TILE_WIDTH_HALF,
+              tile.y - TILE_HEIGHT_HALF,
+            ];
+            const top = [tile.x, tile.y - TILE_HEIGHT];
+            const currentTile = [tile.x, tile.y];
+            const possibleTiles = [topLeft, topRight, top, currentTile];
+            let minDist = Infinity;
+            let index = 0;
+            for (let k = 0; k < 4; k += 1) {
+              const cSquared =
+                (pointer.x - possibleTiles[k][0]) ** 2 +
+                (pointer.y - possibleTiles[k][1]) ** 2;
+              if (cSquared < minDist) {
+                minDist = cSquared;
+                index = k;
+              }
+            }
+            addHighlightSquare(
+              possibleTiles[index][0],
+              possibleTiles[index][1],
+              scene,
+            );
+          });
         }
       }
     }
