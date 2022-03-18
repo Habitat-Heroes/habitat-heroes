@@ -157,7 +157,7 @@ export class InventoryScene extends Phaser.Scene {
   }
 
   #addPanel(panelIdx, x, itemId, qty) {
-    const { name, spritesheet, frame } = ITEMS[itemId];
+    const { name, spritesheet, frame, offsetX, offsetY, cells } = ITEMS[itemId];
     const y = 465;
     const panel = this.add.image(x, y, 'baseboard');
     panel.scale = 0.8;
@@ -189,7 +189,14 @@ export class InventoryScene extends Phaser.Scene {
     button.scaleX = 0.15;
     button.on('pointerup', () => {
       this.scene.stop('InventoryScene');
-      this.scene.resume('HabitatHeroesScene', { spritesheet, frame, itemId });
+      this.scene.resume('HabitatHeroesScene', {
+        spritesheet,
+        frame,
+        itemId,
+        offsetX,
+        offsetY,
+        cells,
+      });
     });
     this.add.existing(button);
 

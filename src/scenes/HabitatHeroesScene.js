@@ -24,6 +24,7 @@ import twobar from '../assets/loading_bar/2bar.png';
 import threebar from '../assets/loading_bar/3bar.png';
 import fourbar from '../assets/loading_bar/4bar.png';
 import fivebar from '../assets/loading_bar/5bar.png';
+import pink from '../assets/pink.png';
 import trees from '../assets/tree_tiles.png';
 import adssprite from '../assets/video/plus_button.png';
 import villager1 from '../assets/villager1.png';
@@ -62,18 +63,21 @@ import {
   MAP_WIDTH,
   TILE_HEIGHT,
   TILE_HEIGHT_HALF,
+  TILE_WIDTH,
   TILE_WIDTH_HALF,
 } from '../utils/constants';
-import checkInMovableRange, {
+import { isCoordinateFree } from '../utils/coordinates';
+import {
   convertSecondsToText,
   getRemainingBuildTime,
 } from '../utils/GameUtils';
 import { loadItemSprites } from '../utils/items';
 import {
-  addHighlightSquare,
+  addHighlightSquares,
   getCursorCoord,
-  getHighlightSquareCoord,
+  getHighlightSquareCoords,
   getIsBuilding,
+  setCells,
   setIsBuilding,
 } from '../utils/placementUtils';
 
@@ -86,6 +90,9 @@ let buildDirection = 0;
 let timerText;
 let buildTimerBarImage;
 let currentBuildTimerBar;
+
+const playerXOffset = 0;
+const playerYOffset = -20;
 
 let pointer;
 
@@ -102,15 +109,25 @@ let bgm;
 let openMenuSfx;
 let overSfx;
 
+let isMoving = false;
+let hasTriedToMoveToBuild = false;
+
 const centerX = MAP_WIDTH * TILE_WIDTH_HALF;
 const centerY = MAP_HEIGHT * TILE_HEIGHT_HALF * 0.3;
 
 const USE_ACTUAL_AVATAR_SPRITE = false;
 
+let yMagnitudeRemaining = 0;
+let xMagnitudeRemaining = 0;
+let isXNegative = false;
+let isYNegative = false;
+
 export class HabitatHeroesScene extends Phaser.Scene {
   buildingSfx;
 
   rewardSfx;
+
+  thudSfx;
 
   constructor() {
     super({
@@ -162,6 +179,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
       USE_ACTUAL_AVATAR_SPRITE ? avatarpanelwithoutlucas : avatarpanel,
     );
     this.load.image('green', green);
+    this.load.image('pink', pink);
     this.load.audio('mainbgm', mainbgm);
     this.load.audio('buttonhover', buttonhover);
     this.load.audio('buttonclick', buttonclick);
@@ -186,7 +204,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
     overSfx = this.sound.add('buttonhover');
     openMenuSfx = this.sound.add('openmenu');
     const footstepSfx = this.sound.add('footstep');
-    const thudSfx = this.sound.add('thud');
+    this.thudSfx = this.sound.add('thud');
     this.buildingSfx = this.sound.add('building');
     this.rewardSfx = this.sound.add('reward');
 
@@ -196,8 +214,8 @@ export class HabitatHeroesScene extends Phaser.Scene {
 
     player = new Avatar(
       scene,
-      centerX - 100,
-      centerY + 100,
+      704 + playerXOffset,
+      232 + playerYOffset,
       'avatar',
       {
         key: 'avatar',
@@ -205,9 +223,9 @@ export class HabitatHeroesScene extends Phaser.Scene {
       },
       footstepSfx,
     ).player;
-    player.depth = centerY + 164;
-    touchY = centerY + 100;
-    touchX = centerX - 100;
+    player.depth = 232 + 110;
+    touchX = 704 + playerXOffset;
+    touchY = 232 + playerYOffset;
     pointer = scene.input.activePointer;
 
     scene.add.existing(BuildButton(this, openMenuSfx, overSfx));
@@ -219,14 +237,9 @@ export class HabitatHeroesScene extends Phaser.Scene {
     scene.add.existing(ShareButton(this, openMenuSfx, overSfx));
     scene.add.existing(CoinsButton(this, downSfx, overSfx));
 
-    Object.entries(store.getState().mapItems).forEach(([, item]) => {
+    store.getState().mapItems.items.forEach((item) => {
       this.add
-        .image(
-          item.coordinates[0],
-          item.coordinates[1],
-          item.spritesheet,
-          item.frame,
-        )
+        .image(item.displayX, item.displayY, item.spritesheet, item.frame)
         .setDepth(item.depth);
     });
 
@@ -235,51 +248,70 @@ export class HabitatHeroesScene extends Phaser.Scene {
         return;
       }
 
-      const { spritesheet, frame, itemId } = data;
+      const { spritesheet, frame, itemId, offsetX, offsetY, cells } = data;
+      setCells(cells);
       const placingItemImage = this.add.image(
         this.input.x + this.cameras.main.scrollX,
         this.input.y + this.cameras.main.scrollY,
         spritesheet,
         frame,
       );
-      placingItemImage.depth = 800;
+      placingItemImage.depth = 850;
       placingItemImage.setAlpha(0.6);
       setIsBuilding(true);
       const placingItemFn = () => {
-        const [x, y] = getHighlightSquareCoord();
-        placingItemImage.setPosition(x, y);
+        const coords = getHighlightSquareCoords();
+        if (coords.length === 0) {
+          return;
+        }
+        placingItemImage.setPosition(
+          coords[0][0] + offsetX,
+          coords[0][1] + offsetY,
+        );
       };
       this.input.on('pointermove', placingItemFn);
 
       // eslint-disable-next-line no-shadow
-      this.input.once('pointerdown', (pointer) => {
+      const placeItemFn = (pointer) => {
         if (pointer.rightButtonDown()) {
           this.input.off('pointermove', placingItemFn);
+          this.input.off('pointerdown', placeItemFn);
           if (placingItemImage) {
             placingItemImage.destroy();
           }
           setIsBuilding(false);
           return;
         }
-        let depth = pointer.y + 110;
+        const coords = getHighlightSquareCoords();
+        if (coords.some((c) => !isCoordinateFree(c[0], c[1]))) {
+          this.thudSfx.play({ ...DEFAULT_SFX_CONFIG, volume: 1.5 });
+          return;
+        }
+        const [x, y] = coords[0];
+        let depth = y + 110;
         if (spritesheet === 'pavements') {
           depth -= 90;
         }
 
         placingItemImage.setAlpha(1).setDepth(depth);
         this.input.off('pointermove', placingItemFn);
+        this.input.off('pointerdown', placeItemFn);
         store.dispatch(
           addToMap({
-            coordinates: [pointer.x, pointer.y],
+            displayX: x + offsetX,
+            displayY: y + offsetY,
             depth,
             spritesheet,
             frame,
+            cellsOccupied: coords,
           }),
         );
         store.dispatch(removeFromInventory({ [itemId]: 1 }));
-        thudSfx.play(DEFAULT_SFX_CONFIG);
+        this.thudSfx.play(DEFAULT_SFX_CONFIG);
         setIsBuilding(false);
-      });
+      };
+
+      this.input.on('pointerdown', placeItemFn);
     });
   }
 
@@ -292,17 +324,14 @@ export class HabitatHeroesScene extends Phaser.Scene {
       return;
     }
 
-    if (
-      pointer.isDown &&
-      !getIsBuilding() &&
-      checkInMovableRange(pointer.x, pointer.y)
-    ) {
+    if (pointer.isDown) {
       const [x, y] = getCursorCoord();
-      touchX = x;
-      touchY = y;
+      touchX = x + playerXOffset;
+      touchY = y + playerYOffset;
+      isMoving = true;
     }
 
-    if (touchY === player.y && touchX === player.x) {
+    if (!isMoving) {
       player.scene.time.delayedCall(
         0.15 * 1000,
         () => {
@@ -311,7 +340,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
         [],
         this,
       );
-    } else {
+    } else if (!getIsBuilding()) {
       this.walkToPoint(touchX, touchY);
     }
   }
@@ -330,17 +359,22 @@ export class HabitatHeroesScene extends Phaser.Scene {
 
   updateBuilding() {
     if (
-      player.x === BUILD_DIRECTION_MAPPING[buildDirection][0] &&
-      player.y === BUILD_DIRECTION_MAPPING[buildDirection][1]
+      player.x === BUILD_DIRECTION_MAPPING[buildDirection][0] + playerXOffset &&
+      player.y === BUILD_DIRECTION_MAPPING[buildDirection][1] + playerYOffset
     ) {
       if (!this.buildingSfx.isPlaying) {
         this.buildingSfx.play({ ...DEFAULT_SFX_CONFIG, loop: true });
       }
       this.animateBuilding();
+    } else if (hasTriedToMoveToBuild && !isMoving) {
+      buildDirection = buildDirection === 3 ? 0 : buildDirection + 1;
+      hasTriedToMoveToBuild = false;
     } else {
+      isMoving = true;
+      hasTriedToMoveToBuild = true;
       this.walkToPoint(
-        BUILD_DIRECTION_MAPPING[buildDirection][0],
-        BUILD_DIRECTION_MAPPING[buildDirection][1],
+        BUILD_DIRECTION_MAPPING[buildDirection][0] + playerXOffset,
+        BUILD_DIRECTION_MAPPING[buildDirection][1] + playerYOffset,
       );
     }
 
@@ -437,26 +471,146 @@ export class HabitatHeroesScene extends Phaser.Scene {
   }
 
   walkToPoint(x, y) {
-    if (y > player.y) {
-      player.anims.play('up', true);
-      player.y += y > player.y + 2 ? 2 : y - player.y;
-      player.depth = player.y + 48;
+    if (!isMoving) {
       return;
     }
-    if (y < player.y) {
+    if (yMagnitudeRemaining > 0) {
+      let amount = isYNegative ? -2 : 2;
+      if (yMagnitudeRemaining <= Math.abs(amount)) {
+        amount = isYNegative ? -yMagnitudeRemaining : yMagnitudeRemaining;
+        yMagnitudeRemaining = 0;
+      } else {
+        yMagnitudeRemaining -= 2;
+      }
+      player.anims.play(isYNegative ? 'down' : 'up', true);
+      player.y += amount;
+      player.depth = player.y + 110;
+      return;
+    }
+    if (xMagnitudeRemaining > 0) {
+      let amount = isXNegative ? -2 : 2;
+      if (xMagnitudeRemaining <= Math.abs(amount)) {
+        amount = isXNegative ? -xMagnitudeRemaining : xMagnitudeRemaining;
+        xMagnitudeRemaining = 0;
+      } else {
+        xMagnitudeRemaining -= 2;
+      }
+      player.anims.play(isXNegative ? 'left' : 'right', true);
+      player.x += amount;
+      return;
+    }
+    if (
+      y >= player.y + TILE_HEIGHT &&
+      isCoordinateFree(
+        player.x - playerXOffset,
+        player.y + TILE_HEIGHT - playerYOffset,
+        true,
+      )
+    ) {
+      player.anims.play('up', true);
+      player.y += 2;
+      yMagnitudeRemaining = TILE_HEIGHT - 2;
+      isYNegative = false;
+      player.depth = player.y + 110;
+      return;
+    }
+    if (
+      y <= player.y - TILE_HEIGHT &&
+      isCoordinateFree(
+        player.x - playerXOffset,
+        player.y - TILE_HEIGHT - playerYOffset,
+        true,
+      )
+    ) {
       player.anims.play('down', true);
-      player.y -= y + 2 < player.y ? 2 : player.y - y;
-      player.depth = player.y + 64;
+      player.y -= 2;
+      yMagnitudeRemaining = TILE_HEIGHT - 2;
+      isYNegative = true;
+      player.depth = player.y + 110;
+      return;
+    }
+    if (
+      x >= player.x + TILE_WIDTH &&
+      isCoordinateFree(
+        player.x + TILE_WIDTH - playerXOffset,
+        player.y - playerYOffset,
+        true,
+      )
+    ) {
+      player.anims.play('right', true);
+      player.x += 2;
+      xMagnitudeRemaining = TILE_WIDTH - 2;
+      isXNegative = false;
+      return;
+    }
+    if (
+      x <= player.x - TILE_WIDTH &&
+      isCoordinateFree(
+        player.x - TILE_WIDTH - playerXOffset,
+        player.y - playerYOffset,
+        true,
+      )
+    ) {
+      player.anims.play('left', true);
+      player.x -= 2;
+      xMagnitudeRemaining = TILE_WIDTH - 2;
+      isXNegative = true;
+      return;
+    }
+    // If we can reach here, it must be one of the three possible cases:
+    // - We got stuck
+    // - We're half-step away either vertically, horizontally or both
+    // - We've reached the destination
+
+    // Case 3: reached
+    if (y === player.y && x === player.x) {
+      isMoving = false;
       return;
     }
 
-    if (x > player.x) {
-      player.anims.play('right', true);
-      player.x += x > player.x + 2 ? 2 : x - player.x;
-    } else if (x < player.x) {
-      player.anims.play('left', true);
-      player.x -= x < player.x - 2 ? 2 : player.x - x;
+    // Case 2: half-step away
+    if (
+      Math.abs(player.y - y) === TILE_HEIGHT_HALF &&
+      Math.abs(player.x - x) === TILE_WIDTH_HALF
+    ) {
+      if (isCoordinateFree(x - playerXOffset, y - playerYOffset, true)) {
+        if (x === player.x) {
+          if (y > player.y) {
+            player.anims.play('up', true);
+            player.y += 2;
+            yMagnitudeRemaining = TILE_HEIGHT_HALF - 2;
+            isYNegative = false;
+          } else {
+            player.anims.play('down', true);
+            player.y -= 2;
+            yMagnitudeRemaining = TILE_HEIGHT_HALF - 2;
+            isYNegative = true;
+          }
+        } else if (x > player.x) {
+          player.anims.play('right', true);
+          player.x += 2;
+          xMagnitudeRemaining = TILE_WIDTH_HALF - 2;
+          isXNegative = false;
+          if (y !== player.y) {
+            yMagnitudeRemaining = TILE_HEIGHT_HALF;
+            isYNegative = y < player.y;
+          }
+        } else {
+          player.anims.play('left', true);
+          player.x -= 2;
+          xMagnitudeRemaining = TILE_WIDTH_HALF - 2;
+          isXNegative = true;
+          if (y !== player.y) {
+            yMagnitudeRemaining = TILE_HEIGHT_HALF;
+            isYNegative = y < player.y;
+          }
+        }
+      }
     }
+
+    // Case 1: stuck
+    this.thudSfx.play(DEFAULT_SFX_CONFIG);
+    isMoving = false;
   }
 
   buildMap() {
@@ -471,10 +625,6 @@ export class HabitatHeroesScene extends Phaser.Scene {
           }
           const tx = (x - y) * TILE_WIDTH_HALF;
           const ty = (x + y) * TILE_HEIGHT_HALF;
-          if (centerX + tx < 0 || centerY + ty < 0) {
-            // eslint-disable-next-line no-continue
-            continue;
-          }
           const tile = scene.add
             .image(centerX + tx, centerY + ty, 'tiles', id)
             .setInteractive();
@@ -503,7 +653,7 @@ export class HabitatHeroesScene extends Phaser.Scene {
                 index = k;
               }
             }
-            addHighlightSquare(
+            addHighlightSquares(
               possibleTiles[index][0],
               possibleTiles[index][1],
               scene,
@@ -644,7 +794,8 @@ export class HabitatHeroesScene extends Phaser.Scene {
         .setUpTint(0xffffff)
         .setOverTint(0xffffff)
         .setTint(0xffffff)
-        .setDisabledTint(0xffffff);
+        .setDisabledTint(0xffffff)
+        .setDisabled(true);
       house.on('pointerup', () => {
         scene.scene.launch('QuizScene');
         scene.scene.pause('HabitatHeroesScene');

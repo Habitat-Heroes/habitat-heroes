@@ -1,53 +1,81 @@
-// import {
-//   TILE_HEIGHT,
-//   TILE_HEIGHT_HALF,
-//   TILE_WIDTH,
-//   TILE_WIDTH_HALF,
-// } from './constants';
+import { TILE_HEIGHT, TILE_WIDTH } from './constants';
+import { isCoordinateFree } from './coordinates';
 
-import checkInMovableRange from './GameUtils';
-
-let cellImage;
+let cellImages = [];
 let previousX;
 let previousY;
 let cursorX;
 let cursorY;
 let isBuilding = false;
+let prevCells = [[0, 0]];
+let cells = [[0, 0]];
 
 export const setIsBuilding = (newIsBuilding) => {
   isBuilding = newIsBuilding;
-  if (!newIsBuilding && cellImage) {
-    cellImage.destroy();
+  if (!newIsBuilding && cellImages.length > 0) {
+    cellImages.forEach((c) => c.destroy());
+    cellImages = [];
   }
 };
 
-export const addHighlightSquare = (newX, newY, scene) => {
-  const inMovableRange = checkInMovableRange(newX, newY);
-  if (inMovableRange) {
-    cursorX = newX;
-    cursorY = newY;
+export const setCells = (newCells) => {
+  prevCells = cells;
+  cells = newCells;
+};
+
+const cellsHasChanged = () => {
+  if (cells.length !== prevCells.length) {
+    return true;
   }
-  if (cellImage && (!isBuilding || !inMovableRange)) {
-    cellImage.destroy();
+  return cells.some(
+    (c, index) => c[0] !== prevCells[index][0] || c[1] !== prevCells[index][1],
+  );
+};
+
+export const addHighlightSquares = (newX, newY, scene) => {
+  cursorX = newX;
+  cursorY = newY;
+  if (cellImages.length > 0 && !isBuilding) {
+    cellImages.forEach((c) => c.destroy());
+    cellImages = [];
     return;
   }
-  if (!isBuilding || !inMovableRange) {
+  if (!isBuilding) {
     return;
   }
-  if (cellImage && (newY !== previousY || newX !== previousX)) {
-    cellImage.destroy();
-  } else if (cellImage && newY === previousY && newX === previousX) {
+  if (
+    cellImages &&
+    (newY !== previousY || newX !== previousX || cellsHasChanged())
+  ) {
+    cellImages.forEach((c) => c.destroy());
+    cellImages = [];
+  } else if (
+    cellImages.length > 0 &&
+    newY === previousY &&
+    newX === previousX &&
+    !cellsHasChanged()
+  ) {
     return;
   }
-  cellImage = scene.add.image(newX, newY, 'green');
-  cellImage.depth = 800;
-  cellImage.setAlpha(0.3);
+  for (let i = 0; i < cells.length; i += 1) {
+    const [x, y] = cells[i];
+    const cellX = newX + x * TILE_WIDTH;
+    const cellY = newY + y * TILE_HEIGHT;
+    const cellImage = scene.add.image(
+      cellX,
+      cellY,
+      isCoordinateFree(cellX, cellY) ? 'green' : 'pink',
+    );
+    cellImage.depth = 800;
+    cellImage.setAlpha(0.8);
+    cellImages.push(cellImage);
+  }
   previousX = newX;
   previousY = newY;
 };
 
 export const getCursorCoord = () => [cursorX, cursorY];
 
-export const getHighlightSquareCoord = () => [previousX, previousY];
+export const getHighlightSquareCoords = () => cellImages.map((c) => [c.x, c.y]);
 
 export const getIsBuilding = () => isBuilding;
