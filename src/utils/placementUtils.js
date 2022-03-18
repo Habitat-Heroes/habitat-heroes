@@ -5,15 +5,14 @@
 //   TILE_WIDTH_HALF,
 // } from './constants';
 
+import checkInMovableRange from './GameUtils';
+
 let cellImage;
 let previousX;
 let previousY;
+let cursorX;
+let cursorY;
 let isBuilding = false;
-
-// const getClosestIsoCoords = (movingPointer) => {
-//   const x = 10;
-//   return [movingPointer.x, movingPointer.y];
-// };
 
 export const setIsBuilding = (newIsBuilding) => {
   isBuilding = newIsBuilding;
@@ -23,11 +22,16 @@ export const setIsBuilding = (newIsBuilding) => {
 };
 
 export const addHighlightSquare = (newX, newY, scene) => {
-  if (cellImage && !isBuilding) {
+  const inMovableRange = checkInMovableRange(newX, newY);
+  if (inMovableRange) {
+    cursorX = newX;
+    cursorY = newY;
+  }
+  if (cellImage && (!isBuilding || !inMovableRange)) {
     cellImage.destroy();
     return;
   }
-  if (!isBuilding) {
+  if (!isBuilding || !inMovableRange) {
     return;
   }
   if (cellImage && (newY !== previousY || newX !== previousX)) {
@@ -41,3 +45,9 @@ export const addHighlightSquare = (newX, newY, scene) => {
   previousX = newX;
   previousY = newY;
 };
+
+export const getCursorCoord = () => [cursorX, cursorY];
+
+export const getHighlightSquareCoord = () => [previousX, previousY];
+
+export const getIsBuilding = () => isBuilding;

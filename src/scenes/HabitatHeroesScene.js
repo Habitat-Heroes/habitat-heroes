@@ -69,7 +69,13 @@ import checkInMovableRange, {
   getRemainingBuildTime,
 } from '../utils/GameUtils';
 import { loadItemSprites } from '../utils/items';
-import { addHighlightSquare, setIsBuilding } from '../utils/placementUtils';
+import {
+  addHighlightSquare,
+  getCursorCoord,
+  getHighlightSquareCoord,
+  getIsBuilding,
+  setIsBuilding,
+} from '../utils/placementUtils';
 
 let player;
 let villager;
@@ -239,12 +245,22 @@ export class HabitatHeroesScene extends Phaser.Scene {
       placingItemImage.depth = 800;
       placingItemImage.setAlpha(0.6);
       setIsBuilding(true);
-      const placingItemFn = (movingPointer) => {
-        placingItemImage.setPosition(movingPointer.x, movingPointer.y);
+      const placingItemFn = () => {
+        const [x, y] = getHighlightSquareCoord();
+        placingItemImage.setPosition(x, y);
       };
       this.input.on('pointermove', placingItemFn);
 
-      this.input.once('pointerup', () => {
+      // eslint-disable-next-line no-shadow
+      this.input.once('pointerdown', (pointer) => {
+        if (pointer.rightButtonDown()) {
+          this.input.off('pointermove', placingItemFn);
+          if (placingItemImage) {
+            placingItemImage.destroy();
+          }
+          setIsBuilding(false);
+          return;
+        }
         let depth = pointer.y + 110;
         if (spritesheet === 'pavements') {
           depth -= 90;
@@ -276,9 +292,14 @@ export class HabitatHeroesScene extends Phaser.Scene {
       return;
     }
 
-    if (pointer.isDown && checkInMovableRange(pointer.x, pointer.y)) {
-      touchX = pointer.x;
-      touchY = pointer.y;
+    if (
+      pointer.isDown &&
+      !getIsBuilding() &&
+      checkInMovableRange(pointer.x, pointer.y)
+    ) {
+      const [x, y] = getCursorCoord();
+      touchX = x;
+      touchY = y;
     }
 
     if (touchY === player.y && touchX === player.x) {
