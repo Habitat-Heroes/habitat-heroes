@@ -327,11 +327,17 @@ export const BUILDING_HOUSE_COORDS_SET = new Set(
   BUILDING_HOUSE_COORDS.map((c) => `${c[0]}-${c[1]}`),
 );
 
+const PLAYER_SAFE_TILE = '704-232';
+
 export const isCoordinateFree = (x, y, isPlayerMovement = false) => {
   const coordString = `${x}-${y}`;
   // Give a builder wallhacks
   if (isPlayerMovement && store.getState().houses.building) {
     return !BUILDING_HOUSE_COORDS_SET.has(coordString);
+  }
+
+  if (!isPlayerMovement && coordString === PLAYER_SAFE_TILE) {
+    return false;
   }
 
   const hasHouse = store.getState().houses.total_house > 0;

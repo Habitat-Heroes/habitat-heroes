@@ -389,6 +389,10 @@ export class HabitatHeroesScene extends Phaser.Scene {
         100,
         () => {
           this.placeHouses();
+          player.x = 704 + playerXOffset;
+          player.y = 232 + playerYOffset;
+          touchX = 704 + playerXOffset;
+          touchY = 232 + playerYOffset;
           scene.scene.launch('ThankYouScene', { villager: villagerIdx });
           scene.scene.pause('HabitatHeroesScene');
           this.rewardSfx.play(DEFAULT_SFX_CONFIG);
