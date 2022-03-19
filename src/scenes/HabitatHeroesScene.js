@@ -53,6 +53,7 @@ import openmenu from '../sounds/openmenu.mp3';
 import reward from '../sounds/reward.mp3';
 import thud from '../sounds/thud.mp3';
 import store from '../store';
+import { bfs } from '../utils/bfs';
 import {
   AVATAR_PANEL_CENTER,
   BUILD_DIRECTION_MAPPING,
@@ -63,7 +64,6 @@ import {
   MAP_WIDTH,
   TILE_HEIGHT,
   TILE_HEIGHT_HALF,
-  TILE_WIDTH,
   TILE_WIDTH_HALF,
 } from '../utils/constants';
 import { isCoordinateFree } from '../utils/coordinates';
@@ -110,17 +110,13 @@ let openMenuSfx;
 let overSfx;
 
 let isMoving = false;
-let hasTriedToMoveToBuild = false;
 
 const centerX = MAP_WIDTH * TILE_WIDTH_HALF;
 const centerY = MAP_HEIGHT * TILE_HEIGHT_HALF * 0.3;
 
 const USE_ACTUAL_AVATAR_SPRITE = false;
 
-let yMagnitudeRemaining = 0;
-let xMagnitudeRemaining = 0;
-let isXNegative = false;
-let isYNegative = false;
+let steps = null;
 
 export class HabitatHeroesScene extends Phaser.Scene {
   buildingSfx;
@@ -366,12 +362,8 @@ export class HabitatHeroesScene extends Phaser.Scene {
         this.buildingSfx.play({ ...DEFAULT_SFX_CONFIG, loop: true });
       }
       this.animateBuilding();
-    } else if (hasTriedToMoveToBuild && !isMoving) {
-      buildDirection = buildDirection === 3 ? 0 : buildDirection + 1;
-      hasTriedToMoveToBuild = false;
     } else {
       isMoving = true;
-      hasTriedToMoveToBuild = true;
       this.walkToPoint(
         BUILD_DIRECTION_MAPPING[buildDirection][0] + playerXOffset,
         BUILD_DIRECTION_MAPPING[buildDirection][1] + playerYOffset,
@@ -476,145 +468,35 @@ export class HabitatHeroesScene extends Phaser.Scene {
 
   walkToPoint(x, y) {
     if (!isMoving) {
+      steps = null;
       return;
     }
-    if (yMagnitudeRemaining > 0) {
-      let amount = isYNegative ? -2 : 2;
-      if (yMagnitudeRemaining <= Math.abs(amount)) {
-        amount = isYNegative ? -yMagnitudeRemaining : yMagnitudeRemaining;
-        yMagnitudeRemaining = 0;
-      } else {
-        yMagnitudeRemaining -= 2;
-      }
-      player.anims.play(isYNegative ? 'down' : 'up', true);
-      player.y += amount;
-      player.depth = player.y + 110;
-      return;
-    }
-    if (xMagnitudeRemaining > 0) {
-      let amount = isXNegative ? -2 : 2;
-      if (xMagnitudeRemaining <= Math.abs(amount)) {
-        amount = isXNegative ? -xMagnitudeRemaining : xMagnitudeRemaining;
-        xMagnitudeRemaining = 0;
-      } else {
-        xMagnitudeRemaining -= 2;
-      }
-      player.anims.play(isXNegative ? 'left' : 'right', true);
-      player.x += amount;
-      return;
-    }
-    if (
-      y >= player.y + TILE_HEIGHT &&
-      isCoordinateFree(
+    if (steps === null) {
+      steps = bfs(
         player.x - playerXOffset,
-        player.y + TILE_HEIGHT - playerYOffset,
-        true,
-      )
-    ) {
-      player.anims.play('up', true);
-      player.y += 2;
-      yMagnitudeRemaining = TILE_HEIGHT - 2;
-      isYNegative = false;
-      player.depth = player.y + 110;
-      return;
-    }
-    if (
-      y <= player.y - TILE_HEIGHT &&
-      isCoordinateFree(
-        player.x - playerXOffset,
-        player.y - TILE_HEIGHT - playerYOffset,
-        true,
-      )
-    ) {
-      player.anims.play('down', true);
-      player.y -= 2;
-      yMagnitudeRemaining = TILE_HEIGHT - 2;
-      isYNegative = true;
-      player.depth = player.y + 110;
-      return;
-    }
-    if (
-      x >= player.x + TILE_WIDTH &&
-      isCoordinateFree(
-        player.x + TILE_WIDTH - playerXOffset,
         player.y - playerYOffset,
-        true,
-      )
-    ) {
-      player.anims.play('right', true);
-      player.x += 2;
-      xMagnitudeRemaining = TILE_WIDTH - 2;
-      isXNegative = false;
-      return;
+        x - playerXOffset,
+        y - playerYOffset,
+      );
     }
-    if (
-      x <= player.x - TILE_WIDTH &&
-      isCoordinateFree(
-        player.x - TILE_WIDTH - playerXOffset,
-        player.y - playerYOffset,
-        true,
-      )
-    ) {
-      player.anims.play('left', true);
-      player.x -= 2;
-      xMagnitudeRemaining = TILE_WIDTH - 2;
-      isXNegative = true;
-      return;
-    }
-    // If we can reach here, it must be one of the three possible cases:
-    // - We got stuck
-    // - We're half-step away either vertically, horizontally or both
-    // - We've reached the destination
-
-    // Case 3: reached
-    if (y === player.y && x === player.x) {
+    if (steps.length === 0) {
       isMoving = false;
+      steps = null;
       return;
     }
-
-    // Case 2: half-step away
-    if (
-      Math.abs(player.y - y) === TILE_HEIGHT_HALF &&
-      Math.abs(player.x - x) === TILE_WIDTH_HALF
-    ) {
-      if (isCoordinateFree(x - playerXOffset, y - playerYOffset, true)) {
-        if (x === player.x) {
-          if (y > player.y) {
-            player.anims.play('up', true);
-            player.y += 2;
-            yMagnitudeRemaining = TILE_HEIGHT_HALF - 2;
-            isYNegative = false;
-          } else {
-            player.anims.play('down', true);
-            player.y -= 2;
-            yMagnitudeRemaining = TILE_HEIGHT_HALF - 2;
-            isYNegative = true;
-          }
-        } else if (x > player.x) {
-          player.anims.play('right', true);
-          player.x += 2;
-          xMagnitudeRemaining = TILE_WIDTH_HALF - 2;
-          isXNegative = false;
-          if (y !== player.y) {
-            yMagnitudeRemaining = TILE_HEIGHT_HALF;
-            isYNegative = y < player.y;
-          }
-        } else {
-          player.anims.play('left', true);
-          player.x -= 2;
-          xMagnitudeRemaining = TILE_WIDTH_HALF - 2;
-          isXNegative = true;
-          if (y !== player.y) {
-            yMagnitudeRemaining = TILE_HEIGHT_HALF;
-            isYNegative = y < player.y;
-          }
-        }
-      }
+    const step = steps.shift();
+    player.x += step[0];
+    player.y += step[1];
+    player.depth = player.y + 110;
+    if (step[0] < 0) {
+      player.anims.play('left', true);
+    } else if (step[0] > 0) {
+      player.anims.play('right', true);
+    } else if (step[1] > 0) {
+      player.anims.play('up', true);
+    } else if (step[1] < 0) {
+      player.anims.play('down', true);
     }
-
-    // Case 1: stuck
-    this.thudSfx.play(DEFAULT_SFX_CONFIG);
-    isMoving = false;
   }
 
   buildMap() {
