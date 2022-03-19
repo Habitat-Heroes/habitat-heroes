@@ -22,4 +22,10 @@ const store = configureStore({
 
 export const persistor = persistStore(store);
 
+const hasPurged = localStorage.getItem('purged');
+if (!hasPurged) {
+  persistor.purge();
+  localStorage.setItem('purged', true);
+}
+
 export default store;
