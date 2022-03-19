@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import sharenewsbutton from '../assets/build_menu/GratitudeBoard_NewsButton.png';
 import closebutton from '../assets/game_menu/close_button.png';
 import shareboard from '../assets/game_menu/woodboard.png';
-import photo from '../assets/social_media/demo_house.png';
+import demohouse from '../assets/social_media/demo_house.png';
 import fbbutton from '../assets/social_media/FacebookButton.png';
 import insbutton from '../assets/social_media/InstagramButton.png';
 import telebutton from '../assets/social_media/TelegramButton.png';
@@ -32,7 +32,7 @@ export class SharePageScene extends Phaser.Scene {
   preload() {
     this.load.image('shareboard', shareboard);
     this.load.image('sharenewsbutton', sharenewsbutton);
-    this.load.image('photo', photo);
+    this.load.image('demohouse', demohouse);
     this.load.image('fbbutton', fbbutton);
     this.load.image('insbutton', insbutton);
     this.load.image('telebutton', telebutton);
@@ -58,7 +58,9 @@ export class SharePageScene extends Phaser.Scene {
     scene.add
       .image(screenCenterX, screenCenterY - 40, 'sharenewsbutton')
       .setDisplaySize(600, 300); // setScale(0.9);
-    scene.add.image(screenCenterX, screenCenterY - 40, 'photo').setScale(0.28); // .setDisplaySize(600, 300)
+    scene.add
+      .image(screenCenterX, screenCenterY - 40, 'demohouse')
+      .setScale(0.28); // .setDisplaySize(600, 300)
     const fbButton = new Button(
       scene,
       screenCenterX - 240,

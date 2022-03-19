@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import photo from '../assets/ads/ads_clean.png';
+import adsclean from '../assets/ads/ads_clean.png';
 import closebutton from '../assets/game_menu/close_button.png';
 import playbutton from '../assets/video/play_button.png';
 import videofull from '../assets/video/VideoFull.png';
@@ -23,7 +23,7 @@ export class AdsScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('photo', photo);
+    this.load.image('adsclean', adsclean);
     this.load.image('videofull', videofull);
     this.load.image('playbutton', playbutton);
     this.load.image('closebutton', closebutton);
@@ -43,7 +43,7 @@ export class AdsScene extends Phaser.Scene {
       .image(screenCenterX, screenCenterY + 10, 'videofull')
       .setScale(0.6);
     scene.add
-      .image(screenCenterX + 6, screenCenterY + 72, 'photo')
+      .image(screenCenterX + 6, screenCenterY + 72, 'adsclean')
       .setScale(0.114);
 
     const playButton = new Button(
