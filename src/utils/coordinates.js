@@ -331,17 +331,22 @@ const PLAYER_SAFE_TILE = '704-232';
 
 export const isCoordinateFree = (x, y, isPlayerMovement = false) => {
   const coordString = `${x}-${y}`;
-  // Give a builder wallhacks
-  if (isPlayerMovement && store.getState().houses.building) {
-    return !BUILDING_HOUSE_COORDS_SET.has(coordString);
+  const isBuilding = store.getState().houses.building;
+  if (
+    isPlayerMovement &&
+    isBuilding &&
+    BUILDING_HOUSE_COORDS_SET.has(coordString)
+  ) {
+    return false;
   }
-
   if (!isPlayerMovement && coordString === PLAYER_SAFE_TILE) {
     return false;
   }
-
   const hasHouse = store.getState().houses.total_house > 0;
-  if ((!isPlayerMovement || hasHouse) && HOUSE_COORDS_SET.has(coordString)) {
+  if (
+    (!isPlayerMovement || (hasHouse && !isBuilding)) &&
+    !HOUSE_COORDS_SET.has(coordString)
+  ) {
     return false;
   }
   if (LAKE_COORDS_SET.has(coordString)) {
